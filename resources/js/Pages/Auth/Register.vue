@@ -24,90 +24,98 @@ const submit = () => {
     <GuestLayout>
         <Head title="Register" />
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="name" value="Name" />
-
-                <TextInput
-                    id="name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.name"
-                    required
-                    autofocus
-                    autocomplete="name"
-                />
-
-                <InputError class="mt-2" :message="form.errors.name" />
+        <div class="space-y-6">
+            <div class="text-center">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Create your account</h2>
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Start your vocabulary journey today</p>
             </div>
 
-            <div class="mt-4">
-                <InputLabel for="email" value="Email" />
+            <form @submit.prevent="submit" class="space-y-5">
+                <div class="space-y-2">
+                    <InputLabel for="name" value="Name" />
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
-                />
+                    <TextInput
+                        id="name"
+                        type="text"
+                        v-model="form.name"
+                        required
+                        autofocus
+                        autocomplete="name"
+                        placeholder="John Doe"
+                    />
 
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
+                    <InputError :message="form.errors.name" />
+                </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <div class="space-y-2">
+                    <InputLabel for="email" value="Email" />
 
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="new-password"
-                />
+                    <TextInput
+                        id="email"
+                        type="email"
+                        v-model="form.email"
+                        required
+                        autocomplete="username"
+                        placeholder="you@example.com"
+                    />
 
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
+                    <InputError :message="form.errors.email" />
+                </div>
 
-            <div class="mt-4">
-                <InputLabel
-                    for="password_confirmation"
-                    value="Confirm Password"
-                />
+                <div class="space-y-2">
+                    <InputLabel for="password" value="Password" />
 
-                <TextInput
-                    id="password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
+                    <TextInput
+                        id="password"
+                        type="password"
+                        v-model="form.password"
+                        required
+                        autocomplete="new-password"
+                        placeholder="••••••••"
+                    />
 
-                <InputError
-                    class="mt-2"
-                    :message="form.errors.password_confirmation"
-                />
-            </div>
+                    <InputError :message="form.errors.password" />
+                </div>
 
-            <div class="mt-4 flex items-center justify-end">
-                <Link
-                    :href="route('login')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-                >
-                    Already registered?
-                </Link>
+                <div class="space-y-2">
+                    <InputLabel
+                        for="password_confirmation"
+                        value="Confirm Password"
+                    />
+
+                    <TextInput
+                        id="password_confirmation"
+                        type="password"
+                        v-model="form.password_confirmation"
+                        required
+                        autocomplete="new-password"
+                        placeholder="••••••••"
+                    />
+
+                    <InputError
+                        :message="form.errors.password_confirmation"
+                    />
+                </div>
 
                 <PrimaryButton
-                    class="ms-4"
-                    :class="{ 'opacity-25': form.processing }"
+                    class="w-full"
+                    :class="{ 'opacity-50': form.processing }"
                     :disabled="form.processing"
                 >
-                    Register
+                    <span v-if="form.processing">Creating account...</span>
+                    <span v-else>Create account</span>
                 </PrimaryButton>
-            </div>
-        </form>
+
+                <div class="text-center">
+                    <span class="text-sm text-gray-600 dark:text-gray-400">Already have an account? </span>
+                    <Link
+                        :href="route('login')"
+                        class="text-sm font-medium text-indigo-600 hover:text-indigo-500 transition-colors dark:text-indigo-400 dark:hover:text-indigo-300"
+                    >
+                        Sign in
+                    </Link>
+                </div>
+            </form>
+        </div>
     </GuestLayout>
 </template>

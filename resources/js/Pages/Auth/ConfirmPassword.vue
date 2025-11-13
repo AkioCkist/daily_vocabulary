@@ -21,35 +21,40 @@ const submit = () => {
     <GuestLayout>
         <Head title="Confirm Password" />
 
-        <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-            This is a secure area of the application. Please confirm your
-            password before continuing.
-        </div>
-
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="password" value="Password" />
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="current-password"
-                    autofocus
-                />
-                <InputError class="mt-2" :message="form.errors.password" />
+        <div class="space-y-6">
+            <div class="text-center">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Confirm your password</h2>
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                    This is a secure area. Please confirm your password to continue.
+                </p>
             </div>
 
-            <div class="mt-4 flex justify-end">
+            <form @submit.prevent="submit" class="space-y-5">
+                <div class="space-y-2">
+                    <InputLabel for="password" value="Password" />
+                    
+                    <TextInput
+                        id="password"
+                        type="password"
+                        v-model="form.password"
+                        required
+                        autocomplete="current-password"
+                        autofocus
+                        placeholder="••••••••"
+                    />
+                    
+                    <InputError :message="form.errors.password" />
+                </div>
+
                 <PrimaryButton
-                    class="ms-4"
-                    :class="{ 'opacity-25': form.processing }"
+                    class="w-full"
+                    :class="{ 'opacity-50': form.processing }"
                     :disabled="form.processing"
                 >
-                    Confirm
+                    <span v-if="form.processing">Confirming...</span>
+                    <span v-else>Confirm</span>
                 </PrimaryButton>
-            </div>
-        </form>
+            </form>
+        </div>
     </GuestLayout>
 </template>

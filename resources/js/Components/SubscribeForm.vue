@@ -1,11 +1,11 @@
 <template>
-  <div class="mt-8 bg-gradient-to-br from-indigo-500 to-purple-600 p-8 rounded-3xl shadow-2xl text-white animate-fade-in">
+  <div class="mt-8 bg-gradient-to-br from-indigo-500 to-purple-600 p-8 rounded-3xl shadow-2xl text-white animate-fade-in dark:from-indigo-600 dark:to-purple-700">
     <div class="text-center mb-6">
       <div class="inline-flex items-center justify-center w-14 h-14 bg-white/20 backdrop-blur rounded-2xl mb-3">
         <span class="text-3xl">✉️</span>
       </div>
       <h3 class="text-2xl font-black mb-2">Daily Word Delivery</h3>
-      <p class="text-indigo-100">Level up your vocabulary! Get a new word every day 🚀</p>
+      <p class="text-indigo-100 dark:text-purple-100">Level up your vocabulary! Get a new word every day 🚀</p>
     </div>
     
     <form @submit.prevent="subscribe" class="space-y-4">
