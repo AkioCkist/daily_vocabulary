@@ -5,9 +5,30 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\UserVocabularyService;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class UserWordController extends Controller
 {
+    public function index(UserVocabularyService $vocabService)
+    {
+        $userId = Auth::id();
+        $userWords = $vocabService->getUserWords($userId);
+
+        // Extract just the word data from the UserWord relationship
+        $words = $userWords->map(function ($userWord) {
+            return $userWord->word;
+        })->values();
+
+        return Inertia::render('UserVocabulary', [
+            'userWords' => $words,
+            'meta' => [
+                'current_page' => 1,
+                'last_page' => 1,
+            ],
+            'user' => auth()->user(),
+        ]);
+    }
+
     public function store(Request $request, UserVocabularyService $vocabService)
     {
         $validated = $request->validate([

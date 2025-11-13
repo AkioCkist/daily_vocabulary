@@ -24,6 +24,7 @@ Route::get('/words', [WordController::class, 'index'])->name('words.index');
 
 // Authenticated user actions
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/user/words', [UserWordController::class, 'index'])->name('user.words.index');
     Route::post('/user/words', [UserWordController::class, 'store'])->name('user.words.store');
     Route::delete('/user/words/{id}', [UserWordController::class, 'destroy'])->name('user.words.destroy');
 

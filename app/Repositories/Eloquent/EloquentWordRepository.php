@@ -12,6 +12,13 @@ class EloquentWordRepository implements WordRepositoryInterface
         return Word::inRandomOrder()->first();
     }
 
+    public function getRandomWordExcluding(array $excludeIds): ?Word
+    {
+        return Word::whereNotIn('id', $excludeIds)
+            ->inRandomOrder()
+            ->first();
+    }
+
     public function findById(int $id): ?Word
     {
         return Word::find($id);
