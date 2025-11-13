@@ -1,59 +1,321 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Daily Vocabulary 🎯
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern web application for daily vocabulary learning and management, built with Laravel, Vue.js, and Inertia.js. This app helps users discover new words, track their learning progress, and build their vocabulary through daily practice.
 
-## About Laravel
+## ✨ Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Daily Word Discovery**: Get a new word every day to expand your vocabulary
+- **Personal Vocabulary Management**: Save, organize, and track your learned words
+- **User Authentication**: Secure user registration and login system
+- **Progress Tracking**: Monitor your vocabulary learning journey
+- **Responsive Design**: Beautiful, modern UI that works on all devices
+- **Email Subscriptions**: Optional daily word delivery to your inbox
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🛠️ Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Backend
+- **PHP 8.2+** - Modern PHP features and performance
+- **Laravel 12** - Robust web application framework
+- **Laravel Fortify** - Authentication scaffolding
+- **Laravel Sanctum** - API authentication
+- **Laravel Telescope** - Development debugging and monitoring
 
-## Learning Laravel
+### Frontend
+- **Vue.js 3** - Progressive JavaScript framework
+- **Inertia.js** - Modern monolith architecture
+- **Tailwind CSS** - Utility-first CSS framework
+- **Vite** - Fast build tool and development server
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Database
+- **PostgreSQL** - Primary database (can be configured for other databases)
+- **Eloquent ORM** - Database interactions and relationships
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 📋 Prerequisites
 
-## Laravel Sponsors
+Before you begin, ensure you have the following installed:
+- **PHP 8.2** or higher
+- **Composer** - PHP dependency manager
+- **Node.js 18+** and **npm** - JavaScript runtime and package manager
+- **PostgreSQL** - Database server (or your preferred database)
+- **Git** - Version control
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🚀 Quick Start
 
-### Premium Partners
+### 1. Clone the Repository
+```bash
+git clone https://github.com/AkioCkist/daily_vocabulary.git
+cd daily_vocabulary
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 2. Install PHP Dependencies
+```bash
+composer install
+```
 
-## Contributing
+### 3. Install JavaScript Dependencies
+```bash
+npm install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 4. Environment Setup
+```bash
+# Copy the environment file
+copy .env.example .env
 
-## Code of Conduct
+# Generate application key
+php artisan key:generate
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 5. Configure Database
+Edit your `.env` file with your database credentials:
+```env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=daily_vocabulary
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
 
-## Security Vulnerabilities
+### 6. Run Database Migrations
+```bash
+php artisan migrate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 7. Seed Database (Optional)
+```bash
+php artisan db:seed
+```
 
-## License
+### 8. Build Frontend Assets
+```bash
+# For development
+npm run dev
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# For production
+npm run build
+```
+
+### 9. Start the Development Server
+```bash
+php artisan serve
+```
+
+Visit `http://localhost:8000` to see your application!
+
+## 🏗️ Architecture Overview
+
+This application follows Laravel's clean architecture principles with a well-organized structure:
+
+### Directory Structure
+```
+app/
+├── Http/Controllers/     # HTTP request handlers
+├── Models/              # Eloquent models
+├── Services/            # Business logic layer
+├── Repositories/        # Data access layer
+│   ├── Interfaces/      # Repository contracts
+│   └── Eloquent/        # Eloquent implementations
+└── Providers/           # Service providers
+
+resources/
+├── js/
+│   ├── Components/      # Vue.js components
+│   └── Pages/          # Inertia.js pages
+└── views/              # Blade templates
+
+database/
+├── migrations/         # Database schema
+├── factories/          # Model factories
+└── seeders/           # Database seeders
+```
+
+### Key Models
+- **User**: User authentication and profile management
+- **Word**: Vocabulary words with definitions and examples
+- **UserWord**: User's personal vocabulary tracking
+- **DailyWordHistory**: Daily word selection history
+- **Subscription**: Email subscription management
+
+### Services Layer
+- **DailyWordService**: Manages daily word selection logic
+- **UserVocabularyService**: Handles user vocabulary operations
+- **SubscriptionService**: Manages email subscriptions
+
+## 🧪 Testing
+
+This project includes comprehensive unit and integration tests.
+
+### Running Tests
+```bash
+# Run all tests
+.\vendor\bin\phpunit
+
+# Run specific test suites
+.\vendor\bin\phpunit tests\Unit\Services
+.\vendor\bin\phpunit tests\Unit\Repositories
+.\vendor\bin\phpunit tests\Unit\Integration
+
+# Run with coverage
+.\vendor\bin\phpunit --coverage-html coverage
+```
+
+### Test Structure
+- **Unit Tests**: Service and repository layer testing with mocked dependencies
+- **Integration Tests**: End-to-end testing with real database interactions
+- **Feature Tests**: HTTP request and response testing
+
+## 🛠️ Development Workflow
+
+### 1. Setup Development Environment
+```bash
+# Install dependencies
+composer install
+npm install
+
+# Setup environment
+copy .env.example .env
+php artisan key:generate
+php artisan migrate
+```
+
+### 2. Start Development Servers
+```bash
+# Terminal 1: Laravel development server
+php artisan serve
+
+# Terminal 2: Vite development server (for hot reloading)
+npm run dev
+```
+
+### 3. Code Quality Tools
+```bash
+# PHP code formatting
+.\vendor\bin\pint
+
+# Static analysis
+.\vendor\bin\phpstan analyse
+
+# Run tests
+.\vendor\bin\phpunit
+```
+
+## 📝 Available Scripts
+
+### PHP/Laravel Scripts
+```bash
+# Development server
+php artisan serve
+
+# Database operations
+php artisan migrate
+php artisan migrate:refresh --seed
+php artisan db:seed
+
+# Clear caches
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
+
+# Generate resources
+php artisan make:controller ControllerName
+php artisan make:model ModelName
+php artisan make:migration create_table_name
+```
+
+### JavaScript/Node Scripts
+```bash
+# Development with hot reloading
+npm run dev
+
+# Production build
+npm run build
+
+# Install new packages
+npm install package-name
+```
+
+## 🔧 Configuration
+
+### Database Configuration
+The application supports multiple database drivers. Configure in `.env`:
+```env
+# PostgreSQL (recommended)
+DB_CONNECTION=pgsql
+
+# MySQL
+DB_CONNECTION=mysql
+
+# SQLite (for testing)
+DB_CONNECTION=sqlite
+```
+
+### Mail Configuration
+For email subscriptions, configure your mail driver:
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=your-smtp-host
+MAIL_PORT=587
+MAIL_USERNAME=your-email
+MAIL_PASSWORD=your-password
+```
+
+## 🚀 Deployment
+
+### Production Build
+```bash
+# Install production dependencies
+composer install --optimize-autoloader --no-dev
+
+# Build frontend assets
+npm run build
+
+# Optimize Laravel
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+
+### Environment Variables
+Ensure these are set in your production environment:
+```env
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://yourdomain.com
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Development Guidelines
+- Follow PSR-12 coding standards for PHP
+- Use TypeScript for complex JavaScript functionality
+- Write tests for new features
+- Update documentation as needed
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+If you encounter any issues or have questions:
+1. Check the existing [Issues](https://github.com/AkioCkist/daily_vocabulary/issues)
+2. Create a new issue with detailed information
+3. Include error messages and steps to reproduce
+
+## 🙏 Acknowledgments
+
+- Laravel community for the excellent framework
+- Vue.js team for the reactive frontend framework
+- Tailwind CSS for the utility-first CSS framework
+- Inertia.js for modern monolith architecture
+
+---
+
+Happy vocabulary building! 📚✨
