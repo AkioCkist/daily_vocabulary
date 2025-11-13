@@ -1,9 +1,8 @@
 <script setup>
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import Panel from '@/Components/Panel.vue';
 import TextInput from '@/Components/TextInput.vue';
+import Button from '@/Components/Button.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 
 const form = useForm({
@@ -18,43 +17,43 @@ const submit = () => {
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Confirm Password" />
+    <Head title="Confirm Password" />
 
-        <div class="space-y-6">
-            <div class="text-center">
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Confirm your password</h2>
-                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                    This is a secure area. Please confirm your password to continue.
-                </p>
-            </div>
+    <AuthenticatedLayout>
+        <template #header>
+            <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+                Confirm Password
+            </h2>
+        </template>
 
-            <form @submit.prevent="submit" class="space-y-5">
-                <div class="space-y-2">
-                    <InputLabel for="password" value="Password" />
-                    
-                    <TextInput
-                        id="password"
-                        type="password"
-                        v-model="form.password"
-                        required
-                        autocomplete="current-password"
-                        autofocus
-                        placeholder="••••••••"
-                    />
-                    
-                    <InputError :message="form.errors.password" />
-                </div>
-
-                <PrimaryButton
-                    class="w-full"
-                    :class="{ 'opacity-50': form.processing }"
-                    :disabled="form.processing"
+        <div class="py-12">
+            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <Panel 
+                    class="max-w-xl mx-auto bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
+                    :header="'Confirm Password'"
+                    :subHeader="'This is a secure area of the application. Please confirm your password before continuing.'"
                 >
-                    <span v-if="form.processing">Confirming...</span>
-                    <span v-else>Confirm</span>
-                </PrimaryButton>
-            </form>
+                <form @submit.prevent="submit">
+                    <TextInput
+                        class="block mt-1 w-full"
+                        type="password"
+                        name="password"
+                        :label="'Password'"
+                        v-model="form.password"
+                        :error="form.errors.password"
+                    />
+
+                    <div class="flex justify-end mt-4">
+                        <Button 
+                            type="submit"
+                            :disabled="form.processing"
+                        >
+                            {{ form.processing ? 'Confirming...' : 'Confirm' }}
+                        </Button>
+                    </div>
+                </form>
+                </Panel>
+            </div>
         </div>
-    </GuestLayout>
+    </AuthenticatedLayout>
 </template>
