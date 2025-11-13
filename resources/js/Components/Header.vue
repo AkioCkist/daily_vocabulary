@@ -20,12 +20,14 @@
           <template v-if="user">
             <!-- Authenticated User Menu -->
             <Link 
+              v-if="currentPath === '/user/words'"
               href="/" 
               class="px-4 py-2 text-gray-700 hover:text-purple-600 font-medium transition-colors hidden sm:block"
             >
               Browse Words
             </Link>
             <Link 
+              v-if="currentPath !== '/user/words'"
               href="/user/words" 
               class="px-4 py-2 text-gray-700 hover:text-purple-600 font-medium transition-colors hidden sm:block"
             >
@@ -56,6 +58,7 @@
                   Profile
                 </Link>
                 <Link 
+                  v-if="currentPath !== '/user/words'"
                   href="/user/words" 
                   class="block px-4 py-2 text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors sm:hidden"
                 >
@@ -108,8 +111,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
+import { Link, usePage } from '@inertiajs/vue3';
 
 defineProps({
   user: {
@@ -119,4 +122,8 @@ defineProps({
 });
 
 const showDropdown = ref(false);
+const page = usePage();
+
+// Get current URL path
+const currentPath = computed(() => page.url);
 </script>
