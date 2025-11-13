@@ -20,7 +20,7 @@ const toggleRecovery = () => {
 };
 
 const submit = () => {
-    form.post(route('two-factor.login'));
+    form.post(route('two-factor.login.store'));
 };
 </script>
 

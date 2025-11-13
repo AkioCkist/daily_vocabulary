@@ -26,7 +26,7 @@ const submitEnable = () => {
 const regenerateForm = useForm({});
 
 const regenerateRecoveryCodes = () => {
-    regenerateForm.post(route('two-factor.recovery-codes'));
+    regenerateForm.post(route('two-factor.regenerate-recovery-codes'));
 };
 
 const disableForm = useForm({});
