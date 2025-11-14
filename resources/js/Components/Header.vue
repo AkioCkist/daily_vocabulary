@@ -86,12 +86,6 @@
           <template v-else>
             <!-- Guest User Buttons -->
             <Link 
-              href="/words" 
-              class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors hidden sm:block dark:text-gray-300 dark:hover:text-indigo-400"
-            >
-              Browse Words
-            </Link>
-            <Link 
               href="/login" 
               class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold transition-colors dark:text-gray-300 dark:hover:text-indigo-400"
             >

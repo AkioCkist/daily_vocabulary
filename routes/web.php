@@ -26,6 +26,9 @@ Route::get('/words', [WordController::class, 'index'])->name('words.index');
 
 // Subscription (guest or logged in)
 Route::post('/subscribe', [SubscriptionController::class, 'store'])->name('subscribe.store');
+Route::post('/unsubscribe', [SubscriptionController::class, 'unsubscribe'])->name('subscribe.unsubscribe');
+Route::post('/check-subscription-status', [SubscriptionController::class, 'checkStatus'])->name('subscribe.checkStatus');
+Route::get('/auth-subscription-status', [SubscriptionController::class, 'getAuthUserStatus'])->name('subscribe.authStatus');
 
 // Authenticated + Verified User routes
 Route::middleware(['auth', 'verified'])->group(function () {

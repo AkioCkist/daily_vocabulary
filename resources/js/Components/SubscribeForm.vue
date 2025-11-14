@@ -8,61 +8,108 @@
       <p class="text-indigo-100 dark:text-purple-100">Level up your vocabulary! Get a new word every day 🚀</p>
     </div>
     
-    <form @submit.prevent="subscribe" class="space-y-4">
-      <div>
-        <div class="relative">
-          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
-            </svg>
-          </div>
-          <input
-            v-model="form.email"
-            type="email"
-            placeholder="your.email@example.com"
-            required
-            class="w-full pl-12 pr-4 py-4 bg-white/95 backdrop-blur text-gray-900 rounded-2xl focus:ring-4 focus:ring-white/50 focus:outline-none font-medium placeholder-gray-400 shadow-lg"
-          />
-        </div>
-        <p v-if="form.errors.email" class="text-red-200 text-sm mt-2 ml-2 font-medium">{{ form.errors.email }}</p>
+    <!-- Subscribe Form - Show if not subscribed -->
+    <form v-if="!isSubscribed && !isLoading" @submit.prevent="subscribe" class="space-y-4">
+      <button
+        type="submit"
+        :disabled="form.processing"
+        class="w-full bg-white text-indigo-600 font-bold py-4 px-6 rounded-2xl hover:bg-indigo-50 transform hover:scale-105 transition-all duration-200 shadow-xl disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+      >
+        {{ form.processing ? 'Subscribing...' : 'Start Learning Now!' }}
+      </button>
+    </form>
+
+    <!-- Already Subscribed - Show if subscribed -->
+    <div v-else-if="isSubscribed && !isLoading" class="space-y-4">
+      <div class="bg-white/20 backdrop-blur rounded-2xl p-4 text-center">
+        <p class="font-bold text-lg mb-2">🎉 You're all set!</p>
+        <p class="text-sm text-indigo-100">{{ userEmail }} is subscribed to Daily Vocabulary</p>
       </div>
       
       <button
-        type="submit"
-        :disabled="form.processing || subscribed"
-        class="w-full bg-white text-indigo-600 font-bold py-4 px-6 rounded-2xl hover:bg-indigo-50 transform hover:scale-105 transition-all duration-200 shadow-xl disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+        type="button"
+        @click="unsubscribe"
+        :disabled="unsubscribeForm.processing"
+        class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-6 rounded-2xl transform hover:scale-105 transition-all duration-200 shadow-xl disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
       >
-        <span v-if="!subscribed">{{ form.processing ? 'Subscribing...' : 'Start Learning Now!' }}</span>
-        <span v-else class="flex items-center gap-2">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-          </svg>
-          Subscribed!
-        </span>
+        <svg v-if="!unsubscribeForm.processing" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+        {{ unsubscribeForm.processing ? 'Unsubscribing...' : 'Unsubscribe' }}
       </button>
-      
-      <div v-if="subscribed" class="bg-white/20 backdrop-blur rounded-2xl p-4 text-center animate-bounce-in">
-        <p class="font-bold">🎉 You're all set!</p>
-        <p class="text-sm text-indigo-100">Check your inbox for your first word</p>
-      </div>
-    </form>
+    </div>
+
+    <!-- Loading state -->
+    <div v-else-if="isLoading" class="text-center">
+      <p class="text-indigo-100">Loading...</p>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 
-const subscribed = ref(false);
+defineProps({
+  user: {
+    type: Object,
+    default: null,
+  },
+});
+
+const isSubscribed = ref(false);
+const isLoading = ref(true);
+const userEmail = ref('');
+
 const form = useForm({
+  email: '',
+});
+
+const unsubscribeForm = useForm({
   email: ''
 });
 
+// Check subscription status on mount
+onMounted(async () => {
+  try {
+    const response = await fetch('/auth-subscription-status');
+    const data = await response.json();
+    
+    if (data.email) {
+      userEmail.value = data.email;
+      form.email = data.email;
+      isSubscribed.value = data.subscribed;
+      if (data.subscribed) {
+        unsubscribeForm.email = data.email;
+      }
+    }
+  } catch (error) {
+    console.error('Error checking subscription status:', error);
+  } finally {
+    isLoading.value = false;
+  }
+});
+
 function subscribe() {
+  console.log('Subscribe function called', { email: form.email, userEmail: userEmail.value });
   form.post('/subscribe', {
     onSuccess: () => {
-      subscribed.value = true;
+      console.log('Subscription successful');
+      isSubscribed.value = true;
+      unsubscribeForm.email = userEmail.value;
+    },
+    onError: (errors) => {
+      console.error('Subscription failed', errors);
+    },
+  });
+}
+
+function unsubscribe() {
+  unsubscribeForm.post('/unsubscribe', {
+    onSuccess: () => {
+      isSubscribed.value = false;
       form.reset();
+      unsubscribeForm.reset();
     },
   });
 }
