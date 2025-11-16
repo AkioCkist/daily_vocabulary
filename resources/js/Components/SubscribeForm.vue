@@ -86,12 +86,7 @@
 import { ref, onMounted } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 
-defineProps({
-  user: {
-    type: Object,
-    default: null,
-  },
-});
+
 
 const isSubscribed = ref(false);
 const isLoading = ref(true);
@@ -103,6 +98,14 @@ const form = useForm({
 
 const unsubscribeForm = useForm({
   email: ''
+});
+
+// Get props to access user data
+const props = defineProps({
+  user: {
+    type: Object,
+    default: null,
+  },
 });
 
 // Check subscription status on mount
@@ -118,6 +121,11 @@ onMounted(async () => {
       if (data.subscribed) {
         unsubscribeForm.email = data.email;
       }
+    } else if (props.user && props.user.email) {
+      // If no subscription data but user is logged in, use user email
+      userEmail.value = props.user.email;
+      form.email = props.user.email;
+      isSubscribed.value = false;
     }
   } catch (error) {
     console.error('Error checking subscription status:', error);
@@ -128,11 +136,18 @@ onMounted(async () => {
 
 function subscribe() {
   console.log('Subscribe function called', { email: form.email, userEmail: userEmail.value });
+  
+  // Ensure we have an email before subscribing
+  if (!form.email && props.user && props.user.email) {
+    form.email = props.user.email;
+    userEmail.value = props.user.email;
+  }
+  
   form.post('/subscribe', {
     onSuccess: () => {
       console.log('Subscription successful');
       isSubscribed.value = true;
-      unsubscribeForm.email = userEmail.value;
+      unsubscribeForm.email = form.email || userEmail.value;
     },
     onError: (errors) => {
       console.error('Subscription failed', errors);
