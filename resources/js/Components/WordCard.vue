@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-white/80 dark:bg-gray-800/80 rounded-3xl shadow-depth-4 p-8 border border-white/30 dark:border-white/10 hover-lift animate-scale-in relative overflow-hidden group">
+  <div class="bg-white/95 dark:bg-gray-800/95 rounded-3xl shadow-depth-4 p-8 border border-gray-200/50 dark:border-gray-600/50 hover-lift animate-scale-in relative overflow-hidden group">
     <!-- Background decoration -->
-    <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/3 via-purple-500/3 to-pink-500/3 dark:from-indigo-400/3 dark:via-purple-400/3 dark:to-pink-400/3 opacity-20 group-hover:opacity-30 transition-opacity duration-500"></div>
+    <div class="absolute inset-0 bg-gradient-to-br from-indigo-600/8 via-purple-600/8 to-pink-600/8 dark:from-indigo-400/8 dark:via-purple-400/8 dark:to-pink-400/8 opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
     
     <!-- Word Header -->
     <div class="mb-8 relative z-10">
@@ -25,7 +25,7 @@
 
     <!-- Definition -->
     <div class="mb-8 relative z-10">
-      <div class="flex items-start gap-3 p-6 bg-white/25 dark:bg-white/5 rounded-2xl border border-white/30 dark:border-white/10 shadow-depth-1">
+      <div class="flex items-start gap-3 p-6 bg-gray-50/80 dark:bg-gray-700/40 rounded-2xl border border-gray-200/40 dark:border-gray-600/30 shadow-depth-1">
         <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
           <span class="text-2xl">📖</span>
         </div>
@@ -35,7 +35,7 @@
 
     <!-- Example -->
     <div v-if="word.example" class="relative z-10">
-      <div class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/50 dark:via-purple-950/50 dark:to-pink-950/50 p-6 rounded-2xl shadow-depth-2 border border-indigo-200/50 dark:border-indigo-700/50 relative overflow-hidden">
+      <div class="bg-gradient-to-br from-indigo-100/80 via-purple-100/80 to-pink-100/80 dark:from-indigo-900/60 dark:via-purple-900/60 dark:to-pink-900/60 p-6 rounded-2xl shadow-depth-2 border border-indigo-300/60 dark:border-indigo-600/60 relative overflow-hidden">
         <!-- Decorative border -->
         <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500 rounded-full"></div>
         

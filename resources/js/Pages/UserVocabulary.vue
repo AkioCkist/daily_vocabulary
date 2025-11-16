@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-indigo-25 via-white to-purple-25 dark:from-gray-900 dark:via-gray-900 dark:to-indigo-950">
+  <div class="min-h-screen bg-gradient-to-br from-slate-100 via-gray-50 to-indigo-50 dark:from-gray-900 dark:via-gray-900 dark:to-indigo-950">
     <!-- Header -->
     <Header :user="user" />
 
@@ -14,7 +14,7 @@
       </div>
 
       <!-- Stats Card -->
-      <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 mb-8 border border-indigo-100 ring-1 ring-gray-900/5 dark:bg-gray-800/80 dark:border-indigo-900/50 dark:ring-white/10">
+      <div class="bg-white/95 rounded-2xl shadow-xl p-6 mb-8 border border-gray-200/60 ring-1 ring-gray-900/10 dark:bg-gray-800/95 dark:border-gray-600/60 dark:ring-white/15">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
             <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
@@ -33,7 +33,7 @@
       </div>
 
       <!-- Word List -->
-      <WordList :words="userWords" />
+      <WordList :words="userWords" :show-remove="true" @remove-word="removeWord" />
 
       <!-- Pagination -->
       <Pagination
@@ -46,6 +46,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useForm } from '@inertiajs/vue3';
 import Header from '@/Components/Header.vue';
 import WordList from '@/Components/WordList.vue';
 import Pagination from '@/Components/Pagination.vue';
@@ -65,5 +66,18 @@ const meta = ref(props.meta || {});
 function changePage(page) {
   // Reload user words page
   // Implement Inertia GET to `/user/words?page=${page}`
+}
+
+function removeWord(wordId) {
+  const form = useForm({});
+  form.delete(`/user/words/${wordId}`, {
+    onSuccess: () => {
+      // Remove word from local array
+      userWords.value = userWords.value.filter(word => word.id !== wordId);
+    },
+    onError: (errors) => {
+      console.error('Failed to remove word:', errors);
+    }
+  });
 }
 </script>

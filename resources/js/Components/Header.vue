@@ -1,5 +1,5 @@
 <template>
-  <header class="glass-morphism dark:glass-morphism-dark sticky top-0 z-50 shadow-depth-3 border-b border-white/30 dark:border-white/10">
+  <header class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm sticky top-0 z-50 shadow-depth-3 border-b border-gray-200/50 dark:border-gray-700/50">
     <div class="max-w-7xl mx-auto px-4 py-4">
       <div class="flex items-center justify-between">
         <!-- Logo/Brand with Enhanced Depth Effects -->
@@ -25,14 +25,14 @@
             <Link 
               v-if="currentPath === '/user/words'"
               href="/" 
-              class="px-6 py-3 text-gray-700 hover:text-indigo-600 font-semibold transition-all duration-300 hidden sm:block dark:text-gray-300 dark:hover:text-indigo-400 bg-white/20 dark:bg-white/5 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl backdrop-blur-md border border-white/30 dark:border-white/10 shadow-depth-1 hover-lift"
+              class="px-6 py-3 text-gray-800 hover:text-indigo-700 font-semibold transition-all duration-300 hidden sm:block dark:text-gray-200 dark:hover:text-indigo-300 bg-gray-100/80 dark:bg-gray-800/80 hover:bg-gray-200/90 dark:hover:bg-gray-700/90 rounded-xl border border-gray-200/60 dark:border-gray-600/60 shadow-depth-1 hover-lift"
             >
               Browse Words
             </Link>
             <Link 
               v-if="currentPath !== '/user/words'"
               href="/user/words" 
-              class="px-6 py-3 text-gray-700 hover:text-indigo-600 font-semibold transition-all duration-300 hidden sm:block dark:text-gray-300 dark:hover:text-indigo-400 bg-white/20 dark:bg-white/5 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl backdrop-blur-md border border-white/30 dark:border-white/10 shadow-depth-1 hover-lift"
+              class="px-6 py-3 text-gray-800 hover:text-indigo-700 font-semibold transition-all duration-300 hidden sm:block dark:text-gray-200 dark:hover:text-indigo-300 bg-gray-100/80 dark:bg-gray-800/80 hover:bg-gray-200/90 dark:hover:bg-gray-700/90 rounded-xl border border-gray-200/60 dark:border-gray-600/60 shadow-depth-1 hover-lift"
             >
               My Vocabulary
             </Link>
@@ -41,7 +41,7 @@
             <div class="relative">
               <button 
                 @click="showDropdown = !showDropdown"
-                class="flex items-center gap-3 px-6 py-3 bg-gradient-to-br from-indigo-100/80 via-purple-100/80 to-pink-100/80 dark:from-indigo-500/30 dark:via-purple-500/25 dark:to-pink-500/30 backdrop-blur-md border border-white/40 dark:border-indigo-400/40 text-gray-800 dark:text-white rounded-xl font-semibold shadow-depth-2 hover-lift btn-3d transition-all duration-300"
+                class="flex items-center gap-3 px-6 py-3 bg-gradient-to-br from-indigo-200/90 via-purple-200/90 to-pink-200/90 dark:from-indigo-600/40 dark:via-purple-600/35 dark:to-pink-600/40 border border-gray-300/60 dark:border-indigo-500/60 text-gray-900 dark:text-white rounded-xl font-semibold shadow-depth-2 hover-lift btn-3d transition-all duration-300"
               >
                 <span class="hidden sm:inline drop-shadow-sm">{{ user.name }}</span>
                 <span class="sm:hidden w-10 h-10 bg-gradient-to-br from-indigo-200 via-purple-200 to-pink-200 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 rounded-full flex items-center justify-center font-bold text-sm text-gray-800 dark:text-white shadow-depth-1">
