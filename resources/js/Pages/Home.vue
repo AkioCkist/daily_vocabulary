@@ -1,4 +1,5 @@
 <template>
+  <Head title="Word of the Day - DailyVocab" />
   <div class="min-h-screen bg-gradient-to-br from-slate-100 via-gray-50 to-blue-50 dark:from-gray-900 dark:via-gray-900 dark:to-indigo-950 relative overflow-hidden">
     <!-- Background decoration for depth -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
@@ -80,8 +81,8 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import { useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import { useForm, Head } from '@inertiajs/vue3';
 import Header from '@/Components/Header.vue';
 import WordCard from '@/Components/WordCard.vue';
 import SubscribeForm from '@/Components/SubscribeForm.vue';

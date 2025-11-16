@@ -22,7 +22,7 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Register" />
+        <Head title="Create Account - DailyVocab" />
 
         <div class="space-y-6">
             <div class="text-center">

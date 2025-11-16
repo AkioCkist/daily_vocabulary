@@ -1,4 +1,5 @@
 <template>
+  <Head title="My Vocabulary - DailyVocab" />
   <div class="min-h-screen bg-gradient-to-br from-slate-100 via-gray-50 to-indigo-50 dark:from-gray-900 dark:via-gray-900 dark:to-indigo-950">
     <!-- Header -->
     <Header :user="user" />
@@ -46,7 +47,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useForm } from '@inertiajs/vue3';
+import { useForm, Head } from '@inertiajs/vue3';
 import Header from '@/Components/Header.vue';
 import WordList from '@/Components/WordList.vue';
 import Pagination from '@/Components/Pagination.vue';

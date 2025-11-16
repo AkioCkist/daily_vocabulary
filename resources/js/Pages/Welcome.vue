@@ -1,3 +1,5 @@
+<Head title="Welcome to DailyVocab - Expand Your Vocabulary" />
+
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
 

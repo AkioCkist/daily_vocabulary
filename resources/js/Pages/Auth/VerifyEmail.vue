@@ -23,7 +23,7 @@ const verificationLinkSent = computed(
 
 <template>
     <GuestLayout>
-        <Head title="Email Verification" />
+        <Head title="Verify Email - DailyVocab" />
 
         <div class="space-y-6">
             <div class="text-center">

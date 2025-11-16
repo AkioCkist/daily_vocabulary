@@ -1,9 +1,10 @@
 <script setup>
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, Head } from '@inertiajs/vue3';
 </script>
 
 <template>
+    <Head title="Welcome - DailyVocab" />
     <div
         class="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-slate-100 via-gray-50 to-indigo-50 px-4 dark:from-gray-900 dark:via-gray-900 dark:to-indigo-950"
     >
