@@ -1,5 +1,5 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import Header from '@/Components/Header.vue';
 import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
@@ -37,19 +37,23 @@ onMounted(() => {
 </script>
 
 <template>
-    <Head title="Profile" />
+    <Head title="Profile Settings - DailyVocab" />
+    
+    <div class="min-h-screen bg-gradient-to-br from-slate-100 via-gray-50 to-indigo-50 dark:from-gray-900 dark:via-gray-900 dark:to-indigo-950">
+        <!-- Header -->
+        <Header :user="user" />
 
-    <AuthenticatedLayout>
-        <template #header>
-            <h2
-                class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
-            >
-                Profile
-            </h2>
-        </template>
+        <div class="max-w-5xl mx-auto px-4 py-8">
+            <!-- Page Header -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full mb-4 shadow-lg">
+                    <span class="text-3xl">⚙️</span>
+                </div>
+                <h1 class="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2 dark:from-indigo-400 dark:to-purple-400">Profile Settings</h1>
+                <p class="text-gray-600 dark:text-gray-400">Manage your account settings and preferences</p>
+            </div>
 
-        <div class="py-6">
-            <div class="mx-auto max-w-5xl space-y-6 sm:px-6 lg:px-8">
+            <div class="space-y-6">
                 <!-- Email Verification Notice -->
                 <div
                     v-if="mustVerifyEmail && !user.email_verified_at"
@@ -126,5 +130,5 @@ onMounted(() => {
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </div>
 </template>
