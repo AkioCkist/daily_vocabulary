@@ -1,13 +1,13 @@
 <template>
-  <div class="glass-morphism dark:glass-morphism-dark rounded-3xl shadow-depth-4 p-8 border border-white/30 dark:border-white/10 hover-lift animate-scale-in relative overflow-hidden group">
+  <div class="bg-white/80 dark:bg-gray-800/80 rounded-3xl shadow-depth-4 p-8 border border-white/30 dark:border-white/10 hover-lift animate-scale-in relative overflow-hidden group">
     <!-- Background decoration -->
-    <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-purple-500/5 to-pink-500/5 dark:from-indigo-400/5 dark:via-purple-400/5 dark:to-pink-400/5 opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
+    <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/3 via-purple-500/3 to-pink-500/3 dark:from-indigo-400/3 dark:via-purple-400/3 dark:to-pink-400/3 opacity-20 group-hover:opacity-30 transition-opacity duration-500"></div>
     
     <!-- Word Header -->
     <div class="mb-8 relative z-10">
       <div class="flex items-center gap-4 mb-4">
         <div class="relative">
-          <div class="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl blur-md opacity-50 animate-pulse-glow"></div>
+          <div class="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl blur-md opacity-30 animate-pulse-glow"></div>
           <div class="relative w-14 h-14 bg-gradient-to-br from-indigo-500 via-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-depth-3 border border-white/20">
             <span class="text-3xl drop-shadow-sm">💬</span>
           </div>
@@ -25,7 +25,7 @@
 
     <!-- Definition -->
     <div class="mb-8 relative z-10">
-      <div class="flex items-start gap-3 p-6 bg-white/40 dark:bg-white/5 rounded-2xl backdrop-blur-sm border border-white/30 dark:border-white/10 shadow-depth-1">
+      <div class="flex items-start gap-3 p-6 bg-white/25 dark:bg-white/5 rounded-2xl border border-white/30 dark:border-white/10 shadow-depth-1">
         <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
           <span class="text-2xl">📖</span>
         </div>

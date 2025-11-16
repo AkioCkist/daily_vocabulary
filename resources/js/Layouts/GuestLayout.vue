@@ -5,7 +5,7 @@ import { Link } from '@inertiajs/vue3';
 
 <template>
     <div
-        class="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50 px-4 dark:from-gray-900 dark:via-gray-900 dark:to-indigo-950"
+        class="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-indigo-25 via-white to-purple-25 px-4 dark:from-gray-900 dark:via-gray-900 dark:to-indigo-950"
     >
         <div class="w-full max-w-md">
             <div class="mb-8 text-center">

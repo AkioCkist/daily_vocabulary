@@ -5,7 +5,7 @@
         <!-- Logo/Brand with Enhanced Depth Effects -->
         <Link href="/" class="flex items-center gap-4 group hover-lift">
           <div class="relative">
-            <div class="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity animate-pulse-glow"></div>
+            <div class="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl blur-lg opacity-20 group-hover:opacity-30 transition-opacity animate-pulse-glow"></div>
             <div class="relative w-14 h-14 bg-gradient-to-br from-indigo-500 via-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-depth-3 group-hover:scale-110 transition-all duration-300 border border-white/40 dark:border-white/30">
               <span class="text-3xl drop-shadow-sm animate-floating">📚</span>
             </div>

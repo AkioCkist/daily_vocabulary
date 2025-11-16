@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-indigo-950">
+  <div class="min-h-screen bg-gradient-to-br from-indigo-25 via-white to-purple-25 dark:from-gray-900 dark:via-gray-900 dark:to-indigo-950">
     <!-- Header -->
     <Header :user="user" />
 

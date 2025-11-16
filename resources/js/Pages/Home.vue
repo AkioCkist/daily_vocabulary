@@ -1,9 +1,9 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-indigo-950 relative overflow-hidden">
+  <div class="min-h-screen bg-gradient-to-br from-indigo-25 via-white to-purple-25 dark:from-gray-900 dark:via-gray-900 dark:to-indigo-950 relative overflow-hidden">
     <!-- Background decoration for depth -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
-      <div class="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-floating"></div>
-      <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-indigo-400/20 to-blue-400/20 rounded-full blur-3xl animate-floating" style="animation-delay: -1s;"></div>
+      <div class="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-purple-400/8 to-pink-400/8 rounded-full blur-3xl animate-floating"></div>
+      <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-indigo-400/8 to-blue-400/8 rounded-full blur-3xl animate-floating" style="animation-delay: -1s;"></div>
     </div>
     
     <!-- Header -->
@@ -13,7 +13,7 @@
       <!-- Header Section -->
       <div class="text-center mb-8 animate-fade-in">
         <div class="inline-flex items-center justify-center w-18 h-18 bg-gradient-to-br from-yellow-400 via-orange-400 to-orange-500 rounded-2xl mb-4 shadow-depth-3 animate-floating hover-lift relative">
-          <div class="absolute inset-0 bg-gradient-to-br from-yellow-300/50 to-orange-400/50 rounded-2xl blur-sm"></div>
+          <div class="absolute inset-0 bg-gradient-to-br from-yellow-300/30 to-orange-400/30 rounded-2xl blur-sm"></div>
           <span class="text-4xl relative z-10 drop-shadow-sm">📚</span>
         </div>
         <h1 class="text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-violet-600 bg-clip-text text-transparent mb-2 dark:from-indigo-400 dark:via-purple-400 dark:to-violet-400 drop-shadow-sm">Word of the Day</h1>

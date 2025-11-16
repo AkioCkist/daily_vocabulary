@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 @layer utilities {
+  /* Custom lighter gradient colors */
+  .from-indigo-25 { --tw-gradient-from: rgb(238 242 255) var(--tw-gradient-from-position); }
+  .to-purple-25 { --tw-gradient-to: rgb(250 245 255) var(--tw-gradient-to-position); }
+  .from-green-25 { --tw-gradient-from: rgb(240 253 244) var(--tw-gradient-from-position); }
+  .to-blue-25 { --tw-gradient-to: rgb(239 246 255) var(--tw-gradient-to-position); }
   /* Enhanced depth and layering utilities */
   .shadow-depth-1 {
     box-shadow: 
@@ -39,16 +44,12 @@
   
   /* Glass morphism enhanced */
   .glass-morphism {
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.18);
   }
   
   .glass-morphism-dark {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
   
@@ -165,10 +166,10 @@
   /* Pulse Glow Animation */
   @keyframes pulseGlow {
     0%, 100% {
-      box-shadow: 0 0 5px rgba(99, 102, 241, 0.5);
+      box-shadow: 0 0 3px rgba(99, 102, 241, 0.3);
     }
     50% {
-      box-shadow: 0 0 20px rgba(99, 102, 241, 0.8);
+      box-shadow: 0 0 12px rgba(99, 102, 241, 0.5);
     }
   }
   

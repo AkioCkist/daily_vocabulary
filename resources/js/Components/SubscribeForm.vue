@@ -4,14 +4,14 @@
     <div class="bg-gradient-to-br from-indigo-500 via-purple-600 to-violet-700 p-8 rounded-3xl shadow-depth-4 text-white animate-fade-in dark:from-indigo-600 dark:via-purple-700 dark:to-violet-800 relative border border-white/20">
       <!-- Background decorations -->
       <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent rounded-3xl"></div>
-      <div class="absolute -top-20 -right-20 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
-      <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-300/20 rounded-full blur-xl"></div>
+      <div class="absolute -top-20 -right-20 w-40 h-40 bg-white/5 rounded-full blur-2xl"></div>
+      <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-300/10 rounded-full blur-xl"></div>
       
       <div class="relative z-10">
         <div class="text-center mb-8">
           <div class="relative inline-block mb-4">
-            <div class="absolute inset-0 bg-white/30 backdrop-blur-md rounded-2xl blur-sm animate-pulse-glow"></div>
-            <div class="relative w-16 h-16 bg-white/25 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-depth-2 border border-white/30">
+            <div class="absolute inset-0 bg-white/15 backdrop-blur-md rounded-2xl blur-sm animate-pulse-glow"></div>
+            <div class="relative w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-depth-2 border border-white/20">
               <span class="text-4xl drop-shadow-sm animate-floating">✉️</span>
             </div>
           </div>
