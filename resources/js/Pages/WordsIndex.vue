@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50">
+  <div class="min-h-screen bg-gradient-to-br from-emerald-100 via-gray-50 to-blue-100">
     <!-- Header -->
     <Header :user="user" />
 
@@ -32,7 +32,7 @@
       </div>
 
       <!-- Word List -->
-      <WordList :words="words" />
+      <WordList :words="words" :show-remove="false" />
 
       <!-- Pagination -->
       <Pagination

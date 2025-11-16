@@ -1,35 +1,54 @@
 <template>
-  <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-indigo-100 ring-1 ring-gray-900/5 hover:border-indigo-300 transition-all duration-300 transform hover:-translate-y-1 animate-scale-in dark:bg-gray-800/80 dark:border-indigo-900/50 dark:ring-white/10">
+  <div class="bg-white/95 dark:bg-gray-800/95 rounded-3xl shadow-depth-4 p-8 border border-gray-200/50 dark:border-gray-600/50 hover-lift animate-scale-in relative overflow-hidden group">
+    <!-- Background decoration -->
+    <div class="absolute inset-0 bg-gradient-to-br from-indigo-600/8 via-purple-600/8 to-pink-600/8 dark:from-indigo-400/8 dark:via-purple-400/8 dark:to-pink-400/8 opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+    
     <!-- Word Header -->
-    <div class="mb-6">
-      <div class="flex items-center gap-3 mb-3">
-        <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg">
-          <span class="text-2xl">💬</span>
+    <div class="mb-8 relative z-10">
+      <div class="flex items-center gap-4 mb-4">
+        <div class="relative">
+          <div class="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl blur-md opacity-30 animate-pulse-glow"></div>
+          <div class="relative w-14 h-14 bg-gradient-to-br from-indigo-500 via-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-depth-3 border border-white/20">
+            <span class="text-3xl drop-shadow-sm">💬</span>
+          </div>
         </div>
         <div class="flex-1">
-          <h2 class="text-4xl font-black text-gray-900 tracking-tight dark:text-white">{{ word.word }}</h2>
+          <h2 class="text-5xl font-black text-gray-900 tracking-tight dark:text-white drop-shadow-sm bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text">{{ word.word }}</h2>
         </div>
       </div>
-      <span class="inline-block bg-indigo-100 text-indigo-700 px-4 py-1.5 rounded-full text-sm font-semibold dark:bg-indigo-900/30 dark:text-indigo-300">
-        {{ word.part_of_speech }}
-      </span>
+      <div class="inline-flex items-center">
+        <span class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-2 rounded-full text-sm font-bold shadow-depth-2 border border-white/20">
+          {{ word.part_of_speech }}
+        </span>
+      </div>
     </div>
 
     <!-- Definition -->
-    <div class="mb-6">
-      <div class="flex items-start gap-2 mb-2">
-        <span class="text-indigo-500 font-bold text-lg dark:text-indigo-400">📖</span>
-        <p class="text-xl text-gray-800 leading-relaxed font-medium dark:text-gray-200">{{ word.definition }}</p>
+    <div class="mb-8 relative z-10">
+      <div class="flex items-start gap-3 p-6 bg-gray-50/80 dark:bg-gray-700/40 rounded-2xl border border-gray-200/40 dark:border-gray-600/30 shadow-depth-1">
+        <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
+          <span class="text-2xl">📖</span>
+        </div>
+        <p class="text-xl text-gray-800 leading-relaxed font-medium dark:text-gray-200 pt-1">{{ word.definition }}</p>
       </div>
     </div>
 
     <!-- Example -->
-    <div v-if="word.example" class="bg-gradient-to-r from-indigo-50 to-purple-50 p-5 rounded-2xl border-l-4 border-indigo-500 shadow-sm dark:from-indigo-950/50 dark:to-purple-950/50 dark:border-indigo-400">
-      <div class="flex items-start gap-2">
-        <span class="text-indigo-600 font-bold dark:text-indigo-400">💡</span>
-        <div class="flex-1">
-          <p class="text-xs font-bold text-indigo-600 uppercase tracking-wide mb-1 dark:text-indigo-400">Example</p>
-          <p class="text-gray-700 italic leading-relaxed dark:text-gray-300">"{{ word.example }}"</p>
+    <div v-if="word.example" class="relative z-10">
+      <div class="bg-gradient-to-br from-indigo-100/80 via-purple-100/80 to-pink-100/80 dark:from-indigo-900/60 dark:via-purple-900/60 dark:to-pink-900/60 p-6 rounded-2xl shadow-depth-2 border border-indigo-300/60 dark:border-indigo-600/60 relative overflow-hidden">
+        <!-- Decorative border -->
+        <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500 rounded-full"></div>
+        
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
+            <span class="text-2xl">💡</span>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+              <p class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider px-2 py-1 bg-indigo-100 dark:bg-indigo-900/30 rounded-md">Example</p>
+            </div>
+            <p class="text-gray-700 dark:text-gray-300 italic leading-relaxed font-medium text-lg">"{{ word.example }}"</p>
+          </div>
         </div>
       </div>
     </div>

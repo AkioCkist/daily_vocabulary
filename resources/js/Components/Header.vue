@@ -1,50 +1,50 @@
 <template>
-  <header class="bg-white/70 backdrop-blur-xl border-b border-white/20 sticky top-0 z-50 shadow-lg shadow-purple-500/5 dark:bg-gray-900/70 dark:border-purple-500/20">
-    <div class="max-w-7xl mx-auto px-4 py-3">
+  <header class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm sticky top-0 z-50 shadow-depth-3 border-b border-gray-200/50 dark:border-gray-700/50">
+    <div class="max-w-7xl mx-auto px-4 py-4">
       <div class="flex items-center justify-between">
-        <!-- Logo/Brand with Enhanced Glassy Effect -->
-        <Link href="/" class="flex items-center gap-3 group">
+        <!-- Logo/Brand with Enhanced Depth Effects -->
+        <Link href="/" class="flex items-center gap-4 group hover-lift">
           <div class="relative">
-            <div class="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl blur-md opacity-50 group-hover:opacity-70 transition-opacity"></div>
-            <div class="relative w-12 h-12 bg-gradient-to-br from-indigo-500 via-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-105 transition-all duration-300 border border-white/30 dark:border-white/20">
-              <span class="text-2xl">📚</span>
+            <div class="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl blur-lg opacity-20 group-hover:opacity-30 transition-opacity animate-pulse-glow"></div>
+            <div class="relative w-14 h-14 bg-gradient-to-br from-indigo-500 via-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-depth-3 group-hover:scale-110 transition-all duration-300 border border-white/40 dark:border-white/30">
+              <span class="text-3xl drop-shadow-sm animate-floating">📚</span>
             </div>
           </div>
           <div>
-            <h1 class="text-2xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-violet-600 bg-clip-text text-transparent dark:from-indigo-400 dark:via-purple-400 dark:to-violet-400 group-hover:scale-105 transition-transform origin-left">
+            <h1 class="text-2xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-violet-600 bg-clip-text text-transparent dark:from-indigo-400 dark:via-purple-400 dark:to-violet-400 group-hover:scale-105 transition-transform origin-left drop-shadow-sm">
               DailyVocab
             </h1>
-            <p class="text-xs text-gray-500 -mt-0.5 font-medium dark:text-gray-400">Learn & Master Daily</p>
+            <p class="text-xs text-gray-600 -mt-0.5 font-semibold dark:text-gray-400">Learn & Master Daily</p>
           </div>
         </Link>
 
         <!-- Navigation -->
-        <nav class="flex items-center gap-2">
+        <nav class="flex items-center gap-3">
           <template v-if="user">
-            <!-- Authenticated User Menu with Glassy Buttons -->
+            <!-- Navigation Links with Enhanced Glass Effect -->
             <Link 
               v-if="currentPath === '/user/words'"
               href="/" 
-              class="px-5 py-2.5 text-gray-700 hover:text-indigo-600 font-semibold transition-all duration-300 hidden sm:block dark:text-gray-300 dark:hover:text-indigo-400 hover:bg-indigo-50/50 dark:hover:bg-indigo-500/10 rounded-xl backdrop-blur-sm"
+              class="px-6 py-3 text-gray-800 hover:text-indigo-700 font-semibold transition-all duration-300 hidden sm:block dark:text-gray-200 dark:hover:text-indigo-300 bg-gray-100/80 dark:bg-gray-800/80 hover:bg-gray-200/90 dark:hover:bg-gray-700/90 rounded-xl border border-gray-200/60 dark:border-gray-600/60 shadow-depth-1 hover-lift"
             >
               Browse Words
             </Link>
             <Link 
               v-if="currentPath !== '/user/words'"
               href="/user/words" 
-              class="px-5 py-2.5 text-gray-700 hover:text-indigo-600 font-semibold transition-all duration-300 hidden sm:block dark:text-gray-300 dark:hover:text-indigo-400 hover:bg-indigo-50/50 dark:hover:bg-indigo-500/10 rounded-xl backdrop-blur-sm"
+              class="px-6 py-3 text-gray-800 hover:text-indigo-700 font-semibold transition-all duration-300 hidden sm:block dark:text-gray-200 dark:hover:text-indigo-300 bg-gray-100/80 dark:bg-gray-800/80 hover:bg-gray-200/90 dark:hover:bg-gray-700/90 rounded-xl border border-gray-200/60 dark:border-gray-600/60 shadow-depth-1 hover-lift"
             >
               My Vocabulary
             </Link>
             
-            <!-- User Dropdown with Classy Glassy Effect -->
+            <!-- Enhanced User Dropdown -->
             <div class="relative">
               <button 
                 @click="showDropdown = !showDropdown"
-                class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 dark:from-indigo-500/40 dark:via-purple-500/35 dark:to-pink-500/40 backdrop-blur-md border border-indigo-300/60 dark:border-indigo-400/50 text-gray-800 dark:text-white rounded-xl font-semibold hover:from-indigo-200 hover:via-purple-200 hover:to-pink-200 dark:hover:from-indigo-500/55 dark:hover:via-purple-500/50 dark:hover:to-pink-500/55 hover:border-indigo-400/70 dark:hover:border-indigo-300/60 transition-all duration-300 shadow-md shadow-purple-300/40 dark:shadow-purple-500/25 hover:shadow-lg hover:shadow-purple-400/50 dark:hover:shadow-purple-400/35 hover:scale-105"
+                class="flex items-center gap-3 px-6 py-3 bg-gradient-to-br from-indigo-200/90 via-purple-200/90 to-pink-200/90 dark:from-indigo-600/40 dark:via-purple-600/35 dark:to-pink-600/40 border border-gray-300/60 dark:border-indigo-500/60 text-gray-900 dark:text-white rounded-xl font-semibold shadow-depth-2 hover-lift btn-3d transition-all duration-300"
               >
-                <span class="hidden sm:inline">{{ user.name }}</span>
-                <span class="sm:hidden w-8 h-8 bg-gradient-to-br from-indigo-200 via-purple-200 to-pink-200 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 rounded-full flex items-center justify-center font-bold text-sm text-gray-800 dark:text-white">
+                <span class="hidden sm:inline drop-shadow-sm">{{ user.name }}</span>
+                <span class="sm:hidden w-10 h-10 bg-gradient-to-br from-indigo-200 via-purple-200 to-pink-200 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 rounded-full flex items-center justify-center font-bold text-sm text-gray-800 dark:text-white shadow-depth-1">
                   {{ user.name.charAt(0).toUpperCase() }}
                 </span>
                 <svg 
