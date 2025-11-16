@@ -1,4 +1,5 @@
 <template>
+  <Head title="Explore Words - DailyVocab" />
   <div class="min-h-screen bg-gradient-to-br from-emerald-100 via-gray-50 to-blue-100">
     <!-- Header -->
     <Header :user="user" />
@@ -45,7 +46,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useForm } from '@inertiajs/vue3';
+import { useForm, Head } from '@inertiajs/vue3';
 import Header from '@/Components/Header.vue';
 import WordList from '@/Components/WordList.vue';
 import Pagination from '@/Components/Pagination.vue';
