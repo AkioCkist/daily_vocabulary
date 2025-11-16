@@ -41,10 +41,10 @@
             <div class="relative">
               <button 
                 @click="showDropdown = !showDropdown"
-                class="flex items-center gap-3 px-6 py-3 bg-gradient-to-br from-indigo-600/20 via-violet-600/15 to-violet-600/20 dark:from-indigo-600/40 dark:via-violet-600/35 dark:to-violet-600/40 border border-indigo-700/30 dark:border-indigo-700/30 text-gray-900 dark:text-white rounded-xl font-semibold shadow-depth-2 hover-lift btn-3d transition-all duration-300"
+                class="flex items-center gap-3 px-6 py-3 bg-gradient-to-br from-slate-100/90 via-indigo-100/80 to-violet-100/80 dark:from-slate-700/90 dark:via-indigo-800/60 dark:to-violet-800/60 border border-indigo-700/40 dark:border-indigo-600/50 text-gray-900 dark:text-white rounded-xl font-semibold shadow-xl hover:shadow-2xl hover-lift btn-3d transition-all duration-300"
               >
                 <span class="hidden sm:inline drop-shadow-sm">{{ user.name }}</span>
-                <span class="sm:hidden w-10 h-10 bg-gradient-to-br from-indigo-600 via-violet-600 to-violet-600 dark:from-indigo-600 dark:via-violet-600 dark:to-violet-600 rounded-full flex items-center justify-center font-bold text-sm text-white dark:text-white shadow-depth-1">
+                <span class="sm:hidden w-10 h-10 bg-gradient-to-br from-slate-200 via-indigo-100 to-violet-100 dark:from-slate-700 dark:via-indigo-800 dark:to-violet-800 rounded-full flex items-center justify-center font-bold text-sm text-gray-800 dark:text-white shadow-lg">
                   {{ user.name.charAt(0).toUpperCase() }}
                 </span>
                 <svg 
