@@ -1,17 +1,17 @@
 <template>
-  <header class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm sticky top-0 z-50 shadow-depth-3 border-b border-gray-200/50 dark:border-gray-700/50">
+  <header class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm sticky top-0 z-50 shadow-depth-3 border-b border-indigo-700/30 dark:border-indigo-700/30">
     <div class="max-w-7xl mx-auto px-4 py-4">
       <div class="flex items-center justify-between">
         <!-- Logo/Brand with Enhanced Depth Effects -->
         <Link href="/" class="flex items-center gap-4 group hover-lift">
           <div class="relative">
-            <div class="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl blur-lg opacity-20 group-hover:opacity-30 transition-opacity animate-pulse-glow"></div>
-            <div class="relative w-14 h-14 bg-gradient-to-br from-indigo-500 via-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-depth-3 group-hover:scale-110 transition-all duration-300 border border-white/40 dark:border-white/30">
+            <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-violet-500/8 rounded-2xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity animate-pulse-glow"></div>
+            <div class="relative w-14 h-14 bg-gradient-to-br from-slate-100 via-indigo-50 to-violet-50 dark:from-slate-800 dark:via-indigo-900/50 dark:to-violet-900/50 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-all duration-300 border border-indigo-700/30 dark:border-indigo-700/30">
               <span class="text-3xl drop-shadow-sm animate-floating">📚</span>
             </div>
           </div>
           <div>
-            <h1 class="text-2xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-violet-600 bg-clip-text text-transparent dark:from-indigo-400 dark:via-purple-400 dark:to-violet-400 group-hover:scale-105 transition-transform origin-left drop-shadow-sm">
+            <h1 class="text-2xl font-black bg-gradient-to-r from-indigo-600 via-violet-600 to-violet-600 bg-clip-text text-transparent dark:from-indigo-600 dark:via-violet-600 dark:to-violet-600 group-hover:scale-105 transition-transform origin-left drop-shadow-sm">
               DailyVocab
             </h1>
             <p class="text-xs text-gray-600 -mt-0.5 font-semibold dark:text-gray-400">Learn & Master Daily</p>
@@ -25,14 +25,14 @@
             <Link 
               v-if="currentPath === '/user/words'"
               href="/" 
-              class="px-6 py-3 text-gray-800 hover:text-indigo-700 font-semibold transition-all duration-300 hidden sm:block dark:text-gray-200 dark:hover:text-indigo-300 bg-gray-100/80 dark:bg-gray-800/80 hover:bg-gray-200/90 dark:hover:bg-gray-700/90 rounded-xl border border-gray-200/60 dark:border-gray-600/60 shadow-depth-1 hover-lift"
+              class="px-6 py-3 text-gray-800 hover:text-indigo-600 font-semibold transition-all duration-300 hidden sm:block dark:text-gray-200 dark:hover:text-indigo-600 bg-gray-100/80 dark:bg-gray-800/80 hover:bg-gray-200/90 dark:hover:bg-gray-700/90 rounded-xl border border-indigo-700/30 dark:border-indigo-700/30 shadow-depth-1 hover-lift"
             >
               Browse Words
             </Link>
             <Link 
               v-if="currentPath !== '/user/words'"
               href="/user/words" 
-              class="px-6 py-3 text-gray-800 hover:text-indigo-700 font-semibold transition-all duration-300 hidden sm:block dark:text-gray-200 dark:hover:text-indigo-300 bg-gray-100/80 dark:bg-gray-800/80 hover:bg-gray-200/90 dark:hover:bg-gray-700/90 rounded-xl border border-gray-200/60 dark:border-gray-600/60 shadow-depth-1 hover-lift"
+              class="px-6 py-3 text-gray-800 hover:text-indigo-600 font-semibold transition-all duration-300 hidden sm:block dark:text-gray-200 dark:hover:text-indigo-600 bg-gray-100/80 dark:bg-gray-800/80 hover:bg-gray-200/90 dark:hover:bg-gray-700/90 rounded-xl border border-indigo-700/30 dark:border-indigo-700/30 shadow-depth-1 hover-lift"
             >
               My Vocabulary
             </Link>
@@ -41,10 +41,10 @@
             <div class="relative">
               <button 
                 @click="showDropdown = !showDropdown"
-                class="flex items-center gap-3 px-6 py-3 bg-gradient-to-br from-indigo-200/90 via-purple-200/90 to-pink-200/90 dark:from-indigo-600/40 dark:via-purple-600/35 dark:to-pink-600/40 border border-gray-300/60 dark:border-indigo-500/60 text-gray-900 dark:text-white rounded-xl font-semibold shadow-depth-2 hover-lift btn-3d transition-all duration-300"
+                class="flex items-center gap-3 px-6 py-3 bg-gradient-to-br from-indigo-600/20 via-violet-600/15 to-violet-600/20 dark:from-indigo-600/40 dark:via-violet-600/35 dark:to-violet-600/40 border border-indigo-700/30 dark:border-indigo-700/30 text-gray-900 dark:text-white rounded-xl font-semibold shadow-depth-2 hover-lift btn-3d transition-all duration-300"
               >
                 <span class="hidden sm:inline drop-shadow-sm">{{ user.name }}</span>
-                <span class="sm:hidden w-10 h-10 bg-gradient-to-br from-indigo-200 via-purple-200 to-pink-200 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 rounded-full flex items-center justify-center font-bold text-sm text-gray-800 dark:text-white shadow-depth-1">
+                <span class="sm:hidden w-10 h-10 bg-gradient-to-br from-indigo-600 via-violet-600 to-violet-600 dark:from-indigo-600 dark:via-violet-600 dark:to-violet-600 rounded-full flex items-center justify-center font-bold text-sm text-white dark:text-white shadow-depth-1">
                   {{ user.name.charAt(0).toUpperCase() }}
                 </span>
                 <svg 
@@ -61,12 +61,12 @@
               <div 
                 v-if="showDropdown"
                 @click="showDropdown = false"
-                class="absolute right-0 mt-3 w-52 bg-white/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/30 py-2 animate-scale-in dark:bg-gray-800/80 dark:border-purple-500/20 overflow-hidden"
+                class="absolute right-0 mt-3 w-52 bg-white/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-indigo-700/30 py-2 animate-scale-in dark:bg-gray-800/80 dark:border-indigo-700/30 overflow-hidden"
               >
-                <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 pointer-events-none"></div>
+                <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-violet-500/5 pointer-events-none"></div>
                 <Link 
                   href="/profile" 
-                  class="relative block px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 transition-all duration-300 font-medium dark:text-gray-300 dark:hover:from-indigo-900/30 dark:hover:to-purple-900/30 dark:hover:text-indigo-400"
+                  class="relative block px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-violet-50 hover:text-indigo-600 transition-all duration-300 font-medium dark:text-gray-300 dark:hover:from-indigo-900/30 dark:hover:to-violet-900/30 dark:hover:text-indigo-600"
                 >
                   <div class="flex items-center gap-3">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,7 +78,7 @@
                 <Link 
                   v-if="currentPath !== '/user/words'"
                   href="/user/words" 
-                  class="relative block px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 transition-all duration-300 sm:hidden font-medium dark:text-gray-300 dark:hover:from-indigo-900/30 dark:hover:to-purple-900/30 dark:hover:text-indigo-400"
+                  class="relative block px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-violet-50 hover:text-indigo-600 transition-all duration-300 sm:hidden font-medium dark:text-gray-300 dark:hover:from-indigo-900/30 dark:hover:to-violet-900/30 dark:hover:text-indigo-600"
                 >
                   <div class="flex items-center gap-3">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -89,7 +89,7 @@
                 </Link>
                 <Link 
                   href="/words" 
-                  class="relative block px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 transition-all duration-300 sm:hidden font-medium dark:text-gray-300 dark:hover:from-indigo-900/30 dark:hover:to-purple-900/30 dark:hover:text-indigo-400"
+                  class="relative block px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-violet-50 hover:text-indigo-600 transition-all duration-300 sm:hidden font-medium dark:text-gray-300 dark:hover:from-indigo-900/30 dark:hover:to-violet-900/30 dark:hover:text-indigo-600"
                 >
                   <div class="flex items-center gap-3">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -120,13 +120,13 @@
             <!-- Guest User Buttons with Enhanced Glassy Effect -->
             <Link 
               href="/login" 
-              class="px-5 py-2.5 text-gray-700 hover:text-indigo-600 font-bold transition-all duration-300 dark:text-gray-300 dark:hover:text-indigo-400 hover:bg-indigo-50/50 dark:hover:bg-indigo-500/10 rounded-xl backdrop-blur-sm"
+              class="px-5 py-2.5 text-gray-700 hover:text-indigo-600 font-bold transition-all duration-300 dark:text-gray-300 dark:hover:text-indigo-600 hover:bg-indigo-50/50 dark:hover:bg-indigo-500/10 rounded-xl backdrop-blur-sm"
             >
               Login
             </Link>
             <Link 
               href="/register" 
-              class="relative px-6 py-2.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-violet-600 text-white rounded-xl font-bold hover:from-indigo-600 hover:via-purple-600 hover:to-violet-700 transform hover:-translate-y-1 transition-all duration-300 shadow-lg shadow-purple-500/40 hover:shadow-xl hover:shadow-purple-500/50 border border-white/20 backdrop-blur-sm overflow-hidden group"
+              class="relative px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-xl font-bold hover:from-indigo-500 hover:to-violet-500 transform hover:-translate-y-1 transition-all duration-300 shadow-lg shadow-violet-600/40 hover:shadow-xl hover:shadow-violet-600/50 border border-indigo-700/30 backdrop-blur-sm overflow-hidden group"
             >
               <span class="relative z-10">Sign Up Free</span>
               <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
