@@ -129,7 +129,7 @@ class Word extends Model
     }
 
     /**
-     * Scope to search words by word text.
+     * Scope for searching by word.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param string $search
@@ -137,7 +137,20 @@ class Word extends Model
      */
     public function scopeByWord($query, $search)
     {
-        return $query->where('word', 'LIKE', '%' . $search . '%');
+        return $query->where(function($q) use ($search) {
+            // First priority: exact match
+            $q->where('word', '=', $search)
+              // Second priority: starts with search term
+              ->orWhere('word', 'LIKE', $search . '%')
+              // Third priority: contains search term
+              ->orWhere('word', 'LIKE', '%' . $search . '%');
+        })->orderByRaw("
+            CASE 
+                WHEN word = ? THEN 1 
+                WHEN word LIKE ? THEN 2 
+                ELSE 3 
+            END, word ASC
+        ", [$search, $search . '%']);
     }
 
     /**

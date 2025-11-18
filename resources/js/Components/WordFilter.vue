@@ -208,9 +208,9 @@ function handleSearch() {
 /**
  * Perform the actual search
  */
-function performSearch() {
+async function performSearch() {
   const params = {
-    search: searchQuery.value,
+    word_search: searchQuery.value,
     ...filters
   };
 
@@ -221,18 +221,27 @@ function performSearch() {
     }
   });
 
-  router.get('/api/words/search', params, {
-    preserveState: true,
-    preserveScroll: true,
-    onSuccess: (response) => {
-      searchResults.value = response.props.words || [];
-      isSearching.value = false;
-    },
-    onError: () => {
+  try {
+    const queryString = new URLSearchParams(params).toString();
+    const response = await fetch(`/api/words/search?${queryString}`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      searchResults.value = data.words || [];
+    } else {
       searchResults.value = [];
-      isSearching.value = false;
     }
-  });
+  } catch (error) {
+    console.error('Search error:', error);
+    searchResults.value = [];
+  } finally {
+    isSearching.value = false;
+  }
 }
 
 /**

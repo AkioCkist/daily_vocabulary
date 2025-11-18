@@ -21,8 +21,23 @@ class WordRepository implements WordRepositoryInterface
      */
     public function filter(array $filters, int $perPage = 20): LengthAwarePaginator
     {
-        return Word::filter($filters)
-            ->orderBy('word')
+        $query = Word::filter($filters);
+        
+        // If there's a word search, check for exact match first
+        if (!empty($filters['word_search'])) {
+            $exactMatch = Word::where('word', '=', $filters['word_search'])->first();
+            if ($exactMatch) {
+                // Return only the exact match
+                return new \Illuminate\Pagination\LengthAwarePaginator(
+                    collect([$exactMatch]),
+                    1,
+                    $perPage,
+                    1
+                );
+            }
+        }
+        
+        return $query->orderBy('word')
             ->paginate($perPage)
             ->withQueryString();
     }
