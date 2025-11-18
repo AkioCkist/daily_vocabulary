@@ -25,6 +25,9 @@ class DailyTestRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'cefr_level' => 'nullable|string|in:A1,A2,B1,B2,C1,C2',
+            'topic' => 'nullable|string|max:50',
+            'question_count' => 'nullable|integer|min:5|max:50',
             'test_length' => 'nullable|integer|min:5|max:50',
             'new_words_ratio' => 'nullable|numeric|min:0|max:1',
             'review_words_ratio' => 'nullable|numeric|min:0|max:1',
@@ -56,7 +59,10 @@ class DailyTestRequest extends FormRequest
     public function getTestConfig(): array
     {
         return [
-            'test_length' => $this->input('test_length', 20),
+            'cefr_level' => $this->input('cefr_level'),
+            'topic' => $this->input('topic'),
+            'question_count' => (int) $this->input('question_count', 10),
+            'test_length' => (int) $this->input('question_count', 10), // Use question_count for test_length
             'new_words_ratio' => $this->input('new_words_ratio', 0.4),
             'review_words_ratio' => $this->input('review_words_ratio', 0.4),
             'unmastered_words_ratio' => $this->input('unmastered_words_ratio', 0.2),

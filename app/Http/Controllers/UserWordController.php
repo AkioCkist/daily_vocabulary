@@ -37,6 +37,14 @@ class UserWordController extends Controller
 
         $vocabService->addWord(Auth::id(), $validated['word_id']);
 
+        // Return JSON response for AJAX requests
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Word added to your vocabulary list!'
+            ]);
+        }
+
         return redirect()->back()->with('success', 'Word added to your list!');
     }
 

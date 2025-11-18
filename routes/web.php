@@ -65,6 +65,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('test')->name('test.')->group(function () {
         Route::get('/', [TestController::class, 'index'])->name('index');
         Route::post('/generate', [TestController::class, 'generate'])->name('generate');
+        Route::post('/generate-daily', [TestController::class, 'generateDaily'])->name('generate-daily');
         Route::post('/answer', [TestController::class, 'submitAnswer'])->name('answer');
         Route::post('/complete', [TestController::class, 'complete'])->name('complete');
         Route::get('/results', [TestController::class, 'results'])->name('results');

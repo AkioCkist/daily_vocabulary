@@ -19,104 +19,212 @@
           </div>
         </div>
 
-        <!-- Test Selection -->
-        <div v-if="!currentTest" class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
-          <div class="p-8">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Choose Your Test</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <!-- Daily Test -->
-              <div class="border-2 border-indigo-200 dark:border-indigo-800 rounded-lg p-6 hover:border-indigo-500 transition-colors cursor-pointer" @click="startDailyTest">
-                <div class="text-center">
-                  <div class="text-4xl mb-4">📅</div>
-                  <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Daily Test</h3>
-                  <p class="text-gray-600 dark:text-gray-400 mb-4">Take today's curated vocabulary test</p>
-                  <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg">
-                    Start Daily Test
-                  </button>
-                </div>
-              </div>
-
-              <!-- Custom Test -->
-              <div class="border-2 border-green-200 dark:border-green-800 rounded-lg p-6 hover:border-green-500 transition-colors cursor-pointer" @click="showCustomTestForm = true">
-                <div class="text-center">
-                  <div class="text-4xl mb-4">⚙️</div>
-                  <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Custom Test</h3>
-                  <p class="text-gray-600 dark:text-gray-400 mb-4">Create a test with your preferences</p>
-                  <button class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg">
-                    Create Custom Test
-                  </button>
-                </div>
-              </div>
+        <!-- Error Message -->
+        <div v-if="error" class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <div class="ml-3">
+              <h3 class="text-sm font-medium text-red-800 dark:text-red-200">Error</h3>
+              <p class="mt-1 text-sm text-red-700 dark:text-red-300">{{ error }}</p>
             </div>
           </div>
         </div>
 
-        <!-- Custom Test Form -->
-        <div v-if="showCustomTestForm" class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
+        <!-- Success Message -->
+        <div v-if="message" class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-6">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm font-medium text-green-800 dark:text-green-200">{{ message }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Test Filter Board (Always Visible) -->
+        <div v-if="!currentTest" class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
           <div class="p-8">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Custom Test Settings</h2>
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Create Your Test</h2>
+                <p class="text-gray-600 dark:text-gray-400">Customize your test with specific filters</p>
+              </div>
+            </div>
             
             <form @submit.prevent="generateCustomTest">
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <!-- Filter Categories -->
+              <div class="space-y-8 mb-8">
+                <!-- CEFR Level -->
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">CEFR Level</label>
-                  <select v-model="customTestForm.cefr_level" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white">
-                    <option value="">All Levels</option>
-                    <option value="A1">A1 - Beginner</option>
-                    <option value="A2">A2 - Elementary</option>
-                    <option value="B1">B1 - Intermediate</option>
-                    <option value="B2">B2 - Upper Intermediate</option>
-                    <option value="C1">C1 - Advanced</option>
-                    <option value="C2">C2 - Proficient</option>
-                  </select>
+                  <label class="block text-lg font-semibold text-gray-900 dark:text-white mb-4">📊 CEFR Level</label>
+                  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-3">
+                    <button
+                      type="button"
+                      @click="customTestForm.cefr_level = ''"
+                      :class="[
+                        'p-4 rounded-xl border-2 transition-all duration-200',
+                        customTestForm.cefr_level === ''
+                          ? 'border-gray-500 bg-gray-50 dark:bg-gray-700'
+                          : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
+                      ]"
+                    >
+                      <div class="text-center">
+                        <div class="text-gray-600 dark:text-gray-400 font-bold text-sm">ALL</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-500 mt-1">All Levels</div>
+                      </div>
+                    </button>
+                    
+                    <button
+                      type="button"
+                      v-for="level in [
+                        { value: 'A1', label: 'Beginner', color: 'green' },
+                        { value: 'A2', label: 'Elementary', color: 'blue' },
+                        { value: 'B1', label: 'Intermediate', color: 'yellow' },
+                        { value: 'B2', label: 'Upper Int.', color: 'orange' },
+                        { value: 'C1', label: 'Advanced', color: 'red' },
+                        { value: 'C2', label: 'Proficient', color: 'purple' }
+                      ]"
+                      :key="level.value"
+                      @click="customTestForm.cefr_level = customTestForm.cefr_level === level.value ? '' : level.value"
+                      :class="[
+                        'p-4 rounded-xl border-2 transition-all duration-200',
+                        customTestForm.cefr_level === level.value
+                          ? `border-${level.color}-500 bg-${level.color}-50 dark:bg-${level.color}-900/20`
+                          : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
+                      ]"
+                    >
+                      <div class="text-center">
+                        <div :class="`text-${level.color}-600 dark:text-${level.color}-400 font-bold text-lg`">{{ level.value }}</div>
+                        <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">{{ level.label }}</div>
+                      </div>
+                    </button>
+                  </div>
                 </div>
-                
+
+                <!-- Topic -->
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Topic</label>
-                  <select v-model="customTestForm.topic" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white">
-                    <option value="">All Topics</option>
-                    <option value="Technology">Technology</option>
-                    <option value="Business">Business</option>
-                    <option value="Travel">Travel</option>
-                    <option value="Food">Food</option>
-                    <option value="Health">Health</option>
-                    <option value="Education">Education</option>
-                    <option value="Sports">Sports</option>
-                    <option value="Science">Science</option>
-                    <option value="Nature">Nature</option>
-                  </select>
+                  <label class="block text-lg font-semibold text-gray-900 dark:text-white mb-4">🏷️ Topic</label>
+                  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                    <button
+                      type="button"
+                      @click="customTestForm.topic = ''"
+                      :class="[
+                        'p-4 rounded-xl border-2 transition-all duration-200 text-left',
+                        customTestForm.topic === ''
+                          ? 'border-gray-500 bg-gray-50 dark:bg-gray-700'
+                          : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
+                      ]"
+                    >
+                      <div class="text-2xl mb-2">🌍</div>
+                      <div class="font-medium text-gray-900 dark:text-white text-sm">All Topics</div>
+                    </button>
+                    
+                    <button
+                      type="button"
+                      v-for="topic in [
+                        { value: 'Business', label: 'Business', icon: '💼' },
+                        { value: 'Culture', label: 'Culture', icon: '🎭' },
+                        { value: 'Education', label: 'Education', icon: '📚' },
+                        { value: 'Environment', label: 'Environment', icon: '🌱' },
+                        { value: 'Health', label: 'Health', icon: '🏥' },
+                        { value: 'Politics', label: 'Politics', icon: '🏛️' },
+                        { value: 'Science', label: 'Science', icon: '🔬' },
+                        { value: 'Technology', label: 'Technology', icon: '💻' }
+                      ]"
+                      :key="topic.value"
+                      @click="customTestForm.topic = customTestForm.topic === topic.value ? '' : topic.value"
+                      :class="[
+                        'p-4 rounded-xl border-2 transition-all duration-200 text-left',
+                        customTestForm.topic === topic.value
+                          ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
+                          : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
+                      ]"
+                    >
+                      <div class="text-2xl mb-2">{{ topic.icon }}</div>
+                      <div class="font-medium text-gray-900 dark:text-white text-sm">{{ topic.label }}</div>
+                    </button>
+                  </div>
                 </div>
-                
+
+                <!-- Question Count -->
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Number of Questions</label>
-                  <select v-model="customTestForm.question_count" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white">
-                    <option value="5">5 Questions</option>
-                    <option value="10">10 Questions</option>
-                    <option value="15">15 Questions</option>
-                    <option value="20">20 Questions</option>
-                  </select>
+                  <label class="block text-lg font-semibold text-gray-900 dark:text-white mb-4">⚙️ Question Count</label>
+                  <div class="grid grid-cols-4 gap-2 max-w-md">
+                    <button
+                      type="button"
+                      v-for="count in [5, 10, 15, 20]"
+                      :key="count"
+                      @click="customTestForm.question_count = count.toString()"
+                      :class="[
+                        'py-3 px-4 rounded-lg border-2 font-medium transition-all duration-200',
+                        customTestForm.question_count === count.toString()
+                          ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400'
+                          : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 text-gray-700 dark:text-gray-300'
+                      ]"
+                    >
+                      {{ count }}
+                    </button>
+                  </div>
                 </div>
               </div>
-              
-              <div class="flex gap-4">
+
+              <!-- Action Buttons -->
+              <div class="flex justify-between items-center pt-6 border-t border-gray-200 dark:border-gray-600">
                 <button 
-                  type="submit" 
+                  type="button"
+                  @click="startDailyTest"
                   :disabled="isGenerating"
-                  class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors disabled:opacity-50"
+                  class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
                 >
-                  <span v-if="!isGenerating">Generate Test</span>
-                  <span v-else>Generating...</span>
+                  <span>📅</span>
+                  {{ isGenerating ? 'Starting...' : 'Daily Test (10 Random)' }}
                 </button>
+                
                 <button 
-                  type="button" 
-                  @click="showCustomTestForm = false"
-                  class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg transition-colors"
+                  type="submit"
+                  :disabled="isGenerating"
+                  class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
                 >
-                  Cancel
+                  <svg v-if="isGenerating" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  {{ isGenerating ? 'Generating...' : 'Generate Custom Test' }}
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+
+        <!-- Custom Test Form is now integrated above -->
+
+        <!-- No Questions Available Message -->
+        <div v-if="currentTest && (!currentTest.items || currentTest.items.length === 0)" class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6 mb-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <svg class="h-8 w-8 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.314 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-lg font-medium text-yellow-800 dark:text-yellow-200 mb-2">No Questions Available</h3>
+              <p class="text-yellow-700 dark:text-yellow-300 mb-4">
+                Sorry, we couldn't find any words matching your criteria. Try adjusting your filters or check back later when more words are added to the database.
+              </p>
+              <button 
+                @click="resetTest"
+                class="bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+              >
+                Try Different Filters
+              </button>
+            </div>
           </div>
         </div>
 
@@ -316,6 +424,29 @@
                       </span>
                     </div>
                   </div>
+
+                  <!-- Add to Vocabulary Button (for incorrect answers) -->
+                  <div v-if="!result.is_correct" class="mt-4 flex justify-end">
+                    <button
+                      @click="addToVocabulary(result)"
+                      :disabled="result.adding_to_vocab"
+                      class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    >
+                      <svg v-if="result.adding_to_vocab" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      <svg v-else-if="result.added_to_vocab" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                      <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                      </svg>
+                      <span v-if="result.added_to_vocab">Added to Vocabulary</span>
+                      <span v-else-if="result.adding_to_vocab">Adding...</span>
+                      <span v-else>Add to My Vocabulary</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -323,7 +454,7 @@
         </div>
 
         <!-- Progress Bar -->
-        <div v-if="currentTest && !testResults" class="mt-6">
+        <div v-if="currentTest && !testResults && currentTest.items && currentTest.items.length > 0" class="mt-6">
           <div class="bg-gray-200 dark:bg-gray-700 rounded-full h-2">
             <div 
               class="bg-indigo-600 h-2 rounded-full transition-all duration-300"
@@ -360,6 +491,10 @@ const props = defineProps({
   message: {
     type: String,
     default: ''
+  },
+  error: {
+    type: String,
+    default: ''
   }
 });
 
@@ -386,37 +521,71 @@ const currentQuestion = computed(() => {
 });
 
 const progressPercentage = computed(() => {
-  if (!currentTest.value || !currentTest.value.items) return 0;
+  if (!currentTest.value || !currentTest.value.items || currentTest.value.items.length === 0) return 0;
   return ((currentQuestionIndex.value + 1) / currentTest.value.items.length) * 100;
 });
 
 // Methods
 function startDailyTest() {
+  console.log('Starting daily test...');
+  isGenerating.value = true;
   const form = useForm({});
   
-  form.post('/test/generate', {
-    onSuccess: (response) => {
-      if (response.props.test) {
-        currentTest.value = response.props.test;
+  form.post('/test/generate-daily', {
+    onSuccess: (page) => {
+      console.log('Daily test success:', page);
+      // Update the component state with the new test
+      if (page.props.test) {
+        currentTest.value = page.props.test;
         currentQuestionIndex.value = 0;
         selectedAnswer.value = '';
         answers.value = {};
+        testResults.value = null;
+        
+        // Check if test has no items
+        if (!page.props.test.items || page.props.test.items.length === 0) {
+          console.warn('Generated test has no items');
+        }
       }
+    },
+    onError: (errors) => {
+      console.error('Daily test errors:', errors);
+    },
+    onFinish: () => {
+      console.log('Daily test finished');
+      isGenerating.value = false;
     }
   });
 }
 
 function generateCustomTest() {
+  console.log('Starting custom test with config:', customTestForm);
   isGenerating.value = true;
   
   const form = useForm(customTestForm);
   
   form.post('/test/generate', {
     onSuccess: (page) => {
-      // The response will be a full page reload with new props
-      // So we don't need to manually update currentTest here
+      console.log('Custom test success:', page);
+      // Update the component state with the new test
+      if (page.props.test) {
+        currentTest.value = page.props.test;
+        currentQuestionIndex.value = 0;
+        selectedAnswer.value = '';
+        answers.value = {};
+        testResults.value = null;
+        
+        // Check if test has no items
+        if (!page.props.test.items || page.props.test.items.length === 0) {
+          console.warn('Generated test has no items');
+        }
+      }
+    },
+    onError: (errors) => {
+      console.error('Custom test errors:', errors);
     },
     onFinish: () => {
+      console.log('Custom test finished');
       isGenerating.value = false;
     }
   });
@@ -482,5 +651,58 @@ function resetTest() {
   answers.value = {};
   testResults.value = null;
   showCustomTestForm.value = false;
+}
+
+async function addToVocabulary(result) {
+  // Set loading state
+  result.adding_to_vocab = true;
+
+  try {
+    const response = await fetch('/user/words', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        word_id: result.word_id,
+        difficulty_level: 'needs_practice',
+        source: 'test_mistake'
+      })
+    });
+
+    if (response.ok) {
+      result.added_to_vocab = true;
+      result.adding_to_vocab = false;
+      
+      // Create a simple toast notification
+      showNotification(`"${result.word}" added to your vocabulary list!`, 'success');
+    } else {
+      throw new Error('Failed to add word to vocabulary');
+    }
+  } catch (error) {
+    console.error('Error adding word to vocabulary:', error);
+    result.adding_to_vocab = false;
+    showNotification('Failed to add word to vocabulary. Please try again.', 'error');
+  }
+}
+
+function showNotification(message, type = 'info') {
+  // Simple notification using browser's built-in alert for now
+  // You could replace this with a proper toast notification library
+  if (type === 'success') {
+    // Create a simple success message
+    const notification = document.createElement('div');
+    notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.remove();
+    }, 3000);
+  } else {
+    alert(message);
+  }
 }
 </script>

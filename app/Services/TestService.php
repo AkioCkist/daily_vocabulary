@@ -10,6 +10,7 @@ use App\Models\Word;
 use App\Repositories\Interfaces\WordRepositoryInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Service for handling daily test operations.
@@ -30,13 +31,22 @@ class TestService
      */
     public function generateDailyTest(User $user, array $config = []): DailyTest
     {
-        // Check if test already exists for today
-        $existingTest = DailyTest::todayForUser($user->id)->first();
-        if ($existingTest) {
-            return $existingTest;
+        $isCustomTest = !empty($config['cefr_level']) || !empty($config['topic']);
+        
+        // Check if test already exists for today (only for daily tests without custom config)
+        if (!$isCustomTest) {
+            $existingTest = DailyTest::todayForUser($user->id)->first();
+            if ($existingTest) {
+                return $existingTest;
+            }
+        } else {
+            // For custom tests, delete any existing test for today to avoid conflicts
+            DailyTest::where('user_id', $user->id)
+                ->where('date', today())
+                ->delete();
         }
 
-        $testLength = $config['test_length'] ?? 20;
+        $testLength = $config['question_count'] ?? $config['test_length'] ?? 10;
         $newWordsRatio = $config['new_words_ratio'] ?? 0.4;
         $reviewWordsRatio = $config['review_words_ratio'] ?? 0.4;
         $unmasteredWordsRatio = $config['unmastered_words_ratio'] ?? 0.2;
@@ -50,18 +60,54 @@ class TestService
                 'is_completed' => false,
             ]);
 
-            // Calculate word counts for each category
-            $newWordsCount = (int) round($testLength * $newWordsRatio);
-            $reviewWordsCount = (int) round($testLength * $reviewWordsRatio);
-            $unmasteredWordsCount = $testLength - $newWordsCount - $reviewWordsCount;
+            // Extract filters from config
+            $filters = [];
+            if (!empty($config['cefr_level']) && $config['cefr_level'] !== '') {
+                $filters['cefr_level'] = $config['cefr_level'];
+            }
+            if (!empty($config['topic']) && $config['topic'] !== '') {
+                $filters['topic'] = $config['topic'];
+            }
 
-            // Get words from each category
-            $newWords = $this->wordRepository->getNewWordsForUser($user->id, [], $newWordsCount);
-            $reviewWords = $this->wordRepository->getReviewWordsForUser($user->id, $reviewWordsCount);
-            $unmasteredWords = $this->wordRepository->getUnmasteredWordsForUser($user->id, $unmasteredWordsCount);
+            // If we have specific filters, get words only from those filters
+            if (!empty($filters)) {
+                Log::info('Generating test with filters', ['filters' => $filters, 'testLength' => $testLength]);
+                
+                // First, check how many words are available with these filters
+                $totalAvailable = Word::filter($filters)->count();
+                Log::info('Words available with filters', ['count' => $totalAvailable]);
+                
+                if ($totalAvailable == 0) {
+                    throw new \Exception("No words found matching your selected filters. Please try different filter combinations.");
+                }
+                
+                if ($totalAvailable < $testLength) {
+                    throw new \Exception("Not enough words available for your selected filters. Found {$totalAvailable} words, but you requested {$testLength} questions. Please try a smaller test size or different filters.");
+                }
+                
+                // Get words directly with a limit instead of the complex random logic
+                $allWords = Word::filter($filters)
+                    ->inRandomOrder()
+                    ->limit($testLength)
+                    ->get();
+                
+                Log::info('Retrieved words for test', ['count' => $allWords->count()]);
+            } else {
+                // Use the original logic for unfiltered tests (daily tests)
+                $newWordsCount = (int) round($testLength * $newWordsRatio);
+                $reviewWordsCount = (int) round($testLength * $reviewWordsRatio);
+                $unmasteredWordsCount = $testLength - $newWordsCount - $reviewWordsCount;
 
-            // Combine and shuffle words
-            $allWords = $newWords->merge($reviewWords)->merge($unmasteredWords)->shuffle();
+                // Get words from each category
+                $newWords = $this->wordRepository->getNewWordsForUser($user->id, [], $newWordsCount);
+                $reviewWords = $this->wordRepository->getReviewWordsForUser($user->id, $reviewWordsCount);
+                $unmasteredWords = $this->wordRepository->getUnmasteredWordsForUser($user->id, $unmasteredWordsCount);
+
+                // Combine and shuffle words
+                $allWords = $newWords->merge($reviewWords)->merge($unmasteredWords);
+            }
+            
+            $allWords = $allWords->shuffle();
 
             // Create test items
             foreach ($allWords as $word) {

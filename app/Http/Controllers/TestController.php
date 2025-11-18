@@ -21,42 +21,69 @@ class TestController extends Controller
     ) {}
 
     /**
-     * Display today's daily test or generate one if it doesn't exist.
+     * Display the test page with filter board.
      */
     public function index(Request $request): Response
     {
         $user = $request->user();
-        $test = $this->testService->getTodaysTest($user);
-        
-        if (!$test) {
-            $test = $this->testService->generateDailyTest($user);
-        }
-        
         $testStats = $this->testService->getTestStats($user);
         
         return Inertia::render('Test/Index', [
-            'test' => $test->load(['items.word', 'attempts']),
+            'test' => null, // Don't auto-generate, show filter board first
             'stats' => $testStats,
             'user' => $user,
         ]);
     }
 
     /**
-     * Generate a new daily test with custom configuration.
+     * Generate a quick daily test (10 random questions).
+     */
+    public function generateDaily(Request $request): Response
+    {
+        $user = $request->user();
+        
+        try {
+            $test = $this->testService->generateDailyTest($user);
+            $testStats = $this->testService->getTestStats($user);
+            
+            return Inertia::render('Test/Index', [
+                'test' => $test->load(['items.word']),
+                'stats' => $testStats,
+                'message' => 'Daily test generated successfully!',
+            ]);
+        } catch (\Exception $e) {
+            return Inertia::render('Test/Index', [
+                'test' => null,
+                'stats' => $this->testService->getTestStats($user),
+                'error' => 'Failed to generate daily test: ' . $e->getMessage(),
+            ]);
+        }
+    }
+
+    /**
+     * Generate a new custom test with user configuration.
      */
     public function generate(DailyTestRequest $request): Response
     {
         $user = $request->user();
         $config = $request->getTestConfig();
         
-        $test = $this->testService->generateDailyTest($user, $config);
-        $testStats = $this->testService->getTestStats($user);
-        
-        return Inertia::render('Test/Index', [
-            'test' => $test->load(['items.word']),
-            'stats' => $testStats,
-            'message' => 'Daily test generated successfully!',
-        ]);
+        try {
+            $test = $this->testService->generateDailyTest($user, $config);
+            $testStats = $this->testService->getTestStats($user);
+            
+            return Inertia::render('Test/Index', [
+                'test' => $test->load(['items.word']),
+                'stats' => $testStats,
+                'message' => 'Custom test generated successfully!',
+            ]);
+        } catch (\Exception $e) {
+            return Inertia::render('Test/Index', [
+                'test' => null,
+                'stats' => $this->testService->getTestStats($user),
+                'error' => 'Failed to generate custom test: ' . $e->getMessage(),
+            ]);
+        }
     }
 
     /**
@@ -127,6 +154,7 @@ class TestController extends Controller
             
             $results[] = [
                 'question_index' => $index,
+                'word_id' => $item->word->id,
                 'word' => $item->word->word,
                 'definition' => $item->word->definition,
                 'question_type' => $item->question_type,
@@ -134,6 +162,8 @@ class TestController extends Controller
                 'correct_answer' => $correctAnswer,
                 'is_correct' => $isCorrect,
                 'options' => $item->options,
+                'adding_to_vocab' => false,
+                'added_to_vocab' => false,
             ];
         }
         
@@ -209,13 +239,13 @@ class TestController extends Controller
     /**
      * Get specific test details.
      */
-    public function show(Request $request, int $testId): Response
+    public function show(Request $request, string $testId): Response
     {
         $user = $request->user();
         
         $test = $user->dailyTests()
             ->with(['items.word', 'attempts'])
-            ->findOrFail($testId);
+            ->findOrFail((int) $testId);
         
         return Inertia::render('Test/Show', [
             'test' => $test,

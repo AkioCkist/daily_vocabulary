@@ -41,65 +41,7 @@
       </div>
     </div>
 
-    <!-- Filters -->
-    <div class="mb-6 relative z-10">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <!-- CEFR Level Filter -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Level</label>
-          <select 
-            v-model="filters.cefr_level"
-            @change="handleSearch"
-            class="w-full px-4 py-3 bg-gray-50/80 dark:bg-gray-700/40 border border-gray-200/40 dark:border-gray-600/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all duration-300 text-gray-900 dark:text-white"
-          >
-            <option value="">All Levels</option>
-            <option value="A1">A1 - Beginner</option>
-            <option value="A2">A2 - Elementary</option>
-            <option value="B1">B1 - Intermediate</option>
-            <option value="B2">B2 - Upper Intermediate</option>
-            <option value="C1">C1 - Advanced</option>
-            <option value="C2">C2 - Proficient</option>
-          </select>
-        </div>
-
-        <!-- Topic Filter -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Topic</label>
-          <select 
-            v-model="filters.topic"
-            @change="handleSearch"
-            class="w-full px-4 py-3 bg-gray-50/80 dark:bg-gray-700/40 border border-gray-200/40 dark:border-gray-600/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all duration-300 text-gray-900 dark:text-white"
-          >
-            <option value="">All Topics</option>
-            <option value="Technology">Technology</option>
-            <option value="Business">Business</option>
-            <option value="Travel">Travel</option>
-            <option value="Food">Food</option>
-            <option value="Health">Health</option>
-            <option value="Education">Education</option>
-            <option value="Sports">Sports</option>
-            <option value="Entertainment">Entertainment</option>
-            <option value="Science">Science</option>
-            <option value="Nature">Nature</option>
-          </select>
-        </div>
-
-        <!-- Source Filter -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Source</label>
-          <select 
-            v-model="filters.source"
-            @change="handleSearch"
-            class="w-full px-4 py-3 bg-gray-50/80 dark:bg-gray-700/40 border border-gray-200/40 dark:border-gray-600/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all duration-300 text-gray-900 dark:text-white"
-          >
-            <option value="">All Sources</option>
-            <option value="oxford">Oxford</option>
-            <option value="cambridge">Cambridge</option>
-            <option value="merriam-webster">Merriam-Webster</option>
-          </select>
-        </div>
-      </div>
-    </div>
+    <!-- Simplified for word discovery only -->
 
     <!-- Results -->
     <div v-if="searchResults.length > 0" class="relative z-10">
@@ -172,12 +114,7 @@ const emit = defineEmits(['word-selected']);
 const searchQuery = ref('');
 const isSearching = ref(false);
 const searchResults = ref([]);
-
-const filters = reactive({
-  cefr_level: '',
-  topic: '',
-  source: ''
-});
+const activeQuickFilter = ref('');
 
 let searchTimeout = null;
 
@@ -211,7 +148,6 @@ function handleSearch() {
 async function performSearch() {
   const params = {
     word_search: searchQuery.value,
-    ...filters
   };
 
   // Remove empty filters
@@ -253,4 +189,6 @@ function selectWord(word) {
   // You could also navigate to a word detail page
   // router.visit(`/words/${word.id}`);
 }
+
+// Quick filter logic removed for homepage simplicity
 </script>

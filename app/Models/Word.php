@@ -162,14 +162,14 @@ class Word extends Model
      */
     public function scopeFilter($query, array $filters)
     {
-        return $query->when($filters['topic'] ?? null, function ($query, $topic) {
-            return $query->byTopic($topic);
-        })->when($filters['cefr_level'] ?? null, function ($query, $level) {
-            return $query->byCefrLevel($level);
-        })->when($filters['meaning_search'] ?? null, function ($query, $search) {
-            return $query->byMeaning($search);
-        })->when($filters['word_search'] ?? null, function ($query, $search) {
-            return $query->byWord($search);
+        return $query->when(!empty($filters['topic']), function ($query) use ($filters) {
+            return $query->byTopic($filters['topic']);
+        })->when(!empty($filters['cefr_level']), function ($query) use ($filters) {
+            return $query->byCefrLevel($filters['cefr_level']);
+        })->when(!empty($filters['meaning_search']), function ($query) use ($filters) {
+            return $query->byMeaning($filters['meaning_search']);
+        })->when(!empty($filters['word_search']), function ($query) use ($filters) {
+            return $query->byWord($filters['word_search']);
         });
     }
 
