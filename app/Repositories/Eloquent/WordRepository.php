@@ -223,4 +223,25 @@ class WordRepository implements WordRepositoryInterface
         ->limit($limit)
         ->get();
     }
+
+    /**
+     * Get all words from user's vocabulary list.
+     *
+     * @param int $userId
+     * @param int $limit
+     * @return Collection<int, Word>
+     */
+    public function getUserVocabularyWords(int $userId, int $limit = 20): Collection
+    {
+        return Word::whereHas('users', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })
+        ->where('definition', 'not like', '%Auto-generated%')
+        ->where('definition', 'not like', '%dolor%')
+        ->where('definition', 'not like', '%Lorem%')
+        ->where('word', 'not like', 'word_%')
+        ->inRandomOrder()
+        ->limit($limit)
+        ->get();
+    }
 }

@@ -117,4 +117,13 @@ interface WordRepositoryInterface
      * @return Collection<int, Word>
      */
     public function getUnmasteredWordsForUser(int $userId, int $limit = 10): Collection;
+
+    /**
+     * Get all words from user's vocabulary list.
+     *
+     * @param int $userId
+     * @param int $limit
+     * @return Collection<int, Word>
+     */
+    public function getUserVocabularyWords(int $userId, int $limit = 20): Collection;
 }

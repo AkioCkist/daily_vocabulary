@@ -93,18 +93,42 @@ class TestService
                 
                 Log::info('Retrieved words for test', ['count' => $allWords->count()]);
             } else {
-                // Use the original logic for unfiltered tests (daily tests)
-                $newWordsCount = (int) round($testLength * $newWordsRatio);
-                $reviewWordsCount = (int) round($testLength * $reviewWordsRatio);
-                $unmasteredWordsCount = $testLength - $newWordsCount - $reviewWordsCount;
-
-                // Get words from each category
-                $newWords = $this->wordRepository->getNewWordsForUser($user->id, [], $newWordsCount);
-                $reviewWords = $this->wordRepository->getReviewWordsForUser($user->id, $reviewWordsCount);
-                $unmasteredWords = $this->wordRepository->getUnmasteredWordsForUser($user->id, $unmasteredWordsCount);
-
-                // Combine and shuffle words
-                $allWords = $newWords->merge($reviewWords)->merge($unmasteredWords);
+                // For daily tests, get words from user's vocabulary list first
+                $allWords = $this->wordRepository->getUserVocabularyWords($user->id, $testLength);
+                
+                Log::info('Daily test - User vocabulary words found', ['count' => $allWords->count(), 'user_id' => $user->id]);
+                
+                // If user doesn't have enough words in vocabulary, supplement with new words
+                if ($allWords->count() < $testLength) {
+                    $needed = $testLength - $allWords->count();
+                    $existingIds = $allWords->pluck('id')->toArray();
+                    
+                    Log::info('Daily test - Need more words', ['needed' => $needed, 'existing_count' => $allWords->count()]);
+                    
+                    $newWords = $this->wordRepository->getNewWordsForUser($user->id, [], $needed);
+                    $allWords = $allWords->merge($newWords);
+                    
+                    Log::info('Daily test - After adding new words', ['total_count' => $allWords->count()]);
+                }
+                
+                // If still not enough words, get any random words as fallback
+                if ($allWords->count() < $testLength) {
+                    $needed = $testLength - $allWords->count();
+                    $existingIds = $allWords->pluck('id')->toArray();
+                    
+                    $fallbackWords = Word::whereNotIn('id', $existingIds)
+                        ->where('definition', 'not like', '%Auto-generated%')
+                        ->where('definition', 'not like', '%dolor%')
+                        ->where('definition', 'not like', '%Lorem%')
+                        ->where('word', 'not like', 'word_%')
+                        ->inRandomOrder()
+                        ->limit($needed)
+                        ->get();
+                    
+                    $allWords = $allWords->merge($fallbackWords);
+                    
+                    Log::info('Daily test - After fallback words', ['final_count' => $allWords->count()]);
+                }
             }
             
             $allWords = $allWords->shuffle();
