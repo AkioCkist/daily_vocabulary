@@ -21,6 +21,17 @@
         <!-- Navigation -->
         <nav class="flex items-center gap-3">
           <template v-if="user">
+            <!-- Filter Words Button for Authenticated Users -->
+            <Link 
+              href="/words/filter" 
+              class="px-6 py-3 text-gray-800 hover:text-indigo-600 font-semibold transition-all duration-300 hidden sm:flex items-center gap-2 dark:text-gray-200 dark:hover:text-indigo-600 bg-gray-100/80 dark:bg-gray-800/80 hover:bg-gray-200/90 dark:hover:bg-gray-700/90 rounded-xl border border-indigo-700/30 dark:border-indigo-700/30 shadow-depth-1 hover-lift"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+              </svg>
+              Filter Words
+            </Link>
+            
             <!-- Navigation Links with Enhanced Glass Effect -->
             <Link 
               v-if="currentPath === '/user/words'"
@@ -117,6 +128,7 @@
           </template>
 
           <template v-else>
+            
             <!-- Guest User Buttons with Enhanced Glassy Effect -->
             <Link 
               href="/login" 
