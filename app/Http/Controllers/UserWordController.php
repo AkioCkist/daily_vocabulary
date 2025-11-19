@@ -33,11 +33,33 @@ class UserWordController extends Controller
     {
         $validated = $request->validate([
             'word_id' => 'required|exists:words,id',
+            'difficulty_level' => 'nullable|string|in:learning,needs_practice,mastered',
+            'source' => 'nullable|string|max:50',
         ]);
 
-        $vocabService->addWord(Auth::id(), $validated['word_id']);
+        try {
+            $vocabService->addWord(Auth::id(), $validated['word_id']);
 
-        return redirect()->back()->with('success', 'Word added to your list!');
+            // Return JSON response for AJAX requests
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Word added to your vocabulary list!'
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'Word added to your list!');
+        } catch (\Exception $e) {
+            // Return JSON error response for AJAX requests
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Word already exists in your vocabulary list or could not be added.'
+                ], 400);
+            }
+
+            return redirect()->back()->with('error', 'Word already exists in your vocabulary list or could not be added.');
+        }
     }
 
     public function destroy($id, UserVocabularyService $vocabService)

@@ -1,0 +1,1382 @@
+[
+  {
+    "word": "analyze",
+    "pronunciation": "/ˈæn.ə.laɪz/",
+    "meaning": "To examine something in detail to understand it better.",
+    "definition": "To study or evaluate something by breaking it into smaller parts.",
+    "example": "Scientists analyze data to discover patterns in climate behavior.",
+    "topic": "Science",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "concept",
+    "pronunciation": "/ˈkɑn.sept/",
+    "meaning": "A general idea or understanding of something.",
+    "definition": "An abstract idea or a mental symbol representing something.",
+    "example": "The concept of freedom varies across cultures.",
+    "topic": "Education",
+    "cefr_level": "B1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "efficient",
+    "pronunciation": "/ɪˈfɪʃ.ənt/",
+    "meaning": "Working in a way that gets good results with little waste.",
+    "definition": "Achieving maximum productivity with minimum wasted effort.",
+    "example": "Solar panels are becoming more efficient every year.",
+    "topic": "Technology",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "heritage",
+    "pronunciation": "/ˈher.ɪ.tɪdʒ/",
+    "meaning": "Traditions and qualities passed down from previous generations.",
+    "definition": "Cultural, historical, or natural resources belonging to a society.",
+    "example": "The ancient temple is an important part of the country's heritage.",
+    "topic": "Culture",
+    "cefr_level": "C1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "allocate",
+    "pronunciation": "/ˈæl.ə.keɪt/",
+    "meaning": "To distribute resources or duties for a purpose.",
+    "definition": "To assign or distribute something for a specific use.",
+    "example": "The manager allocated more funds to the marketing team.",
+    "topic": "Business",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "atom",
+    "pronunciation": "/ˈæt.əm/",
+    "meaning": "The smallest unit of a chemical element.",
+    "definition": "A basic unit of matter consisting of a nucleus surrounded by electrons.",
+    "example": "An atom is the building block of all matter.",
+    "topic": "Science",
+    "cefr_level": "A2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "gravity",
+    "pronunciation": "/ˈɡræv.ɪ.ti/",
+    "meaning": "The force that attracts objects toward the center of the earth.",
+    "definition": "A natural phenomenon by which all things with mass are brought toward one another.",
+    "example": "Gravity keeps us on the ground.",
+    "topic": "Science",
+    "cefr_level": "B1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "hypothesis",
+    "pronunciation": "/haɪˈpɑθ.ə.sɪs/",
+    "meaning": "An idea or explanation for something that is based on known facts but has not yet been proved.",
+    "definition": "A proposed explanation made on the basis of limited evidence.",
+    "example": "The scientist tested her hypothesis with experiments.",
+    "topic": "Science",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "photosynthesis",
+    "pronunciation": "/ˌfoʊ.toʊˈsɪn.θə.sɪs/",
+    "meaning": "The process by which green plants make their own food using sunlight.",
+    "definition": "A process used by plants to convert light energy into chemical energy.",
+    "example": "Photosynthesis is essential for plant growth.",
+    "topic": "Science",
+    "cefr_level": "C1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "cell",
+    "pronunciation": "/sel/",
+    "meaning": "The smallest structural unit of an organism.",
+    "definition": "A microscopic unit that makes up all living things.",
+    "example": "Every living thing is made up of cells.",
+    "topic": "Science",
+    "cefr_level": "A2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "theory",
+    "pronunciation": "/ˈθiə.ri/",
+    "meaning": "An idea or set of ideas intended to explain something.",
+    "definition": "A system of ideas intended to explain something.",
+    "example": "Einstein developed the theory of relativity.",
+    "topic": "Science",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "experiment",
+    "pronunciation": "/ɪkˈsper.ɪ.mənt/",
+    "meaning": "A test done to learn something or to discover if something works.",
+    "definition": "A scientific procedure to make a discovery or test a hypothesis.",
+    "example": "The experiment proved the scientist's theory.",
+    "topic": "Science",
+    "cefr_level": "B1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "molecule",
+    "pronunciation": "/ˈmɑl.ɪ.kjuːl/",
+    "meaning": "A group of atoms bonded together.",
+    "definition": "The smallest unit of a chemical compound.",
+    "example": "A water molecule consists of two hydrogen atoms and one oxygen atom.",
+    "topic": "Science",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "ecosystem",
+    "pronunciation": "/ˈiː.koʊˌsɪs.təm/",
+    "meaning": "A community of living organisms and their environment.",
+    "definition": "A biological community of interacting organisms and their physical environment.",
+    "example": "The rainforest is a complex ecosystem.",
+    "topic": "Science",
+    "cefr_level": "C1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "species",
+    "pronunciation": "/ˈspiː.ʃiːz/",
+    "meaning": "A group of living organisms consisting of similar individuals.",
+    "definition": "A group of organisms capable of interbreeding and producing fertile offspring.",
+    "example": "There are many species of birds in the forest.",
+    "topic": "Science",
+    "cefr_level": "B1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "energy",
+    "pronunciation": "/ˈen.ɚ.dʒi/",
+    "meaning": "The power from something such as electricity or heat that can do work.",
+    "definition": "The capacity to do work or produce change.",
+    "example": "Wind turbines convert kinetic energy into electricity.",
+    "topic": "Science",
+    "cefr_level": "A2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "evolution",
+    "pronunciation": "/ˌev.əˈluː.ʃən/",
+    "meaning": "The way in which living things gradually change and develop over millions of years.",
+    "definition": "The process by which different kinds of organisms develop from earlier forms.",
+    "example": "Darwin's theory of evolution changed scientific understanding.",
+    "topic": "Science",
+    "cefr_level": "C1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "observe",
+    "pronunciation": "/əbˈzɜːrv/",
+    "meaning": "To watch carefully the way something happens.",
+    "definition": "To notice or perceive something and register it as being significant.",
+    "example": "Scientists observe animal behavior in their natural habitat.",
+    "topic": "Science",
+    "cefr_level": "B1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "catalyst",
+    "pronunciation": "/ˈkæt.əl.ɪst/",
+    "meaning": "A substance that makes a chemical reaction happen faster.",
+    "definition": "An agent that provokes or speeds significant change or action.",
+    "example": "Enzymes act as catalysts in biological reactions.",
+    "topic": "Science",
+    "cefr_level": "C1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "oxygen",
+    "pronunciation": "/ˈɑːk.sɪ.dʒən/",
+    "meaning": "A gas with no color or smell that is present in air and water.",
+    "definition": "A chemical element essential for life and combustion.",
+    "example": "Humans need oxygen to breathe.",
+    "topic": "Science",
+    "cefr_level": "A2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "technology",
+    "pronunciation": "/tekˈnɑː.lə.dʒi/",
+    "meaning": "The study and use of scientific knowledge for practical purposes.",
+    "definition": "The application of scientific knowledge for practical purposes.",
+    "example": "Technology has transformed the way we communicate.",
+    "topic": "Technology",
+    "cefr_level": "B1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "software",
+    "pronunciation": "/ˈsɔːft.wer/",
+    "meaning": "Programs used to operate computers.",
+    "definition": "The programs and other operating information used by a computer.",
+    "example": "The company develops software for mobile phones.",
+    "topic": "Technology",
+    "cefr_level": "B1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "algorithm",
+    "pronunciation": "/ˈæl.ɡə.rɪ.ðəm/",
+    "meaning": "A set of rules that must be followed when solving a problem.",
+    "definition": "A process or set of rules to be followed in calculations or problem-solving.",
+    "example": "Search engines use complex algorithms to rank results.",
+    "topic": "Technology",
+    "cefr_level": "C1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "digital",
+    "pronunciation": "/ˈdɪdʒ.ɪ.təl/",
+    "meaning": "Recording or storing information using electronic technology.",
+    "definition": "Relating to or using signals or information represented by discrete values.",
+    "example": "Digital cameras have replaced film cameras.",
+    "topic": "Technology",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "internet",
+    "pronunciation": "/ˈɪn.tɚ.net/",
+    "meaning": "The large system of connected computers around the world.",
+    "definition": "A global computer network providing information and communication facilities.",
+    "example": "The internet has changed how people access information.",
+    "topic": "Technology",
+    "cefr_level": "A2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "database",
+    "pronunciation": "/ˈdeɪ.tə.beɪs/",
+    "meaning": "A large amount of information stored in a computer system.",
+    "definition": "An organized collection of structured information stored electronically.",
+    "example": "The hospital maintains a database of patient records.",
+    "topic": "Technology",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "innovation",
+    "pronunciation": "/ˌɪn.əˈveɪ.ʃən/",
+    "meaning": "A new idea, method, or invention.",
+    "definition": "The action or process of innovating or introducing something new.",
+    "example": "The smartphone was a major innovation in mobile technology.",
+    "topic": "Technology",
+    "cefr_level": "C1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "network",
+    "pronunciation": "/ˈnet.wɜːrk/",
+    "meaning": "A system of connected computers or people.",
+    "definition": "A group or system of interconnected things or people.",
+    "example": "The company has a network of offices worldwide.",
+    "topic": "Technology",
+    "cefr_level": "B1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "processor",
+    "pronunciation": "/ˈprɑː.ses.ɚ/",
+    "meaning": "The part of a computer that controls all the other parts.",
+    "definition": "A device that processes data according to instructions.",
+    "example": "Modern smartphones have powerful processors.",
+    "topic": "Technology",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "application",
+    "pronunciation": "/ˌæp.lɪˈkeɪ.ʃən/",
+    "meaning": "A program designed to do a particular job.",
+    "definition": "A software program designed to perform a specific function for the user.",
+    "example": "I downloaded a new application for photo editing.",
+    "topic": "Technology",
+    "cefr_level": "B1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "automation",
+    "pronunciation": "/ˌɔː.təˈmeɪ.ʃən/",
+    "meaning": "The use of machines to do work that was previously done by people.",
+    "definition": "The technique of making an apparatus or system operate automatically.",
+    "example": "Automation has increased efficiency in manufacturing.",
+    "topic": "Technology",
+    "cefr_level": "C1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "device",
+    "pronunciation": "/dɪˈvaɪs/",
+    "meaning": "An object or machine that has been invented for a particular purpose.",
+    "definition": "A thing made or adapted for a particular purpose.",
+    "example": "Mobile devices are used by billions of people.",
+    "topic": "Technology",
+    "cefr_level": "A2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "interface",
+    "pronunciation": "/ˈɪn.tɚ.feɪs/",
+    "meaning": "The way a computer program presents information to a user.",
+    "definition": "A point where two systems meet and interact.",
+    "example": "The application has a user-friendly interface.",
+    "topic": "Technology",
+    "cefr_level": "C1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "virtual",
+    "pronunciation": "/ˈvɜː.tʃu.əl/",
+    "meaning": "Created by computer technology and appearing to exist.",
+    "definition": "Not physically existing but made to appear by software.",
+    "example": "Virtual reality games are becoming more popular.",
+    "topic": "Technology",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "cybersecurity",
+    "pronunciation": "/ˌsaɪ.bɚ.sɪˈkjʊr.ə.ti/",
+    "meaning": "The practice of protecting computer systems from digital attacks.",
+    "definition": "Measures taken to protect computer systems against unauthorized access.",
+    "example": "Companies invest heavily in cybersecurity to protect data.",
+    "topic": "Technology",
+    "cefr_level": "C1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "curriculum",
+    "pronunciation": "/kəˈrɪk.jə.ləm/",
+    "meaning": "The subjects studied in a school or course.",
+    "definition": "The subjects comprising a course of study in a school or college.",
+    "example": "The school updated its mathematics curriculum.",
+    "topic": "Education",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "knowledge",
+    "pronunciation": "/ˈnɑː.lɪdʒ/",
+    "meaning": "Information and understanding that you have in your mind.",
+    "definition": "Facts, information, and skills acquired through experience or education.",
+    "example": "She has extensive knowledge of world history.",
+    "topic": "Education",
+    "cefr_level": "A2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "literacy",
+    "pronunciation": "/ˈlɪt.ɚ.ə.si/",
+    "meaning": "The ability to read and write.",
+    "definition": "The ability to read and write competently.",
+    "example": "The program aims to improve literacy rates in rural areas.",
+    "topic": "Education",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "pedagogy",
+    "pronunciation": "/ˈped.ə.ɡɑː.dʒi/",
+    "meaning": "The study of teaching methods.",
+    "definition": "The method and practice of teaching, especially as an academic subject.",
+    "example": "The professor specializes in modern pedagogy.",
+    "topic": "Education",
+    "cefr_level": "C1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "scholarship",
+    "pronunciation": "/ˈskɑː.lɚ.ʃɪp/",
+    "meaning": "An amount of money given to someone to pay for their studies.",
+    "definition": "A grant of financial aid awarded to a student.",
+    "example": "She won a scholarship to study at the university.",
+    "topic": "Education",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "comprehension",
+    "pronunciation": "/ˌkɑːm.prɪˈhen.ʃən/",
+    "meaning": "The ability to understand something.",
+    "definition": "The action or capability of understanding something.",
+    "example": "Reading comprehension is essential for academic success.",
+    "topic": "Education",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "evaluate",
+    "pronunciation": "/ɪˈvæl.ju.eɪt/",
+    "meaning": "To judge or calculate the quality or value of something.",
+    "definition": "To form an idea of the amount, number, or value of something.",
+    "example": "Teachers evaluate students through tests and assignments.",
+    "topic": "Education",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "lecture",
+    "pronunciation": "/ˈlek.tʃɚ/",
+    "meaning": "A formal talk on a serious subject given to a group of people.",
+    "definition": "An educational talk to an audience, especially to students.",
+    "example": "The professor gave a lecture on ancient civilizations.",
+    "topic": "Education",
+    "cefr_level": "B1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "tuition",
+    "pronunciation": "/tuˈɪʃ.ən/",
+    "meaning": "Teaching, especially when given to a small group or one person.",
+    "definition": "A fee charged for teaching or instruction.",
+    "example": "University tuition costs have increased significantly.",
+    "topic": "Education",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "assignment",
+    "pronunciation": "/əˈsaɪn.mənt/",
+    "meaning": "A piece of work given to someone as part of their studies or job.",
+    "definition": "A task or piece of work allocated to someone as part of their duties.",
+    "example": "Students must complete the assignment by Friday.",
+    "topic": "Education",
+    "cefr_level": "B1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "enroll",
+    "pronunciation": "/ɪnˈroʊl/",
+    "meaning": "To put yourself or someone else on an official list for an activity.",
+    "definition": "To officially register as a member of an institution or course.",
+    "example": "She enrolled in a French language course.",
+    "topic": "Education",
+    "cefr_level": "B1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "thesis",
+    "pronunciation": "/ˈθiː.sɪs/",
+    "meaning": "A long piece of writing on a particular subject for a university degree.",
+    "definition": "A statement or theory put forward to be proved or maintained.",
+    "example": "He is writing his doctoral thesis on climate change.",
+    "topic": "Education",
+    "cefr_level": "C1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "seminar",
+    "pronunciation": "/ˈsem.ɪ.nɑːr/",
+    "meaning": "A meeting where a group of people discuss a subject.",
+    "definition": "A conference or meeting for discussion or training.",
+    "example": "The university hosts weekly seminars on various topics.",
+    "topic": "Education",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "academy",
+    "pronunciation": "/əˈkæd.ə.mi/",
+    "meaning": "A school or college for special training.",
+    "definition": "A place of study or training in a special field.",
+    "example": "He attended a military academy.",
+    "topic": "Education",
+    "cefr_level": "B1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "methodology",
+    "pronunciation": "/ˌmeθ.əˈdɑː.lə.dʒi/",
+    "meaning": "A system of methods used in a particular area of study.",
+    "definition": "A system of methods used in a particular field of study.",
+    "example": "The research methodology was clearly explained.",
+    "topic": "Education",
+    "cefr_level": "C1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "investment",
+    "pronunciation": "/ɪnˈvest.mənt/",
+    "meaning": "The act of putting money into something to make a profit.",
+    "definition": "The action or process of investing money for profit.",
+    "example": "Real estate can be a good investment.",
+    "topic": "Business",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "profit",
+    "pronunciation": "/ˈprɑː.fɪt/",
+    "meaning": "Money that is earned in trade or business.",
+    "definition": "A financial gain, especially the difference between costs and income.",
+    "example": "The company made a large profit this year.",
+    "topic": "Business",
+    "cefr_level": "B1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "entrepreneur",
+    "pronunciation": "/ˌɑːn.trə.prəˈnɜːr/",
+    "meaning": "Someone who starts their own business.",
+    "definition": "A person who organizes and operates a business, taking financial risks.",
+    "example": "The young entrepreneur launched a successful startup.",
+    "topic": "Business",
+    "cefr_level": "C1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "revenue",
+    "pronunciation": "/ˈrev.ən.uː/",
+    "meaning": "The income that a government or company receives regularly.",
+    "definition": "Income generated from normal business operations.",
+    "example": "The company's revenue increased by twenty percent.",
+    "topic": "Business",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "budget",
+    "pronunciation": "/ˈbʌdʒ.ɪt/",
+    "meaning": "A plan to show how much money a person or organization will earn and spend.",
+    "definition": "An estimate of income and expenditure for a set period of time.",
+    "example": "The department must stay within its budget.",
+    "topic": "Business",
+    "cefr_level": "B1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "negotiate",
+    "pronunciation": "/nɪˈɡoʊ.ʃi.eɪt/",
+    "meaning": "To have formal discussions in order to reach an agreement.",
+    "definition": "To try to reach an agreement through discussion.",
+    "example": "The union negotiated better working conditions.",
+    "topic": "Business",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "stakeholder",
+    "pronunciation": "/ˈsteɪkˌhoʊl.dɚ/",
+    "meaning": "A person or group with an interest in a business.",
+    "definition": "A person with an interest or concern in something.",
+    "example": "The company consulted with all stakeholders before making the decision.",
+    "topic": "Business",
+    "cefr_level": "C1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "marketing",
+    "pronunciation": "/ˈmɑːr.kɪ.tɪŋ/",
+    "meaning": "The activity of presenting and advertising products to customers.",
+    "definition": "The action or business of promoting and selling products or services.",
+    "example": "The marketing campaign was very successful.",
+    "topic": "Business",
+    "cefr_level": "B1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "strategy",
+    "pronunciation": "/ˈstræt.ə.dʒi/",
+    "meaning": "A detailed plan for achieving success.",
+    "definition": "A plan of action designed to achieve a long-term goal.",
+    "example": "The company developed a new business strategy.",
+    "topic": "Business",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "competitor",
+    "pronunciation": "/kəmˈpet.ɪ.tɚ/",
+    "meaning": "A person or organization that competes against others.",
+    "definition": "An organization engaged in commercial rivalry with others.",
+    "example": "The company faces strong competitors in the market.",
+    "topic": "Business",
+    "cefr_level": "B1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "franchise",
+    "pronunciation": "/ˈfræn.tʃaɪz/",
+    "meaning": "Permission given by a company to sell its goods or services.",
+    "definition": "An authorization granted to sell a company's goods or services.",
+    "example": "He owns a fast-food franchise.",
+    "topic": "Business",
+    "cefr_level": "C1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "merger",
+    "pronunciation": "/ˈmɜː.dʒɚ/",
+    "meaning": "The joining together of two companies.",
+    "definition": "A combination of two things, especially companies, into one.",
+    "example": "The merger created the largest bank in the country.",
+    "topic": "Business",
+    "cefr_level": "C1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "liability",
+    "pronunciation": "/ˌlaɪ.əˈbɪl.ə.ti/",
+    "meaning": "The state of being legally responsible for something.",
+    "definition": "The state of being responsible for something by law.",
+    "example": "The company has significant financial liabilities.",
+    "topic": "Business",
+    "cefr_level": "C1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "contract",
+    "pronunciation": "/ˈkɑːn.trækt/",
+    "meaning": "A legal document that states an agreement between people.",
+    "definition": "A written or spoken agreement that is intended to be enforceable by law.",
+    "example": "They signed a contract to supply goods for three years.",
+    "topic": "Business",
+    "cefr_level": "B1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "assets",
+    "pronunciation": "/ˈæs.ets/",
+    "meaning": "Things of value belonging to a person or company.",
+    "definition": "Property owned by a person or company regarded as having value.",
+    "example": "The company's assets include buildings and equipment.",
+    "topic": "Business",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "festival",
+    "pronunciation": "/ˈfes.tə.vəl/",
+    "meaning": "A special day or period when people celebrate something.",
+    "definition": "An organized series of concerts, plays, or films held annually.",
+    "example": "The city hosts a music festival every summer.",
+    "topic": "Culture",
+    "cefr_level": "A2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "tradition",
+    "pronunciation": "/trəˈdɪʃ.ən/",
+    "meaning": "A belief or custom passed down through generations.",
+    "definition": "The transmission of customs or beliefs from generation to generation.",
+    "example": "It is a family tradition to gather for dinner on Sundays.",
+    "topic": "Culture",
+    "cefr_level": "B1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "ceremony",
+    "pronunciation": "/ˈser.ə.moʊ.ni/",
+    "meaning": "A formal event held on special occasions.",
+    "definition": "A formal religious or public occasion celebrating a particular event.",
+    "example": "The wedding ceremony was held in a beautiful church.",
+    "topic": "Culture",
+    "cefr_level": "B1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "diversity",
+    "pronunciation": "/daɪˈvɜː.sə.ti/",
+    "meaning": "The fact of many different types of things or people.",
+    "definition": "The state of being diverse; variety.",
+    "example": "The city is known for its cultural diversity.",
+    "topic": "Culture",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "artifact",
+    "pronunciation": "/ˈɑːr.tɪ.fækt/",
+    "meaning": "An object made by a human, typically of historical interest.",
+    "definition": "An object made by a human being, typically an item of cultural significance.",
+    "example": "The museum displays ancient artifacts from Egypt.",
+    "topic": "Culture",
+    "cefr_level": "C1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "ritual",
+    "pronunciation": "/ˈrɪtʃ.u.əl/",
+    "meaning": "A set of actions performed in a fixed order as part of a ceremony.",
+    "definition": "A religious or solemn ceremony consisting of a series of actions.",
+    "example": "The tribe performed their traditional ritual at sunrise.",
+    "topic": "Culture",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "folklore",
+    "pronunciation": "/ˈfoʊk.lɔːr/",
+    "meaning": "Traditional stories and customs of a community.",
+    "definition": "The traditional beliefs, customs, and stories of a community.",
+    "example": "Irish folklore includes many tales of fairies and leprechauns.",
+    "topic": "Culture",
+    "cefr_level": "C1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "cuisine",
+    "pronunciation": "/kwɪˈziːn/",
+    "meaning": "A style of cooking characteristic of a country or region.",
+    "definition": "A characteristic manner or style of cooking food.",
+    "example": "Japanese cuisine is popular around the world.",
+    "topic": "Culture",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "monument",
+    "pronunciation": "/ˈmɑː.njə.mənt/",
+    "meaning": "A structure built to remind people of a person or event.",
+    "definition": "A statue, building, or other structure erected to commemorate someone or something.",
+    "example": "The monument commemorates soldiers who died in the war.",
+    "topic": "Culture",
+    "cefr_level": "B1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "customs",
+    "pronunciation": "/ˈkʌs.təmz/",
+    "meaning": "The traditional practices of a particular society.",
+    "definition": "Traditional and widely accepted ways of behaving in a society.",
+    "example": "Different cultures have different marriage customs.",
+    "topic": "Culture",
+    "cefr_level": "B1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "indigenous",
+    "pronunciation": "/ɪnˈdɪdʒ.ə.nəs/",
+    "meaning": "Originating naturally in a particular place.",
+    "definition": "Originating or occurring naturally in a particular place; native.",
+    "example": "The indigenous people have lived here for thousands of years.",
+    "topic": "Culture",
+    "cefr_level": "C1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "ethnicity",
+    "pronunciation": "/eθˈnɪs.ə.ti/",
+    "meaning": "The fact of belonging to a particular race.",
+    "definition": "The fact or state of belonging to a social group with a common culture.",
+    "example": "The survey asked about ethnicity and nationality.",
+    "topic": "Culture",
+    "cefr_level": "C1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "sculpture",
+    "pronunciation": "/ˈskʌlp.tʃɚ/",
+    "meaning": "The art of making objects from stone, wood, or clay.",
+    "definition": "The art of making two- or three-dimensional representative forms.",
+    "example": "The park features beautiful bronze sculptures.",
+    "topic": "Culture",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "architecture",
+    "pronunciation": "/ˈɑːr.kɪ.tek.tʃɚ/",
+    "meaning": "The art and practice of designing buildings.",
+    "definition": "The art or practice of designing and constructing buildings.",
+    "example": "Gothic architecture is characterized by pointed arches.",
+    "topic": "Culture",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "dialect",
+    "pronunciation": "/ˈdaɪ.ə.lekt/",
+    "meaning": "A form of a language spoken in a particular area.",
+    "definition": "A particular form of a language specific to a region or social group.",
+    "example": "She speaks a regional dialect of Spanish.",
+    "topic": "Culture",
+    "cefr_level": "C1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "celebrate",
+    "pronunciation": "/ˈsel.ə.breɪt/",
+    "meaning": "To do something enjoyable for a special reason.",
+    "definition": "To acknowledge a significant event with festivities or other deviation.",
+    "example": "People celebrate New Year with fireworks and parties.",
+    "topic": "Culture",
+    "cefr_level": "A2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "justice",
+    "pronunciation": "/ˈdʒʌs.tɪs/",
+    "meaning": "Fairness in the way people are treated.",
+    "definition": "Just behavior or treatment according to what is morally right.",
+    "example": "The legal system aims to deliver justice.",
+    "topic": "Politics",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "democracy",
+    "pronunciation": "/dɪˈmɑː.krə.si/",
+    "meaning": "A system of government where citizens vote for their leaders.",
+    "definition": "A system of government by the whole population through elected representatives.",
+    "example": "Democracy allows people to choose their government.",
+    "topic": "Politics",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "legislation",
+    "pronunciation": "/ˌledʒ.ɪˈsleɪ.ʃən/",
+    "meaning": "Laws considered collectively.",
+    "definition": "Laws, considered collectively, enacted by a government.",
+    "example": "New legislation was passed to protect the environment.",
+    "topic": "Politics",
+    "cefr_level": "C1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "parliament",
+    "pronunciation": "/ˈpɑːr.lə.mənt/",
+    "meaning": "The group of people who make laws in some countries.",
+    "definition": "The highest legislature, consisting of the sovereign, House of Lords, and Commons.",
+    "example": "Parliament voted on the new healthcare bill.",
+    "topic": "Politics",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "election",
+    "pronunciation": "/ɪˈlek.ʃən/",
+    "meaning": "A time when people vote to choose someone for a political position.",
+    "definition": "A formal and organized choice by vote of a person for office.",
+    "example": "The presidential election will be held next month.",
+    "topic": "Politics",
+    "cefr_level": "B1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "policy",
+    "pronunciation": "/ˈpɑː.lə.si/",
+    "meaning": "A set of ideas or plans used as a basis for decisions.",
+    "definition": "A course or principle of action adopted or proposed by an organization.",
+    "example": "The government announced a new economic policy.",
+    "topic": "Politics",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "constitution",
+    "pronunciation": "/ˌkɑːn.stɪˈtuː.ʃən/",
+    "meaning": "The basic laws and principles of a country.",
+    "definition": "A body of fundamental principles according to which a state is governed.",
+    "example": "The constitution guarantees freedom of speech.",
+    "topic": "Politics",
+    "cefr_level": "C1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "government",
+    "pronunciation": "/ˈɡʌv.ɚn.mənt/",
+    "meaning": "The group of people who officially control a country.",
+    "definition": "The governing body of a nation, state, or community.",
+    "example": "The government announced new taxes.",
+    "topic": "Politics",
+    "cefr_level": "A2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "citizen",
+    "pronunciation": "/ˈsɪt.ə.zən/",
+    "meaning": "A person who is legally accepted as belonging to a country.",
+    "definition": "A legally recognized subject or national of a state.",
+    "example": "All citizens have the right to vote.",
+    "topic": "Politics",
+    "cefr_level": "B1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "sovereignty",
+    "pronunciation": "/ˈsɑː.vrən.ti/",
+    "meaning": "The power of a country to control its own government.",
+    "definition": "Supreme power or authority of a state to govern itself.",
+    "example": "The nation fought to protect its sovereignty.",
+    "topic": "Politics",
+    "cefr_level": "C1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "treaty",
+    "pronunciation": "/ˈtriː.t̬i/",
+    "meaning": "A written agreement between countries.",
+    "definition": "A formally concluded and ratified agreement between countries.",
+    "example": "The countries signed a peace treaty.",
+    "topic": "Politics",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "campaign",
+    "pronunciation": "/kæmˈpeɪn/",
+    "meaning": "Organized actions to achieve a particular goal.",
+    "definition": "An organized course of action to achieve a goal.",
+    "example": "She ran a successful election campaign.",
+    "topic": "Politics",
+    "cefr_level": "B1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "coalition",
+    "pronunciation": "/ˌkoʊ.əˈlɪʃ.ən/",
+    "meaning": "A government formed by two or more political parties working together.",
+    "definition": "An alliance for combined action, especially a temporary one.",
+    "example": "The coalition government included three political parties.",
+    "topic": "Politics",
+    "cefr_level": "C1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "debate",
+    "pronunciation": "/dɪˈbeɪt/",
+    "meaning": "A formal discussion on a particular matter.",
+    "definition": "A formal discussion on a particular topic in which opposing arguments are put forward.",
+    "example": "The candidates participated in a televised debate.",
+    "topic": "Politics",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "reform",
+    "pronunciation": "/rɪˈfɔːrm/",
+    "meaning": "Change made to improve a system or organization.",
+    "definition": "The action or process of reforming an institution or practice.",
+    "example": "The government introduced education reform.",
+    "topic": "Politics",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "environment",
+    "pronunciation": "/ɪnˈvaɪ.rən.mənt/",
+    "meaning": "The natural world around us.",
+    "definition": "The surroundings or conditions in which a person, animal, or plant lives.",
+    "example": "We must protect the environment for future generations.",
+    "topic": "Environment",
+    "cefr_level": "A2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "pollution",
+    "pronunciation": "/pəˈluː.ʃən/",
+    "meaning": "Damage caused to the environment by harmful substances.",
+    "definition": "The presence in or introduction into the environment of contaminants.",
+    "example": "Air pollution is a serious health hazard.",
+    "topic": "Environment",
+    "cefr_level": "B1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "conservation",
+    "pronunciation": "/ˌkɑːn.sɚˈveɪ.ʃən/",
+    "meaning": "The protection of plants, animals, and natural areas.",
+    "definition": "The action of conserving something, especially the environment.",
+    "example": "Wildlife conservation is important for biodiversity.",
+    "topic": "Environment",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "sustainable",
+    "pronunciation": "/səˈsteɪ.nə.bəl/",
+    "meaning": "Able to continue over a long period without harming the environment.",
+    "definition": "Able to be maintained at a certain rate or level without depleting resources.",
+    "example": "The company uses sustainable farming methods.",
+    "topic": "Environment",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "climate",
+    "pronunciation": "/ˈklaɪ.mət/",
+    "meaning": "The general weather conditions in an area over a long time.",
+    "definition": "The weather conditions prevailing in an area over a long period.",
+    "example": "The climate in tropical regions is hot and humid.",
+    "topic": "Environment",
+    "cefr_level": "B1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "renewable",
+    "pronunciation": "/rɪˈnuː.ə.bəl/",
+    "meaning": "Able to be replaced naturally and used again.",
+    "definition": "A source of energy that is not depleted by use.",
+    "example": "Solar power is a renewable energy source.",
+    "topic": "Environment",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "habitat",
+    "pronunciation": "/ˈhæb.ɪ.tæt/",
+    "meaning": "The natural home of an animal or plant.",
+    "definition": "The natural home or environment of an animal, plant, or organism.",
+    "example": "Deforestation destroys the habitat of many species.",
+    "topic": "Environment",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "biodiversity",
+    "pronunciation": "/ˌbaɪ.oʊ.daɪˈvɜː.sə.ti/",
+    "meaning": "The variety of plant and animal life in a particular habitat.",
+    "definition": "The variety of life in the world or in a particular ecosystem.",
+    "example": "Rainforests have high levels of biodiversity.",
+    "topic": "Environment",
+    "cefr_level": "C1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "recycle",
+    "pronunciation": "/ˌriːˈsaɪ.kəl/",
+    "meaning": "To process used materials so they can be used again.",
+    "definition": "To convert waste into reusable material.",
+    "example": "We recycle paper, plastic, and glass.",
+    "topic": "Environment",
+    "cefr_level": "B1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "deforestation",
+    "pronunciation": "/diːˌfɔːr.ɪˈsteɪ.ʃən/",
+    "meaning": "The cutting down of trees in a large area.",
+    "definition": "The action of clearing a wide area of trees.",
+    "example": "Deforestation contributes to climate change.",
+    "topic": "Environment",
+    "cefr_level": "C1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "emission",
+    "pronunciation": "/ɪˈmɪʃ.ən/",
+    "meaning": "The production and discharge of something, especially gas.",
+    "definition": "The production and discharge of something, especially gas or radiation.",
+    "example": "Carbon emissions from vehicles harm the atmosphere.",
+    "topic": "Environment",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "endangered",
+    "pronunciation": "/ɪnˈdeɪn.dʒɚd/",
+    "meaning": "At risk of extinction.",
+    "definition": "A species seriously at risk of extinction.",
+    "example": "Tigers are an endangered species.",
+    "topic": "Environment",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "contamination",
+    "pronunciation": "/kənˌtæm.əˈneɪ.ʃən/",
+    "meaning": "The action of making something impure by exposure to harmful substances.",
+    "definition": "The action or state of making or being made impure.",
+    "example": "Water contamination can cause serious illness.",
+    "topic": "Environment",
+    "cefr_level": "C1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "glacier",
+    "pronunciation": "/ˈɡleɪ.ʃɚ/",
+    "meaning": "A large mass of ice that moves slowly down a mountain.",
+    "definition": "A slowly moving mass or river of ice formed by snow accumulation.",
+    "example": "Glaciers are melting due to global warming.",
+    "topic": "Environment",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "organic",
+    "pronunciation": "/ɔːrˈɡæn.ɪk/",
+    "meaning": "Produced without artificial chemicals.",
+    "definition": "Produced or involving production without the use of chemical fertilizers.",
+    "example": "She prefers to buy organic vegetables.",
+    "topic": "Environment",
+    "cefr_level": "B1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "exercise",
+    "pronunciation": "/ˈek.sɚ.saɪz/",
+    "meaning": "Physical activity done to stay healthy.",
+    "definition": "Activity requiring physical effort carried out to sustain or improve health.",
+    "example": "Regular exercise is important for good health.",
+    "topic": "Health",
+    "cefr_level": "A2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "nutrition",
+    "pronunciation": "/nuːˈtrɪʃ.ən/",
+    "meaning": "The process of eating the right kinds of food for health.",
+    "definition": "The process of providing or obtaining the food necessary for health.",
+    "example": "Good nutrition is essential for children's development.",
+    "topic": "Health",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "immune",
+    "pronunciation": "/ɪˈmjuːn/",
+    "meaning": "Protected against a particular disease.",
+    "definition": "Resistant to a particular infection or toxin due to antibodies.",
+    "example": "Vaccination helps make people immune to certain diseases.",
+    "topic": "Health",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "diagnosis",
+    "pronunciation": "/ˌdaɪ.əɡˈnoʊ.sɪs/",
+    "meaning": "The identification of an illness or problem.",
+    "definition": "The identification of the nature of an illness by examination.",
+    "example": "The doctor made a diagnosis after examining the patient.",
+    "topic": "Health",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "symptom",
+    "pronunciation": "/ˈsɪmp.təm/",
+    "meaning": "A physical or mental sign that you have a disease.",
+    "definition": "A physical or mental feature indicating a condition of disease.",
+    "example": "Fever is a common symptom of the flu.",
+    "topic": "Health",
+    "cefr_level": "B1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "therapy",
+    "pronunciation": "/ˈθer.ə.pi/",
+    "meaning": "Treatment intended to relieve or heal a disorder.",
+    "definition": "Treatment intended to relieve or heal a disorder.",
+    "example": "Physical therapy helped her recover from the injury.",
+    "topic": "Health",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "chronic",
+    "pronunciation": "/ˈkrɑː.nɪk/",
+    "meaning": "A disease or condition lasting for a long time.",
+    "definition": "Persisting for a long time or constantly recurring.",
+    "example": "She suffers from chronic back pain.",
+    "topic": "Health",
+    "cefr_level": "C1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "prevention",
+    "pronunciation": "/prɪˈven.ʃən/",
+    "meaning": "The action of stopping something from happening.",
+    "definition": "The action of stopping something from happening or arising.",
+    "example": "Prevention is better than cure.",
+    "topic": "Health",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "vaccine",
+    "pronunciation": "/vækˈsiːn/",
+    "meaning": "A substance that protects against a disease.",
+    "definition": "A substance used to stimulate immunity against diseases.",
+    "example": "Children receive vaccines to protect against measles.",
+    "topic": "Health",
+    "cefr_level": "B1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "obesity",
+    "pronunciation": "/oʊˈbiː.sə.ti/",
+    "meaning": "The condition of being very overweight.",
+    "definition": "The state of being grossly fat or overweight.",
+    "example": "Obesity increases the risk of heart disease.",
+    "topic": "Health",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "antibiotic",
+    "pronunciation": "/ˌæn.t̬iˈbaɪˌɑː.t̬ɪk/",
+    "meaning": "A medicine that kills bacteria.",
+    "definition": "A medicine that inhibits the growth of or destroys microorganisms.",
+    "example": "The doctor prescribed antibiotics for the infection.",
+    "topic": "Health",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "epidemic",
+    "pronunciation": "/ˌep.ɪˈdem.ɪk/",
+    "meaning": "A widespread occurrence of a disease in a community.",
+    "definition": "A widespread occurrence of an infectious disease in a community.",
+    "example": "The flu epidemic affected thousands of people.",
+    "topic": "Health",
+    "cefr_level": "C1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "hygiene",
+    "pronunciation": "/ˈhaɪ.dʒiːn/",
+    "meaning": "Practices to maintain health and prevent disease.",
+    "definition": "Conditions or practices conducive to maintaining health and preventing disease.",
+    "example": "Good hygiene helps prevent the spread of illness.",
+    "topic": "Health",
+    "cefr_level": "B1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "rehabilitation",
+    "pronunciation": "/ˌriː.həˌbɪl.ɪˈteɪ.ʃən/",
+    "meaning": "The process of helping someone recover from illness or injury.",
+    "definition": "The action of restoring someone to health through training and therapy.",
+    "example": "He underwent rehabilitation after his surgery.",
+    "topic": "Health",
+    "cefr_level": "C1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "wellness",
+    "pronunciation": "/ˈwel.nəs/",
+    "meaning": "The state of being in good health.",
+    "definition": "The state of being in good health, especially as an actively pursued goal.",
+    "example": "The company promotes employee wellness through fitness programs.",
+    "topic": "Health",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "geography",
+    "pronunciation": "/dʒiˈɑː.ɡrə.fi/",
+    "meaning": "The study of the earth's surface and its features.",
+    "definition": "The study of the physical features of the earth and its atmosphere.",
+    "example": "Geography class teaches about different countries and climates.",
+    "topic": "Education",
+    "cefr_level": "A2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "literature",
+    "pronunciation": "/ˈlɪt̬.ɚ.ə.tʃɚ/",
+    "meaning": "Written works that are considered to have artistic value.",
+    "definition": "Written works, especially those considered of superior quality.",
+    "example": "She studied English literature at university.",
+    "topic": "Education",
+    "cefr_level": "B1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "mathematics",
+    "pronunciation": "/ˌmæθ.əˈmæt̬.ɪks/",
+    "meaning": "The study of numbers, shapes, and space.",
+    "definition": "The abstract science of number, quantity, and space.",
+    "example": "Mathematics is essential for engineering.",
+    "topic": "Education",
+    "cefr_level": "A2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "philosophy",
+    "pronunciation": "/fɪˈlɑː.sə.fi/",
+    "meaning": "The study of the fundamental nature of knowledge and existence.",
+    "definition": "The study of the fundamental nature of knowledge, reality, and existence.",
+    "example": "Ancient Greek philosophy influenced Western thought.",
+    "topic": "Education",
+    "cefr_level": "C1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "research",
+    "pronunciation": "/rɪˈsɜːrtʃ/",
+    "meaning": "A detailed study of a subject to discover new information.",
+    "definition": "The systematic investigation into materials and sources to establish facts.",
+    "example": "She conducted research on climate change.",
+    "topic": "Education",
+    "cefr_level": "B1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "collaborate",
+    "pronunciation": "/kəˈlæb.ə.reɪt/",
+    "meaning": "To work together with someone to produce something.",
+    "definition": "To work jointly on an activity or project.",
+    "example": "Students collaborate on group projects.",
+    "topic": "Education",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "analyze",
+    "pronunciation": "/ˈæn.əl.aɪz/",
+    "meaning": "To examine something carefully to understand it.",
+    "definition": "To examine methodically by separating into parts and studying relationships.",
+    "example": "Students learn to analyze historical documents.",
+    "topic": "Education",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "critical",
+    "pronunciation": "/ˈkrɪt̬.ɪ.kəl/",
+    "meaning": "Involving careful judgment about something.",
+    "definition": "Expressing adverse or disapproving comments or judgments.",
+    "example": "Critical thinking skills are important in education.",
+    "topic": "Education",
+    "cefr_level": "B2",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "vocabulary",
+    "pronunciation": "/voʊˈkæb.jə.ler.i/",
+    "meaning": "All the words that a person knows or uses.",
+    "definition": "The body of words used in a particular language.",
+    "example": "Reading helps expand your vocabulary.",
+    "topic": "Education",
+    "cefr_level": "B1",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "plagiarism",
+    "pronunciation": "/ˈpleɪ.dʒə.rɪ.zəm/",
+    "meaning": "The practice of taking someone else's work and pretending it is your own.",
+    "definition": "The practice of taking someone else's work or ideas and passing them off as one's own.",
+    "example": "Universities have strict policies against plagiarism.",
+    "topic": "Education",
+    "cefr_level": "C1",
+    "source": "Oxford Dictionary"
+  },
+  {
+    "word": "discipline",
+    "pronunciation": "/ˈdɪs.ə.plɪn/",
+    "meaning": "A branch of knowledge studied or taught.",
+    "definition": "A branch of knowledge, typically one studied in higher education.",
+    "example": "Biology is a scientific discipline.",
+    "topic": "Education",
+    "cefr_level": "B2",
+    "source": "Cambridge Dictionary"
+  },
+  {
+    "word": "articulate",
+    "pronunciation": "/ɑːrˈtɪk.jə.lət/",
+    "meaning": "Able to express ideas clearly.",
+    "definition": "Having or showing the ability to speak fluently and coherently.",
+    "example": "She is very articulate in presenting her ideas.",
+    "topic": "Education",
+    "cefr_level": "C1",
+    "source": "Oxford Dictionary"
+  }
+]

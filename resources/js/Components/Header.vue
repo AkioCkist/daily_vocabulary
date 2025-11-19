@@ -21,6 +21,17 @@
         <!-- Navigation -->
         <nav class="flex items-center gap-3">
           <template v-if="user">
+            <!-- Filter Words Button for Authenticated Users -->
+            <Link 
+              href="/words/filter" 
+              class="px-6 py-3 text-gray-800 hover:text-indigo-600 font-semibold transition-all duration-300 hidden sm:flex items-center gap-2 dark:text-gray-200 dark:hover:text-indigo-600 bg-gray-100/80 dark:bg-gray-800/80 hover:bg-gray-200/90 dark:hover:bg-gray-700/90 rounded-xl border border-indigo-700/30 dark:border-indigo-700/30 shadow-depth-1 hover-lift"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+              </svg>
+              Filter Words
+            </Link>
+            
             <!-- Navigation Links with Enhanced Glass Effect -->
             <Link 
               v-if="currentPath === '/user/words'"
@@ -28,13 +39,6 @@
               class="px-6 py-3 text-gray-800 hover:text-indigo-600 font-semibold transition-all duration-300 hidden sm:block dark:text-gray-200 dark:hover:text-indigo-600 bg-gray-100/80 dark:bg-gray-800/80 hover:bg-gray-200/90 dark:hover:bg-gray-700/90 rounded-xl border border-indigo-700/30 dark:border-indigo-700/30 shadow-depth-1 hover-lift"
             >
               Browse Words
-            </Link>
-            <Link 
-              v-if="currentPath !== '/user/words'"
-              href="/user/words" 
-              class="px-6 py-3 text-gray-800 hover:text-indigo-600 font-semibold transition-all duration-300 hidden sm:block dark:text-gray-200 dark:hover:text-indigo-600 bg-gray-100/80 dark:bg-gray-800/80 hover:bg-gray-200/90 dark:hover:bg-gray-700/90 rounded-xl border border-indigo-700/30 dark:border-indigo-700/30 shadow-depth-1 hover-lift"
-            >
-              My Vocabulary
             </Link>
             
             <!-- Enhanced User Dropdown -->
@@ -76,27 +80,9 @@
                   </div>
                 </Link>
                 <Link 
-                  v-if="currentPath !== '/user/words'"
-                  href="/user/words" 
-                  class="relative block px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-violet-50 hover:text-indigo-600 transition-all duration-300 sm:hidden font-medium dark:text-gray-300 dark:hover:from-indigo-900/30 dark:hover:to-violet-900/30 dark:hover:text-indigo-600"
-                >
-                  <div class="flex items-center gap-3">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                    </svg>
-                    My Vocabulary
-                  </div>
-                </Link>
-                <Link 
                   href="/words" 
                   class="relative block px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-violet-50 hover:text-indigo-600 transition-all duration-300 sm:hidden font-medium dark:text-gray-300 dark:hover:from-indigo-900/30 dark:hover:to-violet-900/30 dark:hover:text-indigo-600"
                 >
-                  <div class="flex items-center gap-3">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                    Browse Words
-                  </div>
                 </Link>
                 <hr class="my-2 border-gray-200/50 dark:border-gray-700/50">
                 <Link 
@@ -117,6 +103,7 @@
           </template>
 
           <template v-else>
+            
             <!-- Guest User Buttons with Enhanced Glassy Effect -->
             <Link 
               href="/login" 

@@ -7,7 +7,7 @@
     <div class="mb-8 relative z-10">
       <div class="flex items-center gap-4 mb-4">
         <div class="relative">
-          <div class="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl blur-md opacity-30 animate-pulse-glow"></div>
+          <div class="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl opacity-30 animate-pulse-glow"></div>
           <div class="relative w-14 h-14 bg-gradient-to-br from-indigo-500 via-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-depth-3 border border-white/20">
             <span class="text-3xl drop-shadow-sm">💬</span>
           </div>
