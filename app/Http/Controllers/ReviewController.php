@@ -25,11 +25,10 @@ class ReviewController extends Controller
     {
         $user = $request->user();
         
-        // Get user's learned words for review
+        // Get user's vocabulary words for review (all words that are not mastered)
         $reviewWords = $user->userWords()
             ->with('word')
-            ->where('is_learned', true)
-            ->where('mastered', false)
+            ->where('mastered', '!=', true) // Include all words that are not mastered
             ->orderBy('last_seen_at', 'asc')
             ->take(20)
             ->get()
@@ -40,15 +39,16 @@ class ReviewController extends Controller
                     'definition' => $userWord->word->definition,
                     'pronunciation' => $userWord->word->pronunciation,
                     'example' => $userWord->word->example,
-                    'level' => $userWord->word->level,
+                    'level' => $userWord->word->cefr_level, // Fixed: was 'level', should be 'cefr_level'
                     'topic' => $userWord->word->topic,
                 ];
             });
 
-        // Simple stats
+        // Simple stats - updated to count all vocabulary words, not just learned ones
         $stats = [
+            'total_words' => $user->userWords()->count(),
             'learned_words' => $user->userWords()->where('is_learned', true)->count(),
-            'review_words' => $user->userWords()->where('is_learned', true)->where('mastered', false)->count(),
+            'review_words' => $user->userWords()->where('mastered', '!=', true)->count(),
             'mastered_words' => $user->userWords()->where('mastered', true)->count(),
         ];
         
@@ -64,18 +64,30 @@ class ReviewController extends Controller
     public function practice(Request $request): Response
     {
         $user = $request->user();
-        $word = $this->reviewService->getRandomReviewWord($user);
         
-        if (!$word) {
-            return Inertia::render('Review/Complete', [
-                'message' => 'Congratulations! You have no words to review right now.',
-                'user' => $user,
+        // Get a random word from user's vocabulary for practice
+        $userWord = $user->userWords()
+            ->with('word')
+            ->where('mastered', '!=', true) // Include all words that are not mastered
+            ->inRandomOrder()
+            ->first();
+        
+        if (!$userWord) {
+            return Inertia::render('Review/Index', [
+                'reviewWords' => collect([]),
+                'stats' => [
+                    'total_words' => 0,
+                    'learned_words' => 0,
+                    'review_words' => 0,
+                    'mastered_words' => 0,
+                ],
+                'message' => 'No words found in your vocabulary. Add some words first!',
             ]);
         }
         
-        return Inertia::render('Review/Practice', [
-            'userWord' => $word,
-            'word' => $word->word,
+        return Inertia::render('Review/Index', [
+            'userWord' => $userWord,
+            'word' => $userWord->word,
             'user' => $user,
         ]);
     }
@@ -83,7 +95,7 @@ class ReviewController extends Controller
     /**
      * Submit answer for review practice.
      */
-    public function submitAnswer(Request $request): JsonResponse
+    public function submitAnswer(Request $request)
     {
         $request->validate([
             'word_id' => 'required|integer|exists:words,id',
@@ -118,33 +130,57 @@ class ReviewController extends Controller
             $userWord->update($updates);
         }
         
-        return response()->json([
-            'success' => true,
-            'message' => 'Rating recorded successfully!',
-        ]);
+        // Return JSON for AJAX requests, redirect for Inertia requests
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Rating recorded successfully!',
+            ]);
+        }
+        
+        // For Inertia requests, redirect back with a success message
+        return redirect()->back()->with('success', 'Rating recorded successfully!');
     }
 
     /**
      * Get next random word for practice.
      */
-    public function nextWord(Request $request): JsonResponse
+    public function nextWord(Request $request)
     {
         $user = $request->user();
-        $userWord = $this->reviewService->getRandomReviewWord($user);
+        
+        // Get a random word from user's vocabulary
+        $userWord = $user->userWords()
+            ->with('word')
+            ->where('mastered', '!=', true) // Include all words that are not mastered
+            ->inRandomOrder()
+            ->first();
         
         if (!$userWord) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'completed' => true,
+                    'message' => 'All review words completed!',
+                ]);
+            }
+            
+            return redirect()->route('review.index')->with('success', 'All review words completed!');
+        }
+        
+        if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'completed' => true,
-                'message' => 'All review words completed!',
+                'completed' => false,
+                'userWord' => $userWord,
+                'word' => $userWord->word,
             ]);
         }
         
-        return response()->json([
-            'success' => true,
-            'completed' => false,
+        return Inertia::render('Review/Index', [
             'userWord' => $userWord,
             'word' => $userWord->word,
+            'user' => $user,
         ]);
     }
 
@@ -158,7 +194,7 @@ class ReviewController extends Controller
         
         $strugglingWords = $this->reviewService->getIntensiveReviewWords($user, $minMistakes);
         
-        return Inertia::render('Review/Intensive', [
+        return Inertia::render('Review/Index', [
             'strugglingWords' => $strugglingWords,
             'minMistakes' => $minMistakes,
             'user' => $user,
@@ -173,7 +209,7 @@ class ReviewController extends Controller
         $user = $request->user();
         $spacedWords = $this->reviewService->getSpacedRepetitionWords($user);
         
-        return Inertia::render('Review/SpacedRepetition', [
+        return Inertia::render('Review/Index', [
             'spacedWords' => $spacedWords,
             'user' => $user,
         ]);
@@ -182,7 +218,7 @@ class ReviewController extends Controller
     /**
      * Mark word as mastered (admin action).
      */
-    public function markMastered(Request $request): JsonResponse
+    public function markMastered(Request $request)
     {
         $request->validate([
             'word_id' => 'required|integer|exists:words,id',
@@ -193,17 +229,21 @@ class ReviewController extends Controller
         
         $userWord = $this->reviewService->markWordAsMastered($user, $wordId);
         
-        return response()->json([
-            'success' => true,
-            'user_word' => $userWord,
-            'message' => 'Word marked as mastered!',
-        ]);
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'user_word' => $userWord,
+                'message' => 'Word marked as mastered!',
+            ]);
+        }
+        
+        return redirect()->back()->with('success', 'Word marked as mastered!');
     }
 
     /**
      * Reset word to review state.
      */
-    public function resetToReview(Request $request): JsonResponse
+    public function resetToReview(Request $request)
     {
         $request->validate([
             'word_id' => 'required|integer|exists:words,id',
@@ -214,10 +254,14 @@ class ReviewController extends Controller
         
         $userWord = $this->reviewService->resetWordToReview($user, $wordId);
         
-        return response()->json([
-            'success' => true,
-            'user_word' => $userWord,
-            'message' => 'Word reset to review status!',
-        ]);
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'user_word' => $userWord,
+                'message' => 'Word reset to review status!',
+            ]);
+        }
+        
+        return redirect()->back()->with('success', 'Word reset to review status!');
     }
 }

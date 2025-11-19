@@ -69,8 +69,27 @@
               <p class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{{ word.definition }}</p>
             </div>
             <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button class="w-8 h-8 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg flex items-center justify-center transition-colors">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <button 
+                @click.stop="addToVocabulary(word)"
+                :disabled="word.adding_to_vocab || word.added_to_vocab"
+                class="w-8 h-8 text-white rounded-lg flex items-center justify-center transition-colors"
+                :class="[
+                  word.added_to_vocab 
+                    ? 'bg-green-500 cursor-not-allowed' 
+                    : word.adding_to_vocab 
+                      ? 'bg-gray-400 cursor-not-allowed' 
+                      : 'bg-indigo-500 hover:bg-indigo-600'
+                ]"
+                :title="word.added_to_vocab ? 'Added to vocabulary' : word.adding_to_vocab ? 'Adding...' : 'Add to vocabulary'"
+              >
+                <svg v-if="word.adding_to_vocab" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <svg v-else-if="word.added_to_vocab" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                 </svg>
               </button>
@@ -168,7 +187,12 @@ async function performSearch() {
 
     if (response.ok) {
       const data = await response.json();
-      searchResults.value = data.words || [];
+      // Add reactive properties to each word for button states
+      searchResults.value = (data.words || []).map(word => ({
+        ...word,
+        adding_to_vocab: false,
+        added_to_vocab: false
+      }));
     } else {
       searchResults.value = [];
     }
@@ -188,6 +212,72 @@ function selectWord(word) {
   
   // You could also navigate to a word detail page
   // router.visit(`/words/${word.id}`);
+}
+
+/**
+ * Add word to user's vocabulary
+ */
+async function addToVocabulary(word) {
+  // Set loading state
+  word.adding_to_vocab = true;
+
+  try {
+    const response = await fetch('/user/words', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        word_id: word.id,
+        difficulty_level: 'learning',
+        source: 'word_search'
+      })
+    });
+
+    if (response.ok) {
+      word.added_to_vocab = true;
+      word.adding_to_vocab = false;
+      
+      // Create a simple toast notification
+      showNotification(`"${word.word}" added to your vocabulary list!`, 'success');
+    } else {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to add word to vocabulary');
+    }
+  } catch (error) {
+    console.error('Error adding word to vocabulary:', error);
+    word.adding_to_vocab = false;
+    showNotification(error.message || 'Failed to add word to vocabulary. Please try again.', 'error');
+  }
+}
+
+/**
+ * Show notification
+ */
+function showNotification(message, type = 'info') {
+  if (type === 'success') {
+    // Create a simple success message
+    const notification = document.createElement('div');
+    notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.remove();
+    }, 3000);
+  } else {
+    // Create an error message
+    const notification = document.createElement('div');
+    notification.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.remove();
+    }, 4000);
+  }
 }
 
 // Quick filter logic removed for homepage simplicity

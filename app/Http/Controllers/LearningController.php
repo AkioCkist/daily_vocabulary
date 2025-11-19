@@ -29,17 +29,27 @@ class LearningController extends Controller
         $user = $request->user();
         $filters = $request->session()->get('word_filters', []);
         
-        // Get initial word for learning
-        $word = $this->learningService->getNextRandomWord($user, $filters);
+        // Get session words for learning (default 10 words)
+        $sessionWords = $this->learningService->getWordsForLearningSession($user, $filters, 10);
+        
+        // If no words found, show a setup message
+        if ($sessionWords->isEmpty()) {
+            // Try to get some random words as fallback
+            $sessionWords = $this->wordService->getNewWordsForUser($user->id, [], 10);
+        }
         
         // Get learning statistics
         $stats = $this->learningService->getLearningStats($user);
         
         return Inertia::render('Learning/Index', [
-            'word' => $word,
+            'sessionWords' => $sessionWords,
             'filters' => $filters,
             'stats' => $stats,
             'user' => $user,
+            'debug' => [
+                'filters' => $filters,
+                'words_count' => $sessionWords->count(),
+            ]
         ]);
     }
 
@@ -63,48 +73,77 @@ class LearningController extends Controller
     /**
      * Mark word as learned.
      */
-    public function markLearned(LearningRequest $request): JsonResponse
+    public function markLearned(LearningRequest $request)
     {
         $user = $request->user();
         $wordId = $request->validated('word_id');
         
         $userWord = $this->learningService->markWordAsLearned($user, $wordId);
         
-        return response()->json([
-            'success' => true,
-            'message' => 'Word marked as learned!',
-            'user_word' => $userWord,
-        ]);
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Word marked as learned!',
+                'user_word' => $userWord,
+            ]);
+        }
+        
+        return redirect()->back()->with('success', 'Word marked as learned!');
     }
 
     /**
      * Add word to review list.
      */
-    public function addToReview(LearningRequest $request): JsonResponse
+    public function addToReview(LearningRequest $request)
     {
         $user = $request->user();
         $wordId = $request->validated('word_id');
         
         $userWord = $this->learningService->addWordToReview($user, $wordId);
         
-        return response()->json([
-            'success' => true,
-            'message' => 'Word added to review list!',
-            'user_word' => $userWord,
-        ]);
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Word added to review list!',
+                'user_word' => $userWord,
+            ]);
+        }
+        
+        return redirect()->back()->with('success', 'Word added to review list!');
     }
 
     /**
      * Start learning session with filtered words.
      */
-    public function startSession(Request $request): \Illuminate\Http\RedirectResponse
+    public function startSession(Request $request)
     {
         $filters = $request->only(['topic', 'cefr_level', 'meaning_search', 'word_search']);
+        $user = $request->user();
         
         // Store filters in session
         $request->session()->put('word_filters', $filters);
         
-        return redirect()->route('learning.index');
+        // Get session words for learning (default 10 words)
+        $sessionWords = $this->learningService->getWordsForLearningSession($user, $filters, 10);
+        
+        // Get learning statistics
+        $stats = $this->learningService->getLearningStats($user);
+        
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'sessionWords' => $sessionWords,
+                'stats' => $stats,
+                'message' => 'Learning session started!'
+            ]);
+        }
+        
+        return Inertia::render('Learning/Index', [
+            'sessionWords' => $sessionWords,
+            'filters' => $filters,
+            'stats' => $stats,
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -127,7 +166,7 @@ class LearningController extends Controller
     /**
      * Update learning progress.
      */
-    public function updateProgress(Request $request): JsonResponse
+    public function updateProgress(Request $request)
     {
         $request->validate([
             'word_id' => 'required|integer|exists:words,id',
@@ -140,10 +179,16 @@ class LearningController extends Controller
         
         $userWord = $this->learningService->updateProgress($user, $wordId, $isCorrect);
         
-        return response()->json([
-            'success' => true,
-            'user_word' => $userWord,
-            'message' => $isCorrect ? 'Correct!' : 'Keep practicing!',
-        ]);
+        $message = $isCorrect ? 'Correct!' : 'Keep practicing!';
+        
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'user_word' => $userWord,
+                'message' => $message,
+            ]);
+        }
+        
+        return redirect()->back()->with('success', $message);
     }
 }

@@ -13,7 +13,9 @@
               </div>
               <div class="text-right">
                 <div class="text-sm text-gray-500 dark:text-gray-400">Session Progress</div>
-                <div class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{{ currentWordIndex + 1 }}/{{ sessionWords.length }}</div>
+                <div class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+                  {{ Math.min(currentWordIndex + 1, sessionWordsData.length) }}/{{ sessionWordsData.length }}
+                </div>
               </div>
             </div>
           </div>
@@ -78,19 +80,36 @@
           </div>
         </div>
 
-        <!-- Session Complete -->
+        <!-- Session Complete or No Words -->
         <div v-else class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
           <div class="p-8 text-center">
-            <div class="text-6xl mb-4">🎉</div>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Session Complete!</h2>
-            <p class="text-gray-600 dark:text-gray-400 mb-6">Great job! You've completed this learning session.</p>
+            <div v-if="sessionWordsData.length === 0" class="text-6xl mb-4">📚</div>
+            <div v-else class="text-6xl mb-4">🎉</div>
+            
+            <h2 v-if="sessionWordsData.length === 0" class="text-2xl font-bold text-gray-900 dark:text-white mb-4">No Words Available</h2>
+            <h2 v-else class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Session Complete!</h2>
+            
+            <p v-if="sessionWordsData.length === 0" class="text-gray-600 dark:text-gray-400 mb-6">
+              No words found for your learning session. Try adjusting your filters or add some words to your vocabulary first.
+            </p>
+            <p v-else class="text-gray-600 dark:text-gray-400 mb-6">Great job! You've completed this learning session.</p>
+            
+            <!-- Debug info (remove in production) -->
+            <div v-if="debug && debug.words_count !== undefined" class="mb-4 p-3 bg-gray-100 dark:bg-gray-700 rounded text-sm">
+              <p>Debug: {{ debug.words_count }} words found</p>
+              <p>Filters: {{ JSON.stringify(debug.filters) }}</p>
+            </div>
             
             <div class="flex justify-center gap-4">
               <Link href="/learn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-colors">
-                Start New Session
+                <span v-if="sessionWordsData.length === 0">Try Again</span>
+                <span v-else>Start New Session</span>
               </Link>
               <Link href="/test" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors">
                 Take a Test
+              </Link>
+              <Link href="/words" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                Browse Words
               </Link>
             </div>
           </div>
@@ -126,6 +145,10 @@ const props = defineProps({
   filters: {
     type: Object,
     default: () => ({})
+  },
+  debug: {
+    type: Object,
+    default: () => ({})
   }
 });
 
@@ -141,6 +164,13 @@ const currentWord = computed(() => {
 
 const progressPercentage = computed(() => {
   if (sessionWordsData.value.length === 0) return 0;
+  
+  // When session is complete, show 100%
+  if (currentWordIndex.value >= sessionWordsData.value.length) {
+    return 100;
+  }
+  
+  // Normal progress calculation
   return ((currentWordIndex.value + 1) / sessionWordsData.value.length) * 100;
 });
 
@@ -195,16 +225,8 @@ function nextWord() {
 // Generate session words if none provided
 onMounted(() => {
   if (sessionWordsData.value.length === 0) {
-    // Start a new learning session
-    const form = useForm(props.filters);
-    
-    form.post('/learn/start', {
-      onSuccess: (response) => {
-        if (response.props.sessionWords) {
-          sessionWordsData.value = response.props.sessionWords;
-        }
-      }
-    });
+    // Reload the page to get session words from the updated controller
+    window.location.reload();
   }
 });
 </script>
