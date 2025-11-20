@@ -51,9 +51,9 @@
 
         <!-- Card with smooth transitions -->
         <Transition name="fade-slide" mode="out-in">
-          <div :key="currentIndex" class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden min-h-[450px] flex flex-col transition-shadow duration-300 hover:shadow-3xl">
+          <div :key="currentIndex" class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden min-h-[450px] flex flex-col transition-shadow duration-300 hover:shadow-3xl relative">
             <!-- Card Header -->
-            <div class="bg-gradient-to-r from-indigo-500 via-purple-500 to-purple-600 text-white p-6 relative overflow-hidden">
+            <div class="bg-gradient-to-r from-indigo-500 via-purple-500 to-purple-600 text-white p-6 relative">
               <div class="absolute inset-0 bg-white/10 animate-pulse-slow"></div>
               <div class="relative flex items-center justify-between">
                 <div class="flex items-center gap-3">
@@ -62,13 +62,75 @@
                   </span>
                   <span class="text-sm opacity-90">{{ currentWord.topic }}</span>
                 </div>
-                <div v-if="currentMode === 'standard'" class="flex items-center gap-2 text-sm opacity-90">
-                  <Transition name="fade" mode="out-in">
-                    <span :key="showAnswer" class="flex items-center gap-1">
-                      <span v-if="!showAnswer">💡 Click to Reveal</span>
-                      <span v-else>👁️ Showing Definition</span>
-                    </span>
-                  </Transition>
+                <div class="flex items-center gap-3">
+                  <!-- Add to Topic Button -->
+                  <div class="relative z-50">
+                    <button
+                      @click.stop="showTopicDropdown = !showTopicDropdown"
+                      class="flex items-center gap-2 px-3 py-1.5 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg text-sm font-medium transition-all duration-200"
+                      title="Add to personal topic"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                      </svg>
+                      <span class="hidden sm:inline">Save</span>
+                    </button>
+                    
+                    <!-- Topic Dropdown -->
+                    <Transition name="dropdown">
+                      <div 
+                        v-if="showTopicDropdown" 
+                        class="absolute right-0 top-full mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700 z-[100] max-h-80 overflow-y-auto"
+                      >
+                        <div class="p-3 border-b border-gray-200 dark:border-gray-700">
+                          <div class="text-sm font-semibold text-gray-900 dark:text-white">Add to Topic</div>
+                          <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Save word to your collections</div>
+                        </div>
+                        
+                        <div v-if="userTopics && userTopics.length > 0" class="p-2">
+                          <button
+                            v-for="topic in userTopics"
+                            :key="topic.id"
+                            @click.stop="addToTopic(topic.id)"
+                            :disabled="addingToTopic === topic.id"
+                            class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            <div class="flex items-center justify-between">
+                              <div class="flex-1 min-w-0">
+                                <div class="font-medium text-gray-900 dark:text-white truncate">{{ topic.name }}</div>
+                                <div v-if="topic.description" class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ topic.description }}</div>
+                              </div>
+                              <svg v-if="addingToTopic === topic.id" class="w-4 h-4 text-indigo-600 dark:text-indigo-400 animate-spin ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                              </svg>
+                            </div>
+                          </button>
+                        </div>
+                        
+                        <div v-else class="p-6 text-center">
+                          <svg class="w-12 h-12 mx-auto text-gray-400 dark:text-gray-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                          </svg>
+                          <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">No custom topics yet</p>
+                          <Link
+                            :href="route('home')"
+                            class="text-xs text-indigo-600 dark:text-indigo-400 hover:underline"
+                          >
+                            Create topics in dashboard
+                          </Link>
+                        </div>
+                      </div>
+                    </Transition>
+                  </div>
+                  
+                  <div v-if="currentMode === 'standard'" class="flex items-center gap-2 text-sm opacity-90">
+                    <Transition name="fade" mode="out-in">
+                      <span :key="showAnswer" class="flex items-center gap-1">
+                        <span v-if="!showAnswer">💡 Click to Reveal</span>
+                        <span v-else>👁️ Showing Definition</span>
+                      </span>
+                    </Transition>
+                  </div>
                 </div>
               </div>
             </div>
@@ -373,7 +435,8 @@ const route = (name, params) => {
   const routes = {
     'home': '/',
     'flashcards.answer': '/flashcards/answer',
-    'flashcards.complete': '/flashcards/complete'
+    'flashcards.complete': '/flashcards/complete',
+    'flashcards.words.add-to-topic': '/flashcards/words/add-to-topic'
   };
   
   return routes[name] || '#';
@@ -387,6 +450,10 @@ const props = defineProps({
   settings: {
     type: Object,
     required: true
+  },
+  userTopics: {
+    type: Array,
+    default: () => []
   }
 });
 
@@ -396,6 +463,10 @@ const showAnswer = ref(false);
 const answered = ref(false);
 const sessionCompleted = ref(false);
 const startTime = ref(null);
+
+// Topic management
+const showTopicDropdown = ref(false);
+const addingToTopic = ref(null);
 
 // Fill-in-the-blank specific
 const userAnswer = ref('');
@@ -667,7 +738,54 @@ onMounted(() => {
       }
     });
   }
+  
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.relative')) {
+      showTopicDropdown.value = false;
+    }
+  });
 })
+
+// Topic management methods
+const addToTopic = async (topicId) => {
+  if (!currentWord.value || addingToTopic.value) return;
+  
+  addingToTopic.value = topicId;
+  
+  try {
+    const response = await fetch('/flashcards/words/add-to-topic', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        word_id: currentWord.value.id,
+        topic_id: topicId,
+      }),
+    });
+
+    const result = await response.json();
+    
+    if (response.ok && result.success) {
+      // Show success feedback
+      showTopicDropdown.value = false;
+      // You could add a toast notification here
+      console.log('Word added to topic successfully');
+    } else {
+      // Handle error (e.g., already in topic)
+      console.error('Failed to add word to topic:', result.message);
+      alert(result.message || 'Failed to add word to topic');
+    }
+  } catch (error) {
+    console.error('Error adding word to topic:', error);
+    alert('Network error. Please try again.');
+  } finally {
+    addingToTopic.value = null;
+  }
+};
 </script>
 
 <style scoped>
@@ -677,6 +795,14 @@ onMounted(() => {
 }
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
+}
+
+.dropdown-enter-active, .dropdown-leave-active {
+  transition: all 0.2s ease;
+}
+.dropdown-enter-from, .dropdown-leave-to {
+  opacity: 0;
+  transform: translateY(-10px) scale(0.95);
 }
 
 .fade-scale-enter-active, .fade-scale-leave-active {

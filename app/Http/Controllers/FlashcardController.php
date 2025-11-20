@@ -6,6 +6,7 @@ use App\Services\DashboardService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -80,9 +81,16 @@ class FlashcardController extends Controller
             ]
         ]);
 
+        // Get user's custom topics for adding words
+        $userTopics = \App\Models\Topic::where('user_id', $user->id)
+            ->select(['id', 'name', 'description'])
+            ->orderBy('name')
+            ->get();
+
         return Inertia::render('Flashcards/Practice', [
             'words' => $words,
             'settings' => $request->all(),
+            'userTopics' => $userTopics,
         ]);
     }
 
@@ -316,6 +324,141 @@ class FlashcardController extends Controller
         return redirect()->route('home')->with([
             'message' => 'Session completed successfully',
             'flashcard_stats' => $stats
+        ]);
+    }
+
+    /**
+     * Add a word to user's personal topic collection.
+     */
+    public function addToTopic(Request $request): JsonResponse
+    {
+        $request->validate([
+            'word_id' => 'required|integer|exists:words,id',
+            'topic_id' => 'required|integer|exists:topics,id',
+        ]);
+
+        $user = Auth::user();
+        $wordId = $request->get('word_id');
+        $topicId = $request->get('topic_id');
+
+        // Verify the topic belongs to the user
+        $topic = \App\Models\Topic::where('id', $topicId)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$topic) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Topic not found or does not belong to you.'
+            ], 403);
+        }
+
+        // Check if already added
+        $exists = DB::table('user_word_topics')
+            ->where('user_id', $user->id)
+            ->where('word_id', $wordId)
+            ->where('topic_id', $topicId)
+            ->exists();
+
+        if ($exists) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Word is already in this topic.'
+            ], 409);
+        }
+
+        // Add to topic
+        DB::table('user_word_topics')->insert([
+            'user_id' => $user->id,
+            'word_id' => $wordId,
+            'topic_id' => $topicId,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Word added to topic successfully.'
+        ]);
+    }
+
+    /**
+     * Remove a word from user's personal topic collection.
+     */
+    public function removeFromTopic(Request $request): JsonResponse
+    {
+        $request->validate([
+            'word_id' => 'required|integer|exists:words,id',
+            'topic_id' => 'required|integer|exists:topics,id',
+        ]);
+
+        $user = Auth::user();
+        $wordId = $request->get('word_id');
+        $topicId = $request->get('topic_id');
+
+        // Verify the topic belongs to the user
+        $topic = \App\Models\Topic::where('id', $topicId)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$topic) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Topic not found or does not belong to you.'
+            ], 403);
+        }
+
+        // Remove from topic
+        $deleted = DB::table('user_word_topics')
+            ->where('user_id', $user->id)
+            ->where('word_id', $wordId)
+            ->where('topic_id', $topicId)
+            ->delete();
+
+        if (!$deleted) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Word not found in this topic.'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Word removed from topic successfully.'
+        ]);
+    }
+
+    /**
+     * Get user's topics for a specific word (to show which topics it's in).
+     */
+    public function getWordTopics(Request $request, int $wordId): JsonResponse
+    {
+        $request->validate([]);
+
+        $user = Auth::user();
+
+        // Get all user topics with a flag indicating if word is in them
+        $userTopics = \App\Models\Topic::where('user_id', $user->id)
+            ->select(['id', 'name', 'description'])
+            ->get()
+            ->map(function ($topic) use ($user, $wordId) {
+                $isAdded = DB::table('user_word_topics')
+                    ->where('user_id', $user->id)
+                    ->where('word_id', $wordId)
+                    ->where('topic_id', $topic->id)
+                    ->exists();
+
+                return [
+                    'id' => $topic->id,
+                    'name' => $topic->name,
+                    'description' => $topic->description,
+                    'is_added' => $isAdded,
+                ];
+            });
+
+        return response()->json([
+            'success' => true,
+            'topics' => $userTopics
         ]);
     }
 

@@ -110,6 +110,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/answer', [\App\Http\Controllers\FlashcardController::class, 'answer'])->name('answer');
         Route::post('/hint', [\App\Http\Controllers\FlashcardController::class, 'getHint'])->name('hint');
         Route::post('/complete', [\App\Http\Controllers\FlashcardController::class, 'complete'])->name('complete');
+        
+        // Word-to-topic management
+        Route::post('/words/add-to-topic', [\App\Http\Controllers\FlashcardController::class, 'addToTopic'])->name('words.add-to-topic');
+        Route::post('/words/remove-from-topic', [\App\Http\Controllers\FlashcardController::class, 'removeFromTopic'])->name('words.remove-from-topic');
+        Route::get('/words/{wordId}/topics', [\App\Http\Controllers\FlashcardController::class, 'getWordTopics'])->name('words.topics');
     });
 
     // Profile (Breeze)

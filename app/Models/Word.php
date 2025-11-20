@@ -73,6 +73,18 @@ class Word extends Model
     }
 
     /**
+     * Get the user topics this word belongs to (many-to-many).
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function userTopics()
+    {
+        return $this->belongsToMany(Topic::class, 'user_word_topics')
+                    ->withPivot('user_id')
+                    ->withTimestamps();
+    }
+
+    /**
      * Get the test attempts for this word.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
