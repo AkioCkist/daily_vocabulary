@@ -28,7 +28,7 @@ class TopicController extends Controller
     /**
      * Create a new custom topic.
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -39,22 +39,16 @@ class TopicController extends Controller
             $user = Auth::user();
             $topic = $this->topicService->createUserTopic($user, $request->only(['name', 'description']));
 
-            return response()->json([
-                'message' => 'Topic created successfully',
-                'topic' => $topic
-            ], 201);
+            return back()->with('success', 'Topic created successfully');
         } catch (ValidationException $e) {
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors' => $e->errors()
-            ], 422);
+            return back()->withErrors($e->errors());
         }
     }
 
     /**
      * Update a custom topic.
      */
-    public function update(Request $request, int $id): JsonResponse
+    public function update(Request $request, int $id)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -65,35 +59,24 @@ class TopicController extends Controller
             $user = Auth::user();
             $topic = $this->topicService->updateUserTopic($user, $id, $request->only(['name', 'description']));
 
-            return response()->json([
-                'message' => 'Topic updated successfully',
-                'topic' => $topic
-            ]);
+            return back()->with('success', 'Topic updated successfully');
         } catch (ValidationException $e) {
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors' => $e->errors()
-            ], 422);
+            return back()->withErrors($e->errors());
         }
     }
 
     /**
      * Delete a custom topic.
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(int $id)
     {
         try {
             $user = Auth::user();
             $this->topicService->deleteUserTopic($user, $id);
 
-            return response()->json([
-                'message' => 'Topic deleted successfully'
-            ]);
+            return back()->with('success', 'Topic deleted successfully');
         } catch (ValidationException $e) {
-            return response()->json([
-                'message' => 'Cannot delete topic',
-                'errors' => $e->errors()
-            ], 422);
+            return back()->withErrors($e->errors());
         }
     }
 
