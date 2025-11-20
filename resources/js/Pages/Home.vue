@@ -219,7 +219,10 @@
                   {{ dashboard.stats.words_due_for_review }}
                 </div>
                 <div class="text-sm text-gray-600 dark:text-gray-400 mb-4">Words need review</div>
-                <button class="w-full bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold py-3 px-6 rounded-xl shadow-depth-2 hover-lift transition-all duration-300">
+                <button 
+                  @click="startReview"
+                  class="w-full bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold py-3 px-6 rounded-xl shadow-depth-2 hover-lift transition-all duration-300"
+                >
                   Start Review
                 </button>
               </div>
@@ -307,6 +310,7 @@ function startQuickFlashcards() {
   console.log('Starting quick flashcards...');
   router.post('/flashcards/start', {
     mode: 'quick',
+    flashcard_type: 'standard',
     word_count: 10
   }, {
     onStart: () => console.log('Request started'),
@@ -320,7 +324,13 @@ function startQuickFlashcards() {
  * Start flashcards with custom settings
  */
 function startFlashcards(settings) {
-  router.post('/flashcards/start', settings);
+  console.log('🚀 Starting flashcards with settings:', settings);
+  router.post('/flashcards/start', settings, {
+    onStart: () => console.log('📤 Flashcard request started'),
+    onSuccess: (page) => console.log('✅ Flashcard request success:', page),
+    onError: (errors) => console.error('❌ Flashcard request errors:', errors),
+    onFinish: () => console.log('🏁 Flashcard request finished')
+  });
 }
 
 /**
@@ -329,8 +339,29 @@ function startFlashcards(settings) {
 function selectTopic(topic) {
   router.post('/flashcards/start', {
     mode: 'topic',
+    flashcard_type: 'standard',
     topic_ids: [topic.id],
     word_count: 10
+  });
+}
+
+/**
+ * Start review session for words due for review
+ */
+function startReview() {
+  console.log('Starting review session...');
+  console.log('Dashboard stats:', props.dashboard.stats);
+  console.log('Words due for review:', props.dashboard.stats.words_due_for_review);
+  
+  router.post('/flashcards/start', {
+    mode: 'review',
+    flashcard_type: 'standard',
+    word_count: props.dashboard.stats.words_due_for_review
+  }, {
+    onStart: () => console.log('Review session started'),
+    onSuccess: (page) => console.log('Review session success:', page),
+    onError: (errors) => console.error('Review session errors:', errors),
+    onFinish: () => console.log('Review session request finished')
   });
 }
 

@@ -108,6 +108,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/start', [\App\Http\Controllers\FlashcardController::class, 'start'])->name('start');
         Route::post('/next', [\App\Http\Controllers\FlashcardController::class, 'next'])->name('next');
         Route::post('/answer', [\App\Http\Controllers\FlashcardController::class, 'answer'])->name('answer');
+        Route::post('/hint', [\App\Http\Controllers\FlashcardController::class, 'getHint'])->name('hint');
         Route::post('/complete', [\App\Http\Controllers\FlashcardController::class, 'complete'])->name('complete');
     });
 

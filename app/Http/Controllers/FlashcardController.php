@@ -22,14 +22,40 @@ class FlashcardController extends Controller
      */
     public function start(Request $request): Response|RedirectResponse
     {
-        $request->validate([
-            'mode' => 'required|in:basic,advanced,topic,quick',
-            'word_count' => 'required|integer|min:5|max:50',
+        // Debug the incoming request
+        Log::info('Flashcard start request received:', [
+            'all_data' => $request->all(),
+            'mode' => $request->get('mode'),
+            'flashcard_type' => $request->get('flashcard_type'),
+            'word_count' => $request->get('word_count'),
+        ]);
+
+        $validation = [
+            'mode' => 'required|in:basic,advanced,topic,quick,review',
+            'flashcard_type' => 'required|in:standard,fill_blank,mixed',
             'cefr_levels' => 'nullable|array',
             'cefr_levels.*' => 'string|in:A1,A2,B1,B2,C1,C2',
             'topic_ids' => 'nullable|array',
             'topic_ids.*' => 'integer|exists:topics,id',
-        ]);
+        ];
+
+        // For review mode, allow smaller word counts (minimum 1)
+        if ($request->get('mode') === 'review') {
+            $validation['word_count'] = 'required|integer|min:1|max:50';
+        } else {
+            $validation['word_count'] = 'required|integer|min:5|max:50';
+        }
+
+        try {
+            $request->validate($validation);
+            Log::info('Flashcard validation passed');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Flashcard validation failed:', [
+                'errors' => $e->errors(),
+                'request_data' => $request->all()
+            ]);
+            throw $e;
+        }
 
         $user = Auth::user();
         
@@ -99,31 +125,163 @@ class FlashcardController extends Controller
     {
         $request->validate([
             'word_id' => 'required|integer|exists:words,id',
-            'is_correct' => 'required|boolean',
+            'is_correct' => 'nullable|boolean',
+            'user_answer' => 'nullable|string',
+            'forgotten' => 'nullable|boolean',
+            'hints_used' => 'nullable|integer|min:0',
             'response_time' => 'nullable|integer|min:0',
+            'flashcard_type' => 'required|in:standard,fill_blank',
         ]);
 
         $user = Auth::user();
+        $session = session('flashcard_session');
         
+        if (!$session) {
+            return response()->json(['error' => 'No active session'], 404);
+        }
+
+        $wordId = $request->get('word_id');
+        $isCorrect = $request->get('is_correct');
+        $userAnswer = $request->get('user_answer');
+        $forgotten = $request->get('forgotten', false);
+        $hintsUsed = $request->get('hints_used', 0);
+        $flashcardType = $request->get('flashcard_type');
+
+        // Handle "I don't remember" action
+        if ($forgotten) {
+            $isCorrect = false;
+            $userAnswer = '[FORGOTTEN]';
+            
+            // Update forgotten count in user_words
+            $userWord = \App\Models\UserWord::firstOrCreate(
+                ['user_id' => $user->id, 'word_id' => $wordId],
+                ['mastered' => false, 'mistake_count' => 0]
+            );
+            
+            $userWord->increment('forgotten_count');
+            $userWord->increment('mistake_count');
+            
+            if ($hintsUsed > 0) {
+                $userWord->increment('hint_reveals_used', $hintsUsed);
+            }
+        }
+
+        // For fill-in-the-blank, evaluate the answer
+        if ($flashcardType === 'fill_blank' && !$forgotten) {
+            $word = \App\Models\Word::find($wordId);
+            $correctAnswer = strtolower(trim($word->word));
+            $submittedAnswer = strtolower(trim($userAnswer ?? ''));
+            
+            $isCorrect = $correctAnswer === $submittedAnswer;
+            
+            // Update fill_blank_attempts count
+            $userWord = \App\Models\UserWord::firstOrCreate(
+                ['user_id' => $user->id, 'word_id' => $wordId],
+                ['mastered' => false, 'mistake_count' => 0]
+            );
+            
+            $userWord->increment('fill_blank_attempts');
+            
+            if ($hintsUsed > 0) {
+                $userWord->increment('hint_reveals_used', $hintsUsed);
+            }
+        }
+
         // Update user progress
         $userProgressService = app(\App\Services\UserProgressService::class);
-        $userProgressService->updateWordProgress(
-            $user,
-            $request->get('word_id'),
-            $request->get('is_correct')
-        );
+        $userProgressService->updateWordProgress($user, $wordId, $isCorrect);
 
-        // Record test attempt
+        // Record detailed flashcard attempt
+        \App\Models\FlashcardAttempt::create([
+            'user_id' => $user->id,
+            'word_id' => $wordId,
+            'mode' => $flashcardType,
+            'is_correct' => $isCorrect,
+            'user_answer' => $userAnswer,
+            'hints_used' => $hintsUsed,
+            'was_forgotten' => $forgotten,
+            'response_time_ms' => $request->get('response_time'),
+            'hint_progression' => $request->get('hint_progression', []),
+        ]);
+
+        // Also record in test_attempts for compatibility
         \App\Models\TestAttempt::create([
             'user_id' => $user->id,
-            'word_id' => $request->get('word_id'),
-            'is_correct' => $request->get('is_correct'),
-            'answer_text' => $request->get('is_correct') ? 'Flashcard - Correct' : 'Flashcard - Incorrect',
+            'word_id' => $wordId,
+            'is_correct' => $isCorrect,
+            'answer_text' => $userAnswer ?? ($isCorrect ? 'Flashcard - Correct' : 'Flashcard - Incorrect'),
             'time_taken' => $request->get('response_time'),
         ]);
 
-        // Return JSON response for AJAX requests
-        return response()->json(['success' => true], 200);
+        // Calculate difficulty adjustment
+        $this->updateDifficultyScore($user->id, $wordId, $isCorrect, $hintsUsed, $forgotten);
+
+        return response()->json([
+            'success' => true,
+            'is_correct' => $isCorrect,
+            'hints_used' => $hintsUsed,
+        ]);
+    }
+
+    /**
+     * Get a hint for the current word in fill-in-the-blank mode.
+     */
+    public function getHint(Request $request): JsonResponse
+    {
+        $request->validate([
+            'word_id' => 'required|integer|exists:words,id',
+            'current_hint_level' => 'required|integer|min:0',
+        ]);
+
+        $word = \App\Models\Word::find($request->get('word_id'));
+        $hintLevel = $request->get('current_hint_level');
+        $targetWord = $word->word;
+        
+        // Calculate how many characters to reveal (progressive hints)
+        $wordLength = strlen($targetWord);
+        $charactersToReveal = min($hintLevel + 1, $wordLength);
+        
+        // Create hint by revealing characters and hiding the rest
+        $hint = substr($targetWord, 0, $charactersToReveal) . str_repeat('_', $wordLength - $charactersToReveal);
+        
+        // Check if this is the complete word (no more hints available)
+        $maxHintsReached = $charactersToReveal >= $wordLength;
+        
+        return response()->json([
+            'hint' => $hint,
+            'hint_level' => $hintLevel + 1,
+            'max_hints_reached' => $maxHintsReached,
+            'characters_revealed' => $charactersToReveal,
+            'total_characters' => $wordLength,
+        ]);
+    }
+
+    /**
+     * Update difficulty score based on performance.
+     */
+    private function updateDifficultyScore(int $userId, int $wordId, bool $isCorrect, int $hintsUsed, bool $forgotten): void
+    {
+        $userWord = \App\Models\UserWord::firstOrCreate(
+            ['user_id' => $userId, 'word_id' => $wordId],
+            ['mastered' => false, 'mistake_count' => 0, 'difficulty_score' => 0.5]
+        );
+
+        $currentScore = $userWord->difficulty_score ?? 0.5;
+        
+        // Calculate new difficulty score (0.0 = very easy, 1.0 = very hard)
+        if ($forgotten) {
+            $newScore = min(1.0, $currentScore + 0.3); // Forgotten = significant difficulty increase
+        } elseif (!$isCorrect) {
+            $newScore = min(1.0, $currentScore + 0.2); // Incorrect = moderate difficulty increase
+        } elseif ($hintsUsed > 0) {
+            // Correct with hints = slight difficulty increase based on hints used
+            $hintPenalty = $hintsUsed * 0.05;
+            $newScore = min(1.0, $currentScore + $hintPenalty);
+        } else {
+            $newScore = max(0.0, $currentScore - 0.1); // Correct without hints = difficulty decrease
+        }
+
+        $userWord->update(['difficulty_score' => round($newScore, 2)]);
     }
 
     /**
@@ -166,6 +324,21 @@ class FlashcardController extends Controller
      */
     private function generateFlashcards(array $settings): array
     {
+        $user = Auth::user();
+        
+        // For review mode, get words that need review (same logic as DashboardService)
+        if ($settings['mode'] === 'review') {
+            $words = \App\Models\Word::select(['words.id', 'words.word', 'words.pronunciation', 'words.definition', 'words.example', 'words.cefr_level', 'words.topic'])
+                ->join('user_words', 'words.id', '=', 'user_words.word_id')
+                ->where('user_words.user_id', $user->id)
+                ->where('user_words.mistake_count', '>', 0)
+                ->where('user_words.mastered', false)
+                ->inRandomOrder()
+                ->limit($settings['word_count'])
+                ->get();
+            return $words->toArray();
+        }
+
         $query = \App\Models\Word::query();
 
         // For quick mode, just get random words

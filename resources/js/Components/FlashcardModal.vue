@@ -62,6 +62,72 @@
           </div>
         </div>
 
+        <!-- Flashcard Type Selection -->
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Flashcard Type</label>
+          <div class="grid grid-cols-2 gap-3 mb-3">
+            <button
+              @click="settings.flashcard_type = 'standard'"
+              :class="[
+                'p-4 rounded-xl border-2 text-left transition-all duration-200',
+                settings.flashcard_type === 'standard'
+                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                  : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
+              ]"
+            >
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                  <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2M7 4h10M7 4L5 6v12a2 2 0 002 2h10a2 2 0 002-2V6l-2-2"></path>
+                  </svg>
+                </div>
+                <span class="font-medium text-gray-900 dark:text-white">Standard Flashcards</span>
+              </div>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Word → Definition with "I don't remember" option</p>
+            </button>
+
+            <button
+              @click="settings.flashcard_type = 'fill_blank'"
+              :class="[
+                'p-4 rounded-xl border-2 text-left transition-all duration-200',
+                settings.flashcard_type === 'fill_blank'
+                  ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
+                  : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
+              ]"
+            >
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
+                  <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                  </svg>
+                </div>
+                <span class="font-medium text-gray-900 dark:text-white">Fill-in-the-Blank</span>
+              </div>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Definition → Type the word with progressive hints</p>
+            </button>
+          </div>
+          
+          <button
+            @click="settings.flashcard_type = 'mixed'"
+            :class="[
+              'w-full p-4 rounded-xl border-2 text-left transition-all duration-200',
+              settings.flashcard_type === 'mixed'
+                ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
+                : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
+            ]"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                </svg>
+              </div>
+              <span class="font-medium text-gray-900 dark:text-white">Mixed Mode</span>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Randomly alternate between both modes for variety</p>
+          </button>
+        </div>
+
         <!-- Advanced Options -->
         <div v-if="settings.mode === 'advanced'" class="space-y-6">
           <!-- CEFR Level Selection -->
@@ -164,6 +230,7 @@
           <h3 class="font-medium text-gray-900 dark:text-white mb-2">Training Summary</h3>
           <div class="space-y-1 text-sm text-gray-600 dark:text-gray-400">
             <div>Mode: {{ settings.mode === 'basic' ? 'Quick Start' : 'Custom Settings' }}</div>
+            <div>Type: {{ settings.flashcard_type === 'standard' ? 'Standard Flashcards' : settings.flashcard_type === 'fill_blank' ? 'Fill-in-the-Blank' : 'Mixed Mode' }}</div>
             <div>Words: {{ settings.word_count }}</div>
             <div v-if="settings.mode === 'advanced'">
               CEFR Levels: {{ settings.cefr_levels.length > 0 ? settings.cefr_levels.join(', ') : 'All' }}
@@ -215,6 +282,7 @@ const emit = defineEmits(['close', 'start']);
 // Training settings
 const settings = reactive({
   mode: 'basic',
+  flashcard_type: 'standard',
   word_count: 10,
   cefr_levels: [],
   topic_ids: []
@@ -249,6 +317,7 @@ function startTraining() {
 
   const trainingSettings = {
     mode: settings.mode,
+    flashcard_type: settings.flashcard_type,
     word_count: settings.word_count
   };
 
