@@ -61,6 +61,29 @@ class Topic extends Model
     }
 
     /**
+     * Get words that users have added to this personal topic collection.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function collectedWords()
+    {
+        return $this->belongsToMany(Word::class, 'user_word_topics')
+                    ->withPivot('user_id')
+                    ->withTimestamps();
+    }
+
+    /**
+     * Get collected words for a specific user.
+     *
+     * @param int $userId
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function collectedWordsForUser(int $userId)
+    {
+        return $this->collectedWords()->wherePivot('user_id', $userId);
+    }
+
+    /**
      * Scope to get only system topics.
      */
     public function scopeSystem(Builder $query): Builder
