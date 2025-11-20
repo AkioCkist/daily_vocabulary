@@ -140,6 +140,71 @@ class LearningService
     }
 
     /**
+     * Generate a custom learning session with specific configuration.
+     *
+     * @param User $user
+     * @param array<string, mixed> $config
+     * @return Collection<int, Word>
+     */
+    public function generateCustomSession(User $user, array $config): Collection
+    {
+        $wordCount = $config['word_count'] ?? 10;
+        $sessionType = $config['session_type'] ?? 'mixed';
+        $newWordsRatio = $config['new_words_ratio'] ?? 0.7;
+        $reviewWordsRatio = $config['review_words_ratio'] ?? 0.3;
+        
+        // Build filters for word selection
+        $filters = [];
+        if (!empty($config['cefr_level'])) {
+            $filters['cefr_level'] = $config['cefr_level'];
+        }
+        if (!empty($config['topic'])) {
+            $filters['topic'] = $config['topic'];
+        }
+        
+        $sessionWords = collect();
+        
+        switch ($sessionType) {
+            case 'new':
+                // Only new words
+                $sessionWords = $this->wordRepository->getNewWordsForUser($user->id, $filters, $wordCount);
+                break;
+                
+            case 'review':
+                // Only review words
+                $sessionWords = $this->wordRepository->getReviewWordsForUser($user->id, $wordCount);
+                break;
+                
+            case 'mixed':
+            default:
+                // Mix of new and review words based on ratios
+                $reviewCount = (int) round($wordCount * $reviewWordsRatio);
+                $newCount = $wordCount - $reviewCount;
+                
+                $reviewWords = $this->wordRepository->getReviewWordsForUser($user->id, $reviewCount);
+                $newWords = $this->wordRepository->getNewWordsForUser($user->id, $filters, $newCount);
+                
+                // If we don't have enough review words, get more new words
+                $actualReviewCount = $reviewWords->count();
+                if ($actualReviewCount < $reviewCount) {
+                    $additionalNewCount = $reviewCount - $actualReviewCount;
+                    $additionalNewWords = $this->wordRepository->getNewWordsForUser(
+                        $user->id, 
+                        $filters, 
+                        $newCount + $additionalNewCount
+                    );
+                    $sessionWords = $reviewWords->merge($additionalNewWords);
+                } else {
+                    $sessionWords = $reviewWords->merge($newWords);
+                }
+                break;
+        }
+        
+        // Shuffle the words for randomization
+        return $sessionWords->shuffle();
+    }
+
+    /**
      * Update user's progress after learning session.
      *
      * @param User $user

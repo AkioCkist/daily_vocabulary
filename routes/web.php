@@ -53,6 +53,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Learning routes
     Route::prefix('learn')->name('learning.')->group(function () {
         Route::get('/', [LearningController::class, 'index'])->name('index');
+        Route::post('/generate', [LearningController::class, 'generateSession'])->name('generate');
+        Route::post('/generate-quick', [LearningController::class, 'generateQuick'])->name('generate-quick');
         Route::post('/start', [LearningController::class, 'startSession'])->name('start');
         Route::post('/next', [LearningController::class, 'next'])->name('next');
         Route::post('/mark-learned', [LearningController::class, 'markLearned'])->name('mark-learned');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LearningRequest;
+use App\Http\Requests\LearningSessionRequest;
 use App\Services\LearningService;
 use App\Services\WordService;
 use Illuminate\Http\JsonResponse;
@@ -22,34 +23,17 @@ class LearningController extends Controller
     ) {}
 
     /**
-     * Display the learning page with filtered words.
+     * Display the learning page with filter board.
      */
     public function index(Request $request): Response
     {
         $user = $request->user();
-        $filters = $request->session()->get('word_filters', []);
-        
-        // Get session words for learning (default 10 words)
-        $sessionWords = $this->learningService->getWordsForLearningSession($user, $filters, 10);
-        
-        // If no words found, show a setup message
-        if ($sessionWords->isEmpty()) {
-            // Try to get some random words as fallback
-            $sessionWords = $this->wordService->getNewWordsForUser($user->id, [], 10);
-        }
-        
-        // Get learning statistics
         $stats = $this->learningService->getLearningStats($user);
         
         return Inertia::render('Learning/Index', [
-            'sessionWords' => $sessionWords,
-            'filters' => $filters,
+            'session' => null, // Don't auto-generate, show filter board first
             'stats' => $stats,
             'user' => $user,
-            'debug' => [
-                'filters' => $filters,
-                'words_count' => $sessionWords->count(),
-            ]
         ]);
     }
 
@@ -113,37 +97,110 @@ class LearningController extends Controller
     }
 
     /**
-     * Start learning session with filtered words.
+     * Generate a quick learning session (10 random words).
+     */
+    public function generateQuick(Request $request): Response
+    {
+        $user = $request->user();
+        
+        try {
+            $sessionWords = $this->learningService->getWordsForLearningSession($user, [], 10);
+            $stats = $this->learningService->getLearningStats($user);
+            
+            if ($sessionWords->isEmpty()) {
+                // Fallback to any available words
+                $sessionWords = $this->wordService->getNewWordsForUser($user->id, [], 10);
+            }
+            
+            return Inertia::render('Learning/Index', [
+                'session' => [
+                    'words' => $sessionWords,
+                    'config' => ['word_count' => 10, 'session_type' => 'mixed']
+                ],
+                'stats' => $stats,
+                'message' => 'Quick learning session generated!',
+            ]);
+        } catch (\Exception $e) {
+            return Inertia::render('Learning/Index', [
+                'session' => null,
+                'stats' => $this->learningService->getLearningStats($user),
+                'error' => 'Failed to generate learning session: ' . $e->getMessage(),
+            ]);
+        }
+    }
+
+    /**
+     * Generate a custom learning session with user configuration.
+     */
+    public function generateSession(LearningSessionRequest $request): Response
+    {
+        $user = $request->user();
+        $config = $request->getSessionConfig();
+        
+        try {
+            $sessionWords = $this->learningService->generateCustomSession($user, $config);
+            $stats = $this->learningService->getLearningStats($user);
+            
+            return Inertia::render('Learning/Index', [
+                'session' => [
+                    'words' => $sessionWords,
+                    'config' => $config
+                ],
+                'stats' => $stats,
+                'message' => 'Custom learning session generated!',
+            ]);
+        } catch (\Exception $e) {
+            return Inertia::render('Learning/Index', [
+                'session' => null,
+                'stats' => $this->learningService->getLearningStats($user),
+                'error' => 'Failed to generate custom session: ' . $e->getMessage(),
+            ]);
+        }
+    }
+
+    /**
+     * Start learning session with filtered words (legacy method for backward compatibility).
      */
     public function startSession(Request $request)
     {
-        $filters = $request->only(['topic', 'cefr_level', 'meaning_search', 'word_search']);
+        $filters = $request->only(['topic', 'cefr_level', 'word_count']);
         $user = $request->user();
         
-        // Store filters in session
-        $request->session()->put('word_filters', $filters);
-        
-        // Get session words for learning (default 10 words)
-        $sessionWords = $this->learningService->getWordsForLearningSession($user, $filters, 10);
-        
-        // Get learning statistics
-        $stats = $this->learningService->getLearningStats($user);
-        
-        if ($request->expectsJson()) {
-            return response()->json([
-                'success' => true,
-                'sessionWords' => $sessionWords,
+        try {
+            $wordCount = (int) ($filters['word_count'] ?? 10);
+            $sessionWords = $this->learningService->getWordsForLearningSession($user, $filters, $wordCount);
+            $stats = $this->learningService->getLearningStats($user);
+            
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'sessionWords' => $sessionWords,
+                    'stats' => $stats,
+                    'message' => 'Learning session started!'
+                ]);
+            }
+            
+            return Inertia::render('Learning/Index', [
+                'session' => [
+                    'words' => $sessionWords,
+                    'config' => $filters
+                ],
                 'stats' => $stats,
-                'message' => 'Learning session started!'
+            ]);
+        } catch (\Exception $e) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to start session: ' . $e->getMessage(),
+                ], 400);
+            }
+            
+            return Inertia::render('Learning/Index', [
+                'session' => null,
+                'stats' => $this->learningService->getLearningStats($user),
+                'error' => 'Failed to start session: ' . $e->getMessage(),
             ]);
         }
-        
-        return Inertia::render('Learning/Index', [
-            'sessionWords' => $sessionWords,
-            'filters' => $filters,
-            'stats' => $stats,
-            'user' => $user,
-        ]);
     }
 
     /**
