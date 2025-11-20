@@ -143,4 +143,14 @@ class User extends Authenticatable implements MustVerifyEmail
                     ->learned()
                     ->with('word');
     }
+
+    /**
+     * Get the user's custom topics.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function topics()
+    {
+        return $this->hasMany(Topic::class);
+    }
 }

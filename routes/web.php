@@ -93,6 +93,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/user/words/{id}', [UserWordController::class, 'update'])->name('user.words.update');
     Route::delete('/user/words/{id}', [UserWordController::class, 'destroy'])->name('user.words.destroy');
 
+    // Topic Management
+    Route::prefix('topics')->name('topics.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\TopicController::class, 'index'])->name('index');
+        Route::post('/', [\App\Http\Controllers\TopicController::class, 'store'])->name('store');
+        Route::put('/{id}', [\App\Http\Controllers\TopicController::class, 'update'])->name('update');
+        Route::delete('/{id}', [\App\Http\Controllers\TopicController::class, 'destroy'])->name('destroy');
+        Route::get('/suggested', [\App\Http\Controllers\TopicController::class, 'suggested'])->name('suggested');
+        Route::get('/search', [\App\Http\Controllers\TopicController::class, 'search'])->name('search');
+    });
+
+    // Flashcard System
+    Route::prefix('flashcards')->name('flashcards.')->group(function () {
+        Route::post('/start', [\App\Http\Controllers\FlashcardController::class, 'start'])->name('start');
+        Route::post('/next', [\App\Http\Controllers\FlashcardController::class, 'next'])->name('next');
+        Route::post('/answer', [\App\Http\Controllers\FlashcardController::class, 'answer'])->name('answer');
+        Route::post('/complete', [\App\Http\Controllers\FlashcardController::class, 'complete'])->name('complete');
+    });
+
     // Profile (Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
