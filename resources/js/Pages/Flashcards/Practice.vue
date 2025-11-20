@@ -63,7 +63,7 @@
           <div class="p-6 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-600">
             <div v-if="showAnswer" class="flex gap-4 justify-center">
               <button
-                @click="markAnswer(false)"
+                @click="() => { console.log('CLICKED: Didn\'t Know button'); markAnswer(false); }"
                 class="flex-1 max-w-xs bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,7 +72,7 @@
                 Didn't Know
               </button>
               <button
-                @click="markAnswer(true)"
+                @click="() => { console.log('CLICKED: Got It Right button'); markAnswer(true); }"
                 class="flex-1 max-w-xs bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -156,6 +156,16 @@
 import { ref, computed, onMounted } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import Header from '@/Components/Header.vue';
+// Simple route helper with fallback URLs
+const route = (name, params) => {
+  const routes = {
+    'home': '/',
+    'flashcards.answer': '/flashcards/answer',
+    'flashcards.complete': '/flashcards/complete'
+  };
+  
+  return routes[name] || '#';
+};
 
 const props = defineProps({
   words: {
@@ -166,6 +176,24 @@ const props = defineProps({
     type: Object,
     required: true
   }
+});
+
+// Debug props
+console.log('=== PRACTICE COMPONENT INITIALIZED ===');
+console.log('Practice component props:', props);
+console.log('Words array:', props.words);
+console.log('Settings:', props.settings);
+
+// Add global error handler
+window.addEventListener('error', (e) => {
+  console.error('🚨 GLOBAL ERROR:', e.error);
+  console.error('🚨 ERROR MESSAGE:', e.message);
+  console.error('🚨 ERROR STACK:', e.error?.stack);
+});
+
+// Add unhandled promise rejection handler
+window.addEventListener('unhandledrejection', (e) => {
+  console.error('🚨 UNHANDLED PROMISE REJECTION:', e.reason);
 });
 
 // Reactive state
@@ -187,33 +215,92 @@ function toggleCard() {
 }
 
 function markAnswer(isCorrect) {
+  console.log('=== MARK ANSWER START ===');
+  console.log('markAnswer called with:', isCorrect);
+  console.log('currentWord:', currentWord.value);
+  console.log('currentIndex:', currentIndex.value);
+  console.log('props.words length:', props.words?.length);
+  console.log('showAnswer.value:', showAnswer.value);
+  console.log('startTime.value:', startTime.value);
+  
+  if (!currentWord.value) {
+    console.error('No current word available');
+    return;
+  }
+  
   const responseTime = startTime.value ? Date.now() - startTime.value : null;
   
-  // Submit answer
-  router.post(route('flashcards.answer'), {
+  console.log('Submitting answer to:', route('flashcards.answer'));
+  console.log('Data:', {
     word_id: currentWord.value.id,
     is_correct: isCorrect,
     response_time: responseTime
-  }, {
-    preserveState: true,
-    preserveScroll: true,
-    onSuccess: () => {
-      nextCard();
-    }
   });
+  
+  try {
+    // Submit answer using fetch instead of Inertia to avoid navigation issues
+    console.log('About to submit answer via fetch');
+    
+    fetch(route('flashcards.answer'), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        word_id: currentWord.value.id,
+        is_correct: isCorrect,
+        response_time: responseTime
+      })
+    })
+    .then(response => {
+      console.log('✅ Answer submission response status:', response.status);
+      if (response.ok) {
+        console.log('✅ Answer submission successful');
+        nextCard();
+      } else {
+        console.error('❌ Answer submission failed with status:', response.status);
+        return response.text().then(text => {
+          console.error('❌ Response text:', text);
+        });
+      }
+    })
+    .catch(error => {
+      console.error('❌ Answer submission network error:', error);
+    });
+    
+    console.log('fetch call initiated');
+  } catch (error) {
+    console.error('❌ Exception in markAnswer:', error);
+  }
+  
+  console.log('=== MARK ANSWER END ===');
 }
 
 function nextCard() {
+  console.log('nextCard called');
+  console.log('currentIndex:', currentIndex.value);
+  console.log('total words:', props.words.length);
+  
   if (currentIndex.value < props.words.length - 1) {
+    console.log('Moving to next card');
     currentIndex.value++;
     showAnswer.value = false;
     startTime.value = null;
+    console.log('New currentIndex:', currentIndex.value);
   } else {
-    // Complete session
+    console.log('Completing session - showing completion screen');
+    // Show completion screen first
+    currentIndex.value = props.words.length;
+    console.log('Completion index set to:', currentIndex.value);
+    // Then complete session in background
     router.post(route('flashcards.complete'), {}, {
-      onSuccess: () => {
-        currentIndex.value = props.words.length; // This will show the completion screen
-      }
+      preserveState: true,
+      preserveScroll: true,
+      onStart: () => console.log('Session completion started'),
+      onSuccess: () => console.log('Session completion successful'),
+      onError: (errors) => console.error('Session completion failed:', errors)
     });
   }
 }
@@ -228,6 +315,10 @@ function previousCard() {
 
 // Keyboard shortcuts
 onMounted(() => {
+  console.log('=== PRACTICE COMPONENT MOUNTED ===');
+  console.log('Final props check - words:', props.words);
+  console.log('Final props check - settings:', props.settings);
+  console.log('currentWord on mount:', currentWord.value);
   const handleKeydown = (event) => {
     switch (event.key) {
       case ' ':

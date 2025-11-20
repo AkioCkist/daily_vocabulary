@@ -145,7 +145,8 @@
               
               <!-- Quick Flashcards -->
               <button 
-                @click="startQuickFlashcards"
+                type="button"
+                @click.prevent="startQuickFlashcards"
                 class="w-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 text-white font-bold py-4 px-6 rounded-xl shadow-depth-2 hover-lift btn-3d flex items-center justify-center gap-3 mb-4 transition-all duration-300"
               >
                 <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
@@ -303,9 +304,15 @@ function handleWordSelected(word) {
  * Start quick flashcards with default settings (10 random words)
  */
 function startQuickFlashcards() {
+  console.log('Starting quick flashcards...');
   router.post('/flashcards/start', {
     mode: 'quick',
     word_count: 10
+  }, {
+    onStart: () => console.log('Request started'),
+    onSuccess: (page) => console.log('Success:', page),
+    onError: (errors) => console.error('Errors:', errors),
+    onFinish: () => console.log('Request finished')
   });
 }
 

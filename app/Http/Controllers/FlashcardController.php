@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Services\DashboardService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -18,10 +20,10 @@ class FlashcardController extends Controller
     /**
      * Start a flashcard session.
      */
-    public function start(Request $request): Response
+    public function start(Request $request): Response|RedirectResponse
     {
         $request->validate([
-            'mode' => 'required|in:basic,advanced,topic',
+            'mode' => 'required|in:basic,advanced,topic,quick',
             'word_count' => 'required|integer|min:5|max:50',
             'cefr_levels' => 'nullable|array',
             'cefr_levels.*' => 'string|in:A1,A2,B1,B2,C1,C2',
@@ -33,6 +35,14 @@ class FlashcardController extends Controller
         
         // Generate flashcards based on settings
         $words = $this->generateFlashcards($request->all());
+
+        // Debug the words
+        Log::info('Generated words for flashcards:', ['count' => count($words), 'words' => $words]);
+
+        // Check if we have words available
+        if (empty($words)) {
+            return back()->with('error', 'No words available for flashcard practice. Please add some words first.');
+        }
 
         // Store session in session storage
         session([
@@ -85,7 +95,7 @@ class FlashcardController extends Controller
     /**
      * Submit an answer for the current flashcard.
      */
-    public function answer(Request $request): JsonResponse
+    public function answer(Request $request)
     {
         $request->validate([
             'word_id' => 'required|integer|exists:words,id',
@@ -108,23 +118,26 @@ class FlashcardController extends Controller
             'user_id' => $user->id,
             'word_id' => $request->get('word_id'),
             'is_correct' => $request->get('is_correct'),
-            'response_time' => $request->get('response_time'),
+            'answer_text' => $request->get('is_correct') ? 'Flashcard - Correct' : 'Flashcard - Incorrect',
+            'time_taken' => $request->get('response_time'),
         ]);
 
-        return response()->json([
-            'message' => 'Answer recorded successfully'
-        ]);
+        // Return JSON response for AJAX requests
+        return response()->json(['success' => true], 200);
     }
 
     /**
      * Complete the flashcard session.
      */
-    public function complete(): JsonResponse
+    public function complete()
     {
         $session = session('flashcard_session');
         
         if (!$session) {
-            return response()->json(['error' => 'No active session'], 404);
+            if (request()->header('X-Inertia')) {
+                return response()->noContent();
+            }
+            return redirect()->route('home')->with('error', 'No active session found');
         }
 
         // Calculate session statistics
@@ -137,9 +150,14 @@ class FlashcardController extends Controller
         // Clear session
         session()->forget('flashcard_session');
 
-        return response()->json([
+        // If it's an Inertia request with preserveState, just return success
+        if (request()->header('X-Inertia') && request()->header('X-Inertia-Partial-Data')) {
+            return response()->noContent();
+        }
+
+        return redirect()->route('home')->with([
             'message' => 'Session completed successfully',
-            'stats' => $stats
+            'flashcard_stats' => $stats
         ]);
     }
 
@@ -150,7 +168,15 @@ class FlashcardController extends Controller
     {
         $query = \App\Models\Word::query();
 
-        // Apply CEFR level filter
+        // For quick mode, just get random words
+        if ($settings['mode'] === 'quick') {
+            $words = $query->inRandomOrder()
+                ->limit($settings['word_count'])
+                ->get(['id', 'word', 'pronunciation', 'definition', 'example', 'cefr_level', 'topic']);
+            return $words->toArray();
+        }
+
+        // Apply CEFR level filter for advanced modes
         if (!empty($settings['cefr_levels'])) {
             $query->whereIn('cefr_level', $settings['cefr_levels']);
         }
