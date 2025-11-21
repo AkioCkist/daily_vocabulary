@@ -18,27 +18,20 @@
       class="flex-1 flex items-center justify-center p-8 min-h-[320px] cursor-pointer hover:bg-gradient-to-br hover:from-gray-50 hover:to-blue-50 dark:hover:from-gray-700/30 dark:hover:to-indigo-900/20 transition-all duration-300 relative"
       @click="!showDefinition && $emit('toggle')"
     >
-      <!-- Tap indicator -->
-      <transition name="fade">
-        <div v-if="!showDefinition" class="absolute top-4 right-4 text-gray-400 dark:text-gray-500 animate-bounce">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"/>
-          </svg>
-        </div>
-      </transition>
-
       <div class="text-center w-full">
         <transition name="fade-scale" mode="out-in">
           <!-- Front: Word -->
           <div v-if="!showDefinition" :key="'word'" class="space-y-4 py-4">
-            <h2 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 leading-tight pb-2">
-              {{ word.word }}
-            </h2>
+            <div class="flex items-center justify-center gap-2">
+              <h2 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 leading-tight pb-2">
+                {{ word.word }}
+              </h2>
+              <SpeakerButton :text="word.word" />
+            </div>
             <div v-if="word.pronunciation" class="text-xl text-gray-600 dark:text-gray-400 font-light">
               {{ word.pronunciation }}
             </div>
           </div>
-          
           <!-- Back: Definition -->
           <div v-else :key="'definition'" class="space-y-6 py-4">
             <h3 class="text-3xl font-semibold text-gray-900 dark:text-white leading-relaxed pb-2">
@@ -109,6 +102,7 @@ defineProps({
 });
 
 defineEmits(['toggle', 'answer']);
+import SpeakerButton from '@/Components/Flashcard/SpeakerButton.vue';
 </script>
 
 <style scoped>
