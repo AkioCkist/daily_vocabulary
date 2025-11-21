@@ -195,8 +195,11 @@ class DashboardService
                 ];
             });
 
+        // For user topics, count words from user_word_topics pivot table
         $userTopics = Topic::where('user_id', $user->id)
-            ->withCount('words')
+            ->withCount(['collectedWords' => function ($query) use ($user) {
+                $query->where('user_word_topics.user_id', $user->id);
+            }])
             ->orderBy('name')
             ->get()
             ->map(function ($topic) {
@@ -204,7 +207,7 @@ class DashboardService
                     'id' => $topic->id,
                     'name' => $topic->name,
                     'description' => $topic->description,
-                    'words_count' => $topic->words_count,
+                    'words_count' => $topic->collected_words_count,
                 ];
             });
 

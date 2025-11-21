@@ -429,6 +429,84 @@ class FlashcardController extends Controller
     }
 
     /**
+     * Quick create a new topic during flashcard setup.
+     */
+    public function quickCreateTopic(Request $request): JsonResponse
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:1000',
+        ]);
+
+        $user = Auth::user();
+
+        // Check if topic with same name already exists (globally, due to unique constraint)
+        $existingTopic = \App\Models\Topic::where('name', $request->get('name'))
+            ->first();
+
+        if ($existingTopic) {
+            return response()->json([
+                'success' => false,
+                'message' => 'A topic with this name already exists. Please choose a different name.'
+            ], 409);
+        }
+
+        // Create the topic
+        $topic = \App\Models\Topic::create([
+            'user_id' => $user->id,
+            'name' => $request->get('name'),
+            'description' => $request->get('description'),
+            'is_system' => false,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Topic created successfully.',
+            'topic' => [
+                'id' => $topic->id,
+                'name' => $topic->name,
+                'description' => $topic->description,
+                'words_count' => 0,
+            ]
+        ]);
+    }
+
+    /**
+     * Delete a user's topic.
+     */
+    public function deleteTopic(Request $request, int $topicId): JsonResponse
+    {
+        $user = Auth::user();
+
+        // Find the topic and verify ownership
+        $topic = \App\Models\Topic::where('id', $topicId)
+            ->where('user_id', $user->id)
+            ->where('is_system', false) // Prevent deletion of system topics
+            ->first();
+
+        if (!$topic) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Topic not found or cannot be deleted.'
+            ], 404);
+        }
+
+        // Delete associated word relationships
+        DB::table('user_word_topics')
+            ->where('topic_id', $topicId)
+            ->where('user_id', $user->id)
+            ->delete();
+
+        // Delete the topic
+        $topic->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Topic deleted successfully.'
+        ]);
+    }
+
+    /**
      * Get user's topics for a specific word (to show which topics it's in).
      */
     public function getWordTopics(Request $request, int $wordId): JsonResponse
@@ -499,8 +577,25 @@ class FlashcardController extends Controller
 
         // Apply topic filter
         if (!empty($settings['topic_ids'])) {
-            $topicNames = \App\Models\Topic::whereIn('id', $settings['topic_ids'])->pluck('name');
-            $query->whereIn('topic', $topicNames);
+            // Separate system topics from user topics
+            $topics = \App\Models\Topic::whereIn('id', $settings['topic_ids'])->get();
+            $systemTopicNames = $topics->where('is_system', true)->pluck('name')->toArray();
+            $userTopicIds = $topics->where('is_system', false)->pluck('id')->toArray();
+            
+            $query->where(function ($q) use ($systemTopicNames, $userTopicIds, $user) {
+                // Include words from system topics (matched by topic name)
+                if (!empty($systemTopicNames)) {
+                    $q->whereIn('topic', $systemTopicNames);
+                }
+                
+                // Include words from user's personal topics (from user_word_topics)
+                if (!empty($userTopicIds)) {
+                    $q->orWhereHas('userTopics', function ($subQuery) use ($userTopicIds, $user) {
+                        $subQuery->whereIn('topics.id', $userTopicIds)
+                                 ->where('user_word_topics.user_id', $user->id);
+                    });
+                }
+            });
         }
 
         // Get random words

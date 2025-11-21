@@ -115,6 +115,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/words/add-to-topic', [\App\Http\Controllers\FlashcardController::class, 'addToTopic'])->name('words.add-to-topic');
         Route::post('/words/remove-from-topic', [\App\Http\Controllers\FlashcardController::class, 'removeFromTopic'])->name('words.remove-from-topic');
         Route::get('/words/{wordId}/topics', [\App\Http\Controllers\FlashcardController::class, 'getWordTopics'])->name('words.topics');
+        
+        // Topic management
+        Route::post('/topics/quick-create', [\App\Http\Controllers\FlashcardController::class, 'quickCreateTopic'])->name('topics.quick-create');
+        Route::delete('/topics/{topicId}', [\App\Http\Controllers\FlashcardController::class, 'deleteTopic'])->name('topics.delete');
     });
 
     // Profile (Breeze)
