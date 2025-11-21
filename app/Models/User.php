@@ -153,4 +153,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Topic::class);
     }
+
+    /**
+     * Get the user's saved study sessions.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function savedSessions()
+    {
+        return $this->hasMany(SavedSession::class);
+    }
 }

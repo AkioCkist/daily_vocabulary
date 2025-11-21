@@ -135,7 +135,10 @@ import TopicManager from '@/Components/Flashcard/TopicManager.vue';
 
 // Route helper
 const route = (name) => {
-  const routes = { 'home': '/' };
+  const routes = { 
+    'home': '/',
+    'flashcards.complete': '/flashcards/complete'
+  };
   return routes[name] || '#';
 };
 

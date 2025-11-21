@@ -32,12 +32,16 @@ class FlashcardController extends Controller
         ]);
 
         $validation = [
-            'mode' => 'required|in:basic,advanced,topic,quick,review',
+            'mode' => 'required|in:basic,advanced,topic,quick,review,saved_session',
             'flashcard_type' => 'required|in:standard,fill_blank,mixed',
             'cefr_levels' => 'nullable|array',
             'cefr_levels.*' => 'string|in:A1,A2,B1,B2,C1,C2',
             'topic_ids' => 'nullable|array',
             'topic_ids.*' => 'integer|exists:topics,id',
+            'saved_session_id' => 'nullable|integer|exists:saved_sessions,id',
+            'flashcard_ids' => 'nullable|array',
+            'flashcard_ids.*' => 'integer',
+            'shuffle' => 'nullable|boolean',
         ];
 
         // For review mode, allow smaller word counts (minimum 1)
@@ -294,9 +298,25 @@ class FlashcardController extends Controller
      */
     public function complete()
     {
+        Log::info('FlashcardController::complete - Method called', [
+            'request_method' => request()->method(),
+            'is_inertia' => !!request()->header('X-Inertia'),
+            'inertia_headers' => [
+                'X-Inertia' => request()->header('X-Inertia'),
+                'X-Inertia-Partial-Data' => request()->header('X-Inertia-Partial-Data'),
+                'X-Inertia-Partial-Component' => request()->header('X-Inertia-Partial-Component'),
+            ]
+        ]);
+        
         $session = session('flashcard_session');
         
+        Log::info('FlashcardController::complete - Session check', [
+            'has_session' => !!$session,
+            'session_keys' => $session ? array_keys($session) : [],
+        ]);
+        
         if (!$session) {
+            Log::warning('FlashcardController::complete - No active session found');
             if (request()->header('X-Inertia')) {
                 return response()->noContent();
             }
@@ -310,15 +330,105 @@ class FlashcardController extends Controller
             'completed_at' => now(),
         ];
 
-        // Clear session
-        session()->forget('flashcard_session');
+        // Debug session data
+        Log::info('Flashcard session complete - Debug:', [
+            'has_session' => !!$session,
+            'session_settings' => $session['settings'] ?? null,
+            'has_saved_session_id' => isset($session['settings']['saved_session_id']),
+            'saved_session_id' => $session['settings']['saved_session_id'] ?? null,
+            'words_count' => isset($session['words']) ? count($session['words']) : 0,
+            'mode' => $session['settings']['mode'] ?? null,
+        ]);
 
-        // If it's an Inertia request with preserveState, just return success
-        if (request()->header('X-Inertia') && request()->header('X-Inertia-Partial-Data')) {
-            return response()->noContent();
+        // Prepare save session data for popup (only for study sessions, not review)
+        $saveSessionData = null;
+        $shouldShowSavePopup = false;
+
+        // Check if this is a study session (not a review of saved session)
+        if (!isset($session['settings']['saved_session_id']) && 
+            isset($session['words']) && 
+            count($session['words']) > 0) {
+            
+            $shouldShowSavePopup = true;
+            
+            // Extract flashcard IDs from session
+            $flashcardIds = [];
+            foreach ($session['words'] as $word) {
+                if (isset($word['id'])) {
+                    $flashcardIds[] = $word['id'];
+                }
+            }
+
+            $saveSessionData = [
+                'flashcard_ids' => $flashcardIds,
+                'suggested_name' => \App\Models\SavedSession::generateSessionName(
+                    $session['settings']['topic'] ?? null
+                ),
+                'topic' => $session['settings']['topic'] ?? null,
+                'total_words' => count($session['words']),
+            ];
+
+            Log::info('Should show save popup:', [
+                'should_show' => $shouldShowSavePopup,
+                'flashcard_ids_count' => count($flashcardIds),
+                'suggested_name' => $saveSessionData['suggested_name'],
+                'topic' => $saveSessionData['topic'],
+            ]);
+        } else {
+            Log::info('Not showing save popup because:', [
+                'has_saved_session_id' => isset($session['settings']['saved_session_id']),
+                'has_words' => isset($session['words']),
+                'words_count' => isset($session['words']) ? count($session['words']) : 0,
+            ]);
         }
 
-        return redirect()->route('home')->with([
+        // Clear session
+        session()->forget('flashcard_session');
+        Log::info('FlashcardController::complete - Session cleared');
+
+        // If it's an Inertia request with preserveState, return data for popup
+        if (request()->header('X-Inertia') && request()->header('X-Inertia-Partial-Data')) {
+            Log::info('FlashcardController::complete - Returning JSON response for Inertia partial');
+            return response()->json([
+                'stats' => $stats,
+                'show_save_popup' => $shouldShowSavePopup,
+                'save_session_data' => $saveSessionData,
+            ]);
+        }
+
+        // For regular requests, redirect with data
+        $url = route('home');
+        
+        Log::info('FlashcardController::complete - Preparing redirect', [
+            'base_url' => $url,
+            'should_show_save_popup' => $shouldShowSavePopup,
+            'is_inertia_request' => !!request()->header('X-Inertia'),
+        ]);
+        
+        if ($shouldShowSavePopup) {
+            // Add query parameters for save session popup
+            $queryParams = [
+                'show_save_popup' => 'true',
+                'save_session_data' => urlencode(json_encode($saveSessionData))
+            ];
+            $url .= '?' . http_build_query($queryParams);
+            
+            Log::info('FlashcardController::complete - Built URL with save popup params', [
+                'final_url' => $url,
+                'query_params' => $queryParams,
+                'save_session_data' => $saveSessionData,
+            ]);
+        }
+
+        Log::info('FlashcardController::complete - Redirecting', [
+            'final_url' => $url,
+            'with_data' => [
+                'message' => 'Session completed successfully',
+                'flashcard_stats' => $stats
+            ]
+        ]);
+
+        return redirect($url)->with([
             'message' => 'Session completed successfully',
             'flashcard_stats' => $stats
         ]);
@@ -543,6 +653,31 @@ class FlashcardController extends Controller
     private function generateFlashcards(array $settings): array
     {
         $user = Auth::user();
+        
+        // For saved_session mode, get words from flashcard_ids
+        if ($settings['mode'] === 'saved_session' && !empty($settings['flashcard_ids'])) {
+            $flashcardIds = $settings['flashcard_ids'];
+            
+            // If shuffle is enabled, shuffle the IDs
+            if (!empty($settings['shuffle'])) {
+                shuffle($flashcardIds);
+            }
+            
+            // Get words in the specified order
+            $words = \App\Models\Word::whereIn('id', $flashcardIds)
+                ->get(['id', 'word', 'pronunciation', 'definition', 'example', 'cefr_level', 'topic'])
+                ->keyBy('id');
+            
+            // Maintain the order of flashcard_ids
+            $orderedWords = [];
+            foreach ($flashcardIds as $id) {
+                if (isset($words[$id])) {
+                    $orderedWords[] = $words[$id]->toArray();
+                }
+            }
+            
+            return $orderedWords;
+        }
         
         // For review mode, get words that need review (same logic as DashboardService)
         if ($settings['mode'] === 'review') {
