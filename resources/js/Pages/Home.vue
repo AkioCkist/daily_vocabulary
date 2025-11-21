@@ -12,10 +12,11 @@
       />
 
       <!-- Guest Content -->
-      <GuestContent 
-        v-if="!user" 
-        @word-selected="handleWordSelected" 
-      />
+      <div v-if="!user" class="min-h-[60vh] flex items-center justify-center">
+        <GuestContent 
+          @word-selected="handleWordSelected" 
+        />
+      </div>
 
       <!-- User Dashboard -->
       <div v-else-if="dashboard" class="space-y-6">

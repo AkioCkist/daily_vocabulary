@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center max-w-3xl mx-auto mb-12">
+  <div class="text-center max-w-3xl mx-auto" :class="user ? 'mb-12' : 'min-h-[70vh] flex flex-col items-center justify-center'">
     <!-- Main Headline -->
     <h1 class="text-5xl font-bold text-gray-900 dark:text-white mb-4">
       Master English Vocabulary
