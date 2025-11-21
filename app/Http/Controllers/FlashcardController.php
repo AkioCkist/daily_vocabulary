@@ -87,11 +87,8 @@ class FlashcardController extends Controller
             ->orderBy('name')
             ->get();
 
-        return Inertia::render('Flashcards/Practice', [
-            'words' => $words,
-            'settings' => $request->all(),
-            'userTopics' => $userTopics,
-        ]);
+        // Redirect to GET route for practice page
+        return redirect()->route('flashcards.practice');
     }
 
     /**
