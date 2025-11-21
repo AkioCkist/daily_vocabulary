@@ -18,9 +18,12 @@
       <div class="text-center w-full space-y-6 py-4">
         <!-- Definition -->
         <div class="space-y-4">
-          <h3 class="text-3xl font-semibold text-gray-900 dark:text-white leading-relaxed pb-2">
-            {{ word.definition }}
-          </h3>
+          <div class="flex items-center justify-center gap-2">
+            <h3 class="text-3xl font-semibold text-gray-900 dark:text-white leading-relaxed pb-2">
+              {{ word.definition }}
+            </h3>
+            <SpeakerButton :text="word.definition" />
+          </div>
           
           <div v-if="word.example" class="max-w-lg mx-auto p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl">
             <p class="text-gray-700 dark:text-gray-300 italic font-mono">
@@ -131,6 +134,7 @@
 
 <script setup>
 import { ref, computed, watch, nextTick } from 'vue';
+import SpeakerButton from '@/Components/Flashcard/SpeakerButton.vue';
 
 const props = defineProps({
   word: {
