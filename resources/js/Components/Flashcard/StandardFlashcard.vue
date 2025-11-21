@@ -42,6 +42,15 @@
                 "{{ word.example }}"
               </p>
             </div>
+            <div class="flex justify-center mt-6">
+              <button
+                @click.stop="$emit('toggle')"
+                class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow transition-all duration-200"
+              >
+                <ArrowUturnLeftIcon class="w-5 h-5" />
+                Back to Word
+              </button>
+            </div>
           </div>
         </transition>
       </div>
@@ -103,6 +112,7 @@ defineProps({
 
 defineEmits(['toggle', 'answer']);
 import SpeakerButton from '@/Components/Flashcard/SpeakerButton.vue';
+import { ArrowUturnLeftIcon } from '@heroicons/vue/24/outline';
 </script>
 
 <style scoped>
