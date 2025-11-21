@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden min-h-[550px] flex flex-col">
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden min-h-[480px] flex flex-col">
     <!-- Header -->
     <div class="bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 text-white p-6">
       <div class="flex items-center justify-between">
@@ -14,7 +14,7 @@
     </div>
 
     <!-- Content -->
-    <div class="flex-1 flex items-center justify-center p-10 min-h-[400px]">
+    <div class="flex-1 flex items-center justify-center p-8 min-h-[320px]">
       <div class="text-center w-full space-y-6 py-4">
         <!-- Definition -->
         <div class="space-y-4">

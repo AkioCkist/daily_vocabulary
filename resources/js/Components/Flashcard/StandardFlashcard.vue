@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden min-h-[550px] flex flex-col">
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden min-h-[480px] flex flex-col">
     <!-- Header -->
     <div class="bg-gradient-to-r from-indigo-500 via-purple-500 to-purple-600 text-white p-6">
       <div class="flex items-center justify-between">
@@ -15,7 +15,7 @@
 
     <!-- Content -->
     <div 
-      class="flex-1 flex items-center justify-center p-10 min-h-[400px] cursor-pointer hover:bg-gradient-to-br hover:from-gray-50 hover:to-blue-50 dark:hover:from-gray-700/30 dark:hover:to-indigo-900/20 transition-all duration-300 relative"
+      class="flex-1 flex items-center justify-center p-8 min-h-[320px] cursor-pointer hover:bg-gradient-to-br hover:from-gray-50 hover:to-blue-50 dark:hover:from-gray-700/30 dark:hover:to-indigo-900/20 transition-all duration-300 relative"
       @click="!showDefinition && $emit('toggle')"
     >
       <!-- Tap indicator -->
