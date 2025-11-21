@@ -54,15 +54,20 @@
 
         <!-- Actions -->
         <div class="flex gap-4 justify-center">
-          <Link
-            :href="route('home')"
-            class="group bg-gradient-to-r from-indigo-500 via-purple-500 to-purple-600 hover:from-indigo-600 hover:via-purple-600 hover:to-purple-700 text-white font-bold py-4 px-10 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 flex items-center gap-2"
+          <button
+            @click="completeSession"
+            :disabled="isCompleting"
+            class="group bg-gradient-to-r from-indigo-500 via-purple-500 to-purple-600 hover:from-indigo-600 hover:via-purple-600 hover:to-purple-700 text-white font-bold py-4 px-10 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg v-if="isCompleting" class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
             </svg>
-            <span>Back to Dashboard</span>
-          </Link>
+            <span>{{ isCompleting ? 'Completing...' : 'Back to Dashboard' }}</span>
+          </button>
         </div>
       </div>
     </div>
@@ -70,8 +75,8 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { computed, ref } from 'vue';
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
   totalWords: {
@@ -111,6 +116,70 @@ const accuracyClass = computed(() => {
     return 'bg-gradient-to-r from-red-100 to-rose-100 dark:from-red-900/30 dark:to-rose-900/30 text-red-700 dark:text-red-300';
   }
 });
+
+// State for completion
+const isCompleting = ref(false);
+
+// Complete session and redirect
+const completeSession = async () => {
+  if (isCompleting.value) {
+    console.log('SessionComplete: Already completing, ignoring duplicate call');
+    return;
+  }
+  
+  console.log('SessionComplete: ==> Starting completion process');
+  console.log('SessionComplete: Props received:', props);
+  console.log('SessionComplete: Available routes:', {
+    home: props.route ? props.route('home') : 'route function not available',
+    flashcardsComplete: props.route ? props.route('flashcards.complete') : 'route function not available'
+  });
+  
+  isCompleting.value = true;
+  
+  try {
+    const completeUrl = props.route('flashcards.complete');
+    console.log('SessionComplete: Calling complete endpoint:', completeUrl);
+    
+    // Call the complete endpoint to process session and potentially show save popup
+    await router.post(completeUrl, {}, {
+      preserveState: false,
+      preserveScroll: false,
+      onBefore: (visit) => {
+        console.log('SessionComplete: About to make request:', visit);
+        return true;
+      },
+      onStart: (visit) => {
+        console.log('SessionComplete: Request started:', visit);
+      },
+      onProgress: (progress) => {
+        console.log('SessionComplete: Request progress:', progress);
+      },
+      onSuccess: (page) => {
+        console.log('SessionComplete: Success response received');
+        console.log('SessionComplete: Page props:', page.props);
+        console.log('SessionComplete: Page component:', page.component);
+        console.log('SessionComplete: Page url:', page.url);
+        // The controller will handle redirect with save popup data if needed
+      },
+      onError: (errors) => {
+        console.error('SessionComplete: Error completing session:', errors);
+        // Fallback: just redirect to home
+        console.log('SessionComplete: Falling back to direct home redirect');
+        router.visit(props.route('home'));
+      },
+      onFinish: () => {
+        console.log('SessionComplete: Request finished');
+        isCompleting.value = false;
+      }
+    });
+  } catch (error) {
+    console.error('SessionComplete: Exception during completion:', error);
+    // Fallback: just redirect to home
+    console.log('SessionComplete: Exception fallback - redirecting to home');
+    router.visit(props.route('home'));
+    isCompleting.value = false;
+  }
+};
 </script>
 
 <style scoped>

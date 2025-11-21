@@ -14,6 +14,8 @@ use App\Http\Controllers\WordController;
 use App\Http\Controllers\WordFilterController;
 use App\Http\Controllers\UserWordController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\SavedSessionController;
+use App\Http\Controllers\SavedSessionItemController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
@@ -135,6 +137,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Topic management
         Route::post('/topics/quick-create', [\App\Http\Controllers\FlashcardController::class, 'quickCreateTopic'])->name('topics.quick-create');
         Route::delete('/topics/{topicId}', [\App\Http\Controllers\FlashcardController::class, 'deleteTopic'])->name('topics.delete');
+    });
+
+    // Saved Sessions
+    Route::prefix('saved-sessions')->name('saved-sessions.')->group(function () {
+        // Main CRUD operations
+        Route::get('/', [\App\Http\Controllers\SavedSessionController::class, 'index'])->name('index');
+        Route::post('/', [\App\Http\Controllers\SavedSessionController::class, 'store'])->name('store');
+        Route::get('/{slug}', [\App\Http\Controllers\SavedSessionController::class, 'show'])->name('show');
+        Route::put('/{slug}', [\App\Http\Controllers\SavedSessionController::class, 'update'])->name('update');
+        Route::delete('/{slug}', [\App\Http\Controllers\SavedSessionController::class, 'destroy'])->name('destroy');
+        
+        // Review session (start study from saved session)
+        Route::post('/{slug}/review', [\App\Http\Controllers\SavedSessionController::class, 'review'])->name('review');
+        
+        // Item management within sessions
+        Route::prefix('{slug}/items')->name('items.')->group(function () {
+            Route::post('/', [\App\Http\Controllers\SavedSessionItemController::class, 'store'])->name('store');
+            Route::delete('/{itemId}', [\App\Http\Controllers\SavedSessionItemController::class, 'destroy'])->name('destroy');
+            Route::put('/{itemId}/move', [\App\Http\Controllers\SavedSessionItemController::class, 'move'])->name('move');
+            Route::put('/reorder', [\App\Http\Controllers\SavedSessionItemController::class, 'reorder'])->name('reorder');
+        });
     });
 
     // Profile (Breeze)

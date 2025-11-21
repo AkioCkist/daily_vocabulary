@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden min-h-[450px] flex flex-col">
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden min-h-[480px] flex flex-col">
     <!-- Header -->
     <div class="bg-gradient-to-r from-indigo-500 via-purple-500 to-purple-600 text-white p-6">
       <div class="flex items-center justify-between">
@@ -15,7 +15,7 @@
 
     <!-- Content -->
     <div 
-      class="flex-1 flex items-center justify-center p-8 cursor-pointer hover:bg-gradient-to-br hover:from-gray-50 hover:to-blue-50 dark:hover:from-gray-700/30 dark:hover:to-indigo-900/20 transition-all duration-300 relative"
+      class="flex-1 flex items-center justify-center p-8 min-h-[320px] cursor-pointer hover:bg-gradient-to-br hover:from-gray-50 hover:to-blue-50 dark:hover:from-gray-700/30 dark:hover:to-indigo-900/20 transition-all duration-300 relative"
       @click="!showDefinition && $emit('toggle')"
     >
       <!-- Tap indicator -->
@@ -30,8 +30,8 @@
       <div class="text-center w-full">
         <transition name="fade-scale" mode="out-in">
           <!-- Front: Word -->
-          <div v-if="!showDefinition" :key="'word'" class="space-y-4">
-            <h2 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
+          <div v-if="!showDefinition" :key="'word'" class="space-y-4 py-4">
+            <h2 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 leading-tight pb-2">
               {{ word.word }}
             </h2>
             <div v-if="word.pronunciation" class="text-xl text-gray-600 dark:text-gray-400 font-light">
@@ -40,8 +40,8 @@
           </div>
           
           <!-- Back: Definition -->
-          <div v-else :key="'definition'" class="space-y-6">
-            <h3 class="text-3xl font-semibold text-gray-900 dark:text-white leading-relaxed">
+          <div v-else :key="'definition'" class="space-y-6 py-4">
+            <h3 class="text-3xl font-semibold text-gray-900 dark:text-white leading-relaxed pb-2">
               {{ word.definition }}
             </h3>
             <div v-if="word.example" class="max-w-lg mx-auto p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl">

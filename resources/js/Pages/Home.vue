@@ -72,6 +72,11 @@
               @select="selectTopic"
               @manage="showTopicModal = true"
             />
+
+            <!-- Saved Sessions -->
+            <SavedSessionsSection 
+              :sessions="saved_sessions"
+            />
           </div>
         </div>
 
@@ -96,11 +101,18 @@
       @close="showTopicModal = false"
       @refresh="refreshDashboard"
     />
+
+    <SaveSessionModal 
+      v-if="showSaveSessionModal && saveSessionData"
+      :session-data="saveSessionData"
+      @close="closeSaveSessionModal"
+      @saved="handleSessionSaved"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { Head, router } from '@inertiajs/vue3';
 
 // Layout Components
@@ -114,10 +126,12 @@ import GitHubHeatmap from '@/Components/Dashboard/GitHubHeatmap.vue';
 import QuickActions from '@/Components/Dashboard/QuickActions.vue';
 import TopicsSection from '@/Components/Dashboard/TopicsSection.vue';
 import RecentActivity from '@/Components/Dashboard/RecentActivity.vue';
+import SavedSessionsSection from '@/Components/Dashboard/SavedSessionsSection.vue';
 
 // Modal Components
 import FlashcardModal from '@/Components/FlashcardModal.vue';
 import TopicModal from '@/Components/TopicModal.vue';
+import SaveSessionModal from '@/Components/SaveSessionModal.vue';
 
 const props = defineProps({
   user: {
@@ -127,6 +141,10 @@ const props = defineProps({
   dashboard: {
     type: Object,
     default: null
+  },
+  saved_sessions: {
+    type: Array,
+    default: () => []
   }
 });
 
@@ -134,6 +152,8 @@ const props = defineProps({
 const heatmapPeriod = ref('yearly');
 const showFlashcardModal = ref(false);
 const showTopicModal = ref(false);
+const showSaveSessionModal = ref(false);
+const saveSessionData = ref(null);
 
 // Handlers
 const handleWordSelected = (word) => {
@@ -170,6 +190,58 @@ const startReview = () => {
 };
 
 const refreshDashboard = () => {
-  router.reload({ only: ['dashboard'] });
+  router.reload({ only: ['dashboard', 'saved_sessions'] });
 };
+
+const closeSaveSessionModal = () => {
+  showSaveSessionModal.value = false;
+  saveSessionData.value = null;
+};
+
+const handleSessionSaved = (session) => {
+  // Session saved successfully, refresh data
+  refreshDashboard();
+  closeSaveSessionModal();
+};
+
+// Check for save session data on component mount
+onMounted(() => {
+  console.log('Home: Component mounted, checking for save session data');
+  
+  // Check if there's save session data from flashcard completion
+  const urlParams = new URLSearchParams(window.location.search);
+  const showSavePopup = urlParams.get('show_save_popup') === 'true';
+  
+  console.log('Home: URL params:', {
+    showSavePopup,
+    allParams: Object.fromEntries(urlParams.entries())
+  });
+  
+  if (showSavePopup) {
+    console.log('Home: Should show save popup');
+    
+    // Get session data from URL params or session storage
+    try {
+      const sessionDataParam = urlParams.get('save_session_data');
+      console.log('Home: Save session data param:', sessionDataParam);
+      
+      if (sessionDataParam) {
+        const parsedData = JSON.parse(decodeURIComponent(sessionDataParam));
+        console.log('Home: Parsed save session data:', parsedData);
+        
+        saveSessionData.value = parsedData;
+        showSaveSessionModal.value = true;
+        
+        console.log('Home: Save session modal should now be visible');
+        
+        // Clean up URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    } catch (error) {
+      console.error('Home: Error parsing save session data:', error);
+    }
+  } else {
+    console.log('Home: No save popup needed');
+  }
+});
 </script>
