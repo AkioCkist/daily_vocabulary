@@ -162,7 +162,8 @@ class SavedSessionController extends Controller
         }
 
         return Inertia::render('SavedSessions/Show', [
-            'session' => $session
+            'session' => $session,
+            'user' => $user
         ]);
     }
 

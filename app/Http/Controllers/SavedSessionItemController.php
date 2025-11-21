@@ -308,6 +308,17 @@ class SavedSessionItemController extends Controller
             $allItems = SavedSessionItem::forSession($session->id)
                 ->orderBy('position')
                 ->get();
+                
+            Log::info('Initial item positions before move:', [
+                'items' => $allItems->map(fn($item) => [
+                    'id' => $item->id,
+                    'flashcard_id' => $item->flashcard_id,
+                    'position' => $item->position
+                ])->toArray(),
+                'moving_item_id' => $itemId,
+                'old_position' => $oldPosition,
+                'new_position' => $newPosition
+            ]);
 
             // Create a new array without the item being moved
             $itemsWithoutMoved = $allItems->filter(function ($sessionItem) use ($itemId) {
@@ -317,12 +328,27 @@ class SavedSessionItemController extends Controller
             // Insert the moved item at the new position (1-based index)
             $itemsWithoutMoved->splice($newPosition - 1, 0, [$item]);
 
-            // Update all positions at once to avoid unique constraint violations
+            // First, set all items to negative positions to avoid constraint violations
             foreach ($itemsWithoutMoved as $index => $sessionItem) {
-                $sessionItem->update(['position' => $index + 1]);
+                $tempPos = -($index + 1);
+                Log::info("Setting item {$sessionItem->id} to temporary position {$tempPos}");
+                $sessionItem->update(['position' => $tempPos]);
+            }
+            
+            // Then, update to final positive positions
+            foreach ($itemsWithoutMoved as $index => $sessionItem) {
+                $newPos = $index + 1;
+                Log::info("Updating item {$sessionItem->id} to final position {$newPos}");
+                $sessionItem->update(['position' => $newPos]);
             }
 
             DB::commit();
+            
+            // Log final state
+            $finalItems = SavedSessionItem::forSession($session->id)
+                ->orderBy('position')
+                ->get(['id', 'flashcard_id', 'position']);
+            Log::info('Final item positions after move:', $finalItems->toArray());
 
             // Return appropriate response based on request type
             if ($request->expectsJson()) {

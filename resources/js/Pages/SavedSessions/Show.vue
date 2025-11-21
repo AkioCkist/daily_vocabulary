@@ -265,24 +265,62 @@ const startReview = (settings) => {
 };
 
 const moveItemUp = (item, index) => {
-  if (index === 0) return;
+  console.log('moveItemUp called:', { item, index });
+  
+  if (index === 0) {
+    console.log('Cannot move up - already at top');
+    return;
+  }
   
   const newPosition = props.session.items[index - 1].position;
+  console.log('Moving up to position:', newPosition);
   moveItem(item.id, newPosition);
 };
 
 const moveItemDown = (item, index) => {
-  if (index === props.session.items.length - 1) return;
+  console.log('moveItemDown called:', { item, index });
+  
+  if (index === props.session.items.length - 1) {
+    console.log('Cannot move down - already at bottom');
+    return;
+  }
   
   const newPosition = props.session.items[index + 1].position;
+  console.log('Moving down to position:', newPosition);
   moveItem(item.id, newPosition);
 };
 
 const moveItem = (itemId, newPosition) => {
+  console.log('Moving item:', { itemId, newPosition });
+  
   router.put(
     route('saved-sessions.items.move', { slug: props.session.slug, itemId }),
     { new_position: newPosition },
-    { preserveScroll: true }
+    { 
+      preserveScroll: true,
+      onBefore: () => {
+        console.log('About to move item');
+        return true;
+      },
+      onSuccess: (page) => {
+        console.log('Item moved successfully', page);
+        console.log('About to reload page...');
+        // Refresh the page data to show the new order
+        router.reload({
+          onStart: () => console.log('Page reload started'),
+          onFinish: () => console.log('Page reload finished'),
+          onSuccess: () => console.log('Page reload successful'),
+          onError: (errors) => console.error('Page reload error:', errors)
+        });
+      },
+      onError: (errors) => {
+        console.error('Error moving item:', errors);
+        alert('Error moving item: ' + (errors.message || 'Unknown error'));
+      },
+      onFinish: () => {
+        console.log('Move request finished');
+      }
+    }
   );
 };
 
