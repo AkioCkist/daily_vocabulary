@@ -1,6 +1,6 @@
 <template>
-  <div class="fixed inset-0 z-50 overflow-y-auto">
-    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+  <div class="fixed inset-0 z-50 flex items-center justify-center">
+    <div class="flex items-center justify-center w-full h-full">
       <!-- Background overlay -->
       <div 
         class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
@@ -8,7 +8,7 @@
       ></div>
 
       <!-- Modal -->
-      <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+      <div class="bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:max-w-lg w-full max-w-lg">
         <!-- Header -->
         <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
           <div class="sm:flex sm:items-start">
@@ -59,20 +59,7 @@
                     />
                   </div>
 
-                  <!-- Flashcard type -->
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Flashcard Type
-                    </label>
-                    <select
-                      v-model="settings.flashcard_type"
-                      class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                    >
-                      <option value="standard">Standard (English → Vietnamese)</option>
-                      <option value="reverse">Reverse (Vietnamese → English)</option>
-                      <option value="both">Both Directions</option>
-                    </select>
-                  </div>
+
                 </div>
               </div>
             </div>
