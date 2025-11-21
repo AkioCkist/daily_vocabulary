@@ -52,15 +52,15 @@ class SavedSessionItem extends Model
     }
 
     /**
-     * Get the flashcard data for this item.
-     * Note: We store flashcard_id but don't create a direct relationship
-     * since flashcards might be generated dynamically in your system.
-     * You can add this relationship if you have a dedicated Flashcard model.
+     * Get the word (flashcard) for this item.
+     * The flashcard_id actually refers to the word_id.
+     *
+     * @return BelongsTo
      */
-    // public function flashcard(): BelongsTo
-    // {
-    //     return $this->belongsTo(Flashcard::class, 'flashcard_id');
-    // }
+    public function word(): BelongsTo
+    {
+        return $this->belongsTo(Word::class, 'flashcard_id');
+    }
 
     /**
      * Scope to get items ordered by position.

@@ -124,13 +124,22 @@
                 <div class="flex-1 min-w-0">
                   <div class="flex items-center gap-3 mb-2">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                      Word #{{ item.flashcard_id }}
+                      {{ item.word?.word || `Word #${item.flashcard_id}` }}
                     </h3>
-                    <!-- Note: In a real app, you'd fetch actual word data -->
-                    <!-- This is just showing the flashcard_id for demo -->
+                    <span v-if="item.word?.cefr_level" class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200">
+                      {{ item.word.cefr_level }}
+                    </span>
                   </div>
                   
-                  <p class="text-sm text-gray-500 dark:text-gray-400">
+                  <p v-if="item.word?.definition" class="text-sm text-gray-600 dark:text-gray-300 mb-1">
+                    {{ item.word.definition }}
+                  </p>
+                  
+                  <p v-if="item.word?.pronunciation" class="text-sm text-gray-500 dark:text-gray-400 italic">
+                    /{{ item.word.pronunciation }}/
+                  </p>
+                  
+                  <p v-if="!item.word" class="text-sm text-gray-500 dark:text-gray-400">
                     Flashcard ID: {{ item.flashcard_id }}
                   </p>
                 </div>

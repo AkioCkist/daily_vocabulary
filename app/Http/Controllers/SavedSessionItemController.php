@@ -7,8 +7,10 @@ use App\Models\SavedSession;
 use App\Models\SavedSessionItem;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 /**
@@ -25,7 +27,7 @@ class SavedSessionItemController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function store(string $sessionSlug, Request $request): JsonResponse
+    public function store(string $sessionSlug, Request $request): JsonResponse|RedirectResponse
     {
         $user = Auth::user();
         
@@ -80,18 +82,33 @@ class SavedSessionItemController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                'message' => 'Flashcard đã được thêm vào session.',
-                'item' => $item
-            ], 201);
+            // Return appropriate response based on request type
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Flashcard đã được thêm vào session.',
+                    'item' => $item
+                ], 201);
+            }
+
+            return back()->with('success', 'Flashcard đã được thêm vào session.');
 
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return response()->json([
-                'message' => 'Có lỗi xảy ra khi thêm flashcard.',
+            Log::error('SavedSessionItemController::store - Error adding item', [
+                'session_slug' => $sessionSlug,
+                'flashcard_id' => $request->flashcard_id,
                 'error' => $e->getMessage()
-            ], 500);
+            ]);
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Có lỗi xảy ra khi thêm flashcard.',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+
+            return back()->with('error', 'Có lỗi xảy ra khi thêm flashcard.');
         }
     }
 
@@ -102,7 +119,7 @@ class SavedSessionItemController extends Controller
      * @param int $itemId
      * @return JsonResponse
      */
-    public function destroy(string $sessionSlug, int $itemId): JsonResponse
+    public function destroy(string $sessionSlug, int $itemId, Request $request): JsonResponse|RedirectResponse
     {
         $user = Auth::user();
         
@@ -129,17 +146,32 @@ class SavedSessionItemController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                'message' => 'Flashcard đã được xóa khỏi session.'
-            ]);
+            // Return appropriate response based on request type
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Flashcard đã được xóa khỏi session.'
+                ]);
+            }
+
+            return back()->with('success', 'Flashcard đã được xóa khỏi session.');
 
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return response()->json([
-                'message' => 'Có lỗi xảy ra khi xóa flashcard.',
+            Log::error('SavedSessionItemController::destroy - Error deleting item', [
+                'session_slug' => $sessionSlug,
+                'item_id' => $itemId,
                 'error' => $e->getMessage()
-            ], 500);
+            ]);
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Có lỗi xảy ra khi xóa flashcard.',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+
+            return back()->with('error', 'Có lỗi xảy ra khi xóa flashcard.');
         }
     }
 
@@ -150,7 +182,7 @@ class SavedSessionItemController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function reorder(string $sessionSlug, Request $request): JsonResponse
+    public function reorder(string $sessionSlug, Request $request): JsonResponse|RedirectResponse
     {
         $user = Auth::user();
         
@@ -188,7 +220,14 @@ class SavedSessionItemController extends Controller
                 ], 400);
             }
 
-            // Update positions
+            // Update positions safely to avoid unique constraint violations
+            // First, set all positions to negative values
+            foreach ($itemOrders as $index => $order) {
+                SavedSessionItem::where('id', $order['id'])
+                    ->update(['position' => -($index + 1)]);
+            }
+            
+            // Then, set them to the correct positive positions
             foreach ($itemOrders as $order) {
                 SavedSessionItem::where('id', $order['id'])
                     ->update(['position' => $order['position']]);
@@ -196,17 +235,32 @@ class SavedSessionItemController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                'message' => 'Thứ tự flashcards đã được cập nhật.',
-            ]);
+            // Return appropriate response based on request type
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Thứ tự flashcards đã được cập nhật.',
+                ]);
+            }
+
+            return back()->with('success', 'Thứ tự flashcards đã được cập nhật.');
 
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return response()->json([
-                'message' => 'Có lỗi xảy ra khi sắp xếp lại flashcards.',
+            Log::error('SavedSessionItemController::reorder - Error reordering items', [
+                'session_slug' => $sessionSlug,
+                'item_orders' => $itemOrders ?? null,
                 'error' => $e->getMessage()
-            ], 500);
+            ]);
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Có lỗi xảy ra khi sắp xếp lại flashcards.',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+
+            return back()->with('error', 'Có lỗi xảy ra khi sắp xếp lại flashcards.');
         }
     }
 
@@ -218,7 +272,7 @@ class SavedSessionItemController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function move(string $sessionSlug, int $itemId, Request $request): JsonResponse
+    public function move(string $sessionSlug, int $itemId, Request $request): JsonResponse|RedirectResponse
     {
         $user = Auth::user();
         
@@ -250,37 +304,55 @@ class SavedSessionItemController extends Controller
         try {
             DB::beginTransaction();
 
-            if ($newPosition > $oldPosition) {
-                // Moving down: shift items up
-                SavedSessionItem::forSession($session->id)
-                    ->where('position', '>', $oldPosition)
-                    ->where('position', '<=', $newPosition)
-                    ->decrement('position');
-            } else {
-                // Moving up: shift items down
-                SavedSessionItem::forSession($session->id)
-                    ->where('position', '>=', $newPosition)
-                    ->where('position', '<', $oldPosition)
-                    ->increment('position');
-            }
+            // Get all items for this session ordered by position
+            $allItems = SavedSessionItem::forSession($session->id)
+                ->orderBy('position')
+                ->get();
 
-            // Update the item's position
-            $item->update(['position' => $newPosition]);
+            // Create a new array without the item being moved
+            $itemsWithoutMoved = $allItems->filter(function ($sessionItem) use ($itemId) {
+                return $sessionItem->id !== $itemId;
+            })->values();
+
+            // Insert the moved item at the new position (1-based index)
+            $itemsWithoutMoved->splice($newPosition - 1, 0, [$item]);
+
+            // Update all positions at once to avoid unique constraint violations
+            foreach ($itemsWithoutMoved as $index => $sessionItem) {
+                $sessionItem->update(['position' => $index + 1]);
+            }
 
             DB::commit();
 
-            return response()->json([
-                'message' => 'Vị trí flashcard đã được cập nhật.',
-                'item' => $item->fresh()
-            ]);
+            // Return appropriate response based on request type
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Vị trí flashcard đã được cập nhật.',
+                    'item' => $item->fresh()
+                ]);
+            }
+
+            return back()->with('success', 'Vị trí flashcard đã được cập nhật.');
 
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return response()->json([
-                'message' => 'Có lỗi xảy ra khi di chuyển flashcard.',
+            Log::error('SavedSessionItemController::move - Error moving item', [
+                'session_slug' => $sessionSlug,
+                'item_id' => $itemId,
+                'new_position' => $newPosition,
+                'old_position' => $oldPosition,
                 'error' => $e->getMessage()
-            ], 500);
+            ]);
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Có lỗi xảy ra khi di chuyển flashcard.',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+
+            return back()->with('error', 'Có lỗi xảy ra khi di chuyển flashcard.');
         }
     }
 }

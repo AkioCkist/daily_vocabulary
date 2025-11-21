@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -36,7 +37,7 @@ class SavedSessionController extends Controller
         $sessions = SavedSession::forUser($user->id)
             ->recent()
             ->with(['items' => function($query) {
-                $query->orderBy('position');
+                $query->orderBy('position')->with('word');
             }])
             ->paginate(12);
 
@@ -127,16 +128,32 @@ class SavedSessionController extends Controller
      *
      * @param string $slug
      * @param Request $request
-     * @return JsonResponse|Response
+     * @return JsonResponse|Response|RedirectResponse
      */
     public function show(string $slug, Request $request)
     {
+        // Force check authentication
+        if (!Auth::check()) {
+            Log::warning('SavedSessionController::show - User not authenticated, redirecting to login');
+            return redirect()->route('login')->with('error', 'Please log in to access saved sessions.');
+        }
+        
         $user = Auth::user();
+        
+        // Debug authentication state
+        Log::info('SavedSessionController::show - Authentication debug', [
+            'is_authenticated' => true,
+            'user_id' => $user->id,
+            'user_email' => $user->email,
+            'slug' => $slug,
+            'session_id' => session()->getId(),
+            'request_url' => $request->fullUrl(),
+        ]);
         
         $session = SavedSession::forUser($user->id)
             ->where('slug', $slug)
             ->with(['items' => function($query) {
-                $query->orderBy('position');
+                $query->orderBy('position')->with('word');
             }])
             ->firstOrFail();
 
@@ -290,8 +307,23 @@ class SavedSessionController extends Controller
      */
     public function review(string $slug, ReviewSavedSessionRequest $request)
     {
+        // Force check authentication
+        if (!Auth::check()) {
+            Log::warning('SavedSessionController::review - User not authenticated');
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Authentication required'], 401);
+            }
+            return redirect()->route('login')->with('error', 'Please log in to access saved sessions.');
+        }
+        
         $user = Auth::user();
         $validated = $request->validated();
+        
+        Log::info('SavedSessionController::review - Starting review', [
+            'user_id' => $user->id,
+            'slug' => $slug,
+            'validated_data' => $validated,
+        ]);
         
         $session = SavedSession::forUser($user->id)
             ->where('slug', $slug)
