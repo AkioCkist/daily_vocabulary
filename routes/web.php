@@ -106,6 +106,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Flashcard System
     Route::prefix('flashcards')->name('flashcards.')->group(function () {
         Route::post('/start', [\App\Http\Controllers\FlashcardController::class, 'start'])->name('start');
+        Route::get('/practice', function() {
+            // Render the practice page using session data
+            $session = session('flashcard_session');
+            if (!$session) {
+                return redirect()->route('dashboard')->with('error', 'No active flashcard session.');
+            }
+            $userTopics = \App\Models\Topic::where('user_id', \Illuminate\Support\Facades\Auth::id())
+                ->select(['id', 'name', 'description'])
+                ->orderBy('name')
+                ->get();
+            return Inertia::render('Flashcards/Practice', [
+                'words' => $session['words'],
+                'settings' => $session['settings'],
+                'userTopics' => $userTopics,
+            ]);
+        })->name('practice');
         Route::post('/next', [\App\Http\Controllers\FlashcardController::class, 'next'])->name('next');
         Route::post('/answer', [\App\Http\Controllers\FlashcardController::class, 'answer'])->name('answer');
         Route::post('/hint', [\App\Http\Controllers\FlashcardController::class, 'getHint'])->name('hint');
@@ -115,6 +131,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/words/add-to-topic', [\App\Http\Controllers\FlashcardController::class, 'addToTopic'])->name('words.add-to-topic');
         Route::post('/words/remove-from-topic', [\App\Http\Controllers\FlashcardController::class, 'removeFromTopic'])->name('words.remove-from-topic');
         Route::get('/words/{wordId}/topics', [\App\Http\Controllers\FlashcardController::class, 'getWordTopics'])->name('words.topics');
+        
+        // Topic management
+        Route::post('/topics/quick-create', [\App\Http\Controllers\FlashcardController::class, 'quickCreateTopic'])->name('topics.quick-create');
+        Route::delete('/topics/{topicId}', [\App\Http\Controllers\FlashcardController::class, 'deleteTopic'])->name('topics.delete');
     });
 
     // Profile (Breeze)
