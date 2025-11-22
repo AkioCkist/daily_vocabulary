@@ -4,16 +4,14 @@ import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
 import TwoFactorAuthentication from './Partials/TwoFactorAuthentication.vue';
+import SubscriptionSettings from './Partials/SubscriptionSettings.vue';
 import { Head, usePage, useForm } from '@inertiajs/vue3';
 import { computed, onMounted, ref } from 'vue';
 
-defineProps({
-    mustVerifyEmail: {
-        type: Boolean,
-    },
-    status: {
-        type: String,
-    },
+const props = defineProps({
+    mustVerifyEmail: Boolean,
+    status: String,
+    subscriptionPreferences: Object,
 });
 
 const page = usePage();
@@ -101,6 +99,9 @@ onMounted(() => {
                 >
                     <UpdatePasswordForm class="max-w-xl" />
                 </div>
+
+                <!-- Subscription Settings -->
+                <SubscriptionSettings :initial="props.subscriptionPreferences || undefined" />
 
                 <!-- Two Factor Authentication -->
                 <div

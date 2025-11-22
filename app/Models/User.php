@@ -163,4 +163,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(SavedSession::class);
     }
+
+    /**
+     * Get the user's subscription preferences record.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function subscription()
+    {
+        return $this->hasOne(Subscription::class);
+    }
 }

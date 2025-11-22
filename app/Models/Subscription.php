@@ -25,6 +25,24 @@ class Subscription extends Model
         'user_id',
         'confirmed_at',
         'unsubscribed_at',
+        'receive_ads',
+        'incorrect_words_frequency',
+        'topic_summary_frequency',
+        'last_ads_sent_at',
+        'last_incorrect_words_sent_at',
+        'last_topic_summary_sent_at',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'receive_ads' => 'boolean',
+        'last_ads_sent_at' => 'datetime',
+        'last_incorrect_words_sent_at' => 'datetime',
+        'last_topic_summary_sent_at' => 'datetime',
     ];
 
     /**

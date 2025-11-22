@@ -18,9 +18,15 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        $subscription = $request->user()->subscription()->first();
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
+            'subscriptionPreferences' => $subscription ? [
+                'receive_ads' => (bool)$subscription->receive_ads,
+                'incorrect_words_frequency' => $subscription->incorrect_words_frequency,
+                'topic_summary_frequency' => $subscription->topic_summary_frequency,
+            ] : null,
         ]);
     }
 

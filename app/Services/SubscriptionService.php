@@ -4,6 +4,9 @@ namespace App\Services;
 
 use App\Repositories\Interfaces\SubscriptionRepositoryInterface;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeSubscriptionMail;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class SubscriptionService
 {
@@ -25,9 +28,8 @@ class SubscriptionService
                 ]);
                 
                 // Send welcome back email
-                Mail::mailer('smtp')->raw('Welcome back to Daily Vocabulary! You will receive a new word every day.', function ($m) use ($email) {
-                    $m->to($email)->subject('Welcome Back to Daily Vocabulary!');
-                });
+                $user = $userId ? User::find($userId) : null;
+                Mail::to($email)->send(new WelcomeSubscriptionMail($user, $existing));
                 
                 return $existing;
             }
@@ -47,10 +49,24 @@ class SubscriptionService
             'confirmed_at' => now(), // Confirm immediately for authenticated users
         ]);
 
-        // Send confirmation email instantly via Mailhog (smtp mailer)
-        Mail::mailer('smtp')->raw('You are now subscribed to Daily Vocabulary! You will receive a new word every day.', function ($m) use ($email) {
-            $m->to($email)->subject('Welcome to Daily Vocabulary!');
-        });
+        // Send welcome email instantly
+        $user = $userId ? User::find($userId) : null;
+        Mail::to($email)->send(new WelcomeSubscriptionMail($user, $subscription));
+
+        // Optionally log welcome email in email_logs
+        try {
+            DB::table('email_logs')->insert([
+                'user_id' => $user?->id ?? 0,
+                'type' => 'welcome',
+                'subject' => 'Welcome to Daily Vocabulary!',
+                'meta' => json_encode(['email' => $email]),
+                'sent_at' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        } catch (\Throwable $e) {
+            // ignore logging failures
+        }
 
         return $subscription;
     }
