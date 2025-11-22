@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Api\WordSearchController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Profile\SubscriptionSettingsController;
 use Inertia\Inertia;
 
 use App\Http\Controllers\HomeController;
@@ -164,6 +165,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Subscription settings (Edit Profile)
+    Route::put('/profile/subscription', [SubscriptionSettingsController::class, 'update'])->name('profile.subscription.update');
+    Route::get('/profile/subscription/metrics', [SubscriptionSettingsController::class, 'metrics'])->name('profile.subscription.metrics');
 });
 
 // Email Verification Routes (double-opt-in)
