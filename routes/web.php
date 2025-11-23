@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Api\WordSearchController;
+use App\Http\Controllers\TokenManagerController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Profile\SubscriptionSettingsController;
@@ -35,9 +36,6 @@ Route::get('/words', [WordController::class, 'index'])->name('words.index');
 // Word filtering routes (guest or auth)
 Route::get('/words/filter', [WordFilterController::class, 'index'])->name('words.filter');
 Route::get('/words/search', [WordFilterController::class, 'search'])->name('words.search');
-Route::get('/api/words/filter', [WordFilterController::class, 'api'])->middleware('throttle:60,1')->name('api.words.filter');
-Route::get('/api/words/filter-options', [WordFilterController::class, 'filterOptions'])->middleware('throttle:30,1')->name('api.words.filter-options');
-Route::get('/api/words/search', [WordSearchController::class, 'search'])->middleware('throttle:60,1')->name('api.words.search');
 
 // Subscription (guest or logged in)
 Route::post('/subscribe', [SubscriptionController::class, 'store'])->middleware('progressive_throttle:3,1')->name('subscribe.store');
@@ -169,6 +167,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Subscription settings (Edit Profile)
     Route::put('/profile/subscription', [SubscriptionSettingsController::class, 'update'])->name('profile.subscription.update');
     Route::get('/profile/subscription/metrics', [SubscriptionSettingsController::class, 'metrics'])->name('profile.subscription.metrics');
+
+    // API Token Manager
+    Route::get('/tokens', [TokenManagerController::class, 'index'])->name('tokens.index');
 });
 
 // Email Verification Routes (double-opt-in)

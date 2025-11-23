@@ -7,6 +7,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
+        api: __DIR__.'/../routes/api.php',
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
@@ -18,6 +19,12 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\CheckAuthenticationLocks::class,
         ]);
 
+        // API middleware should use sanctum authentication and force JSON responses
+        $middleware->api(append: [
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            \App\Http\Middleware\ForceJsonResponse::class,
+        ]);
+
         // Register progressive rate limiter
         $middleware->alias([
             'progressive_throttle' => \App\Http\Middleware\ProgressiveRateLimiter::class,
@@ -26,6 +33,20 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // Handle authentication exceptions for API requests
+        $exceptions->render(function (Illuminate\Auth\AuthenticationException $e, $request) {
+            if ($request->expectsJson() || $request->is('api/*')) {
+                return response()->json([
+                    'message' => 'Unauthenticated',
+                    'error' => 'Authentication required'
+                ], 401);
+            }
+            
+            // Default behavior for web requests
+            return redirect()->guest(route('login'));
+        });
+
+        // Handle rate limit exceptions
         $exceptions->render(function (Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException $e, $request) {
             $retryAfter = $e->getHeaders()['Retry-After'] ?? null;
             $message = $e->getMessage();
@@ -33,7 +54,7 @@ return Application::configure(basePath: dirname(__DIR__))
             // Check if this is a lock message
             $isLocked = str_contains($message, 'locked') || str_contains($message, 'administrator');
             
-            if ($request->expectsJson()) {
+            if ($request->expectsJson() || $request->is('api/*')) {
                 return response()->json([
                     'message' => $isLocked ? $message : 'Too Many Requests',
                     'retry_after' => $retryAfter,
