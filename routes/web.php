@@ -40,10 +40,10 @@ Route::get('/api/words/filter-options', [WordFilterController::class, 'filterOpt
 Route::get('/api/words/search', [WordSearchController::class, 'search'])->middleware('throttle:60,1')->name('api.words.search');
 
 // Subscription (guest or logged in)
-Route::post('/subscribe', [SubscriptionController::class, 'store'])->middleware('throttle:5,1')->name('subscribe.store');
-Route::post('/unsubscribe', [SubscriptionController::class, 'unsubscribe'])->middleware('throttle:3,1')->name('subscribe.unsubscribe');
-Route::post('/check-subscription-status', [SubscriptionController::class, 'checkStatus'])->middleware('throttle:10,1')->name('subscribe.checkStatus');
-Route::get('/auth-subscription-status', [SubscriptionController::class, 'getAuthUserStatus'])->middleware('throttle:20,1')->name('subscribe.authStatus');
+Route::post('/subscribe', [SubscriptionController::class, 'store'])->middleware('progressive_throttle:3,1')->name('subscribe.store');
+Route::post('/unsubscribe', [SubscriptionController::class, 'unsubscribe'])->middleware('progressive_throttle:2,1')->name('subscribe.unsubscribe');
+Route::post('/check-subscription-status', [SubscriptionController::class, 'checkStatus'])->middleware('progressive_throttle:5,1')->name('subscribe.checkStatus');
+Route::get('/auth-subscription-status', [SubscriptionController::class, 'getAuthUserStatus'])->middleware('progressive_throttle:10,1')->name('subscribe.authStatus');
 
 // Authenticated + Verified User routes
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -56,8 +56,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Learning routes
     Route::prefix('learn')->name('learning.')->group(function () {
         Route::get('/', [LearningController::class, 'index'])->name('index');
-        Route::post('/generate', [LearningController::class, 'generateSession'])->middleware('throttle:10,1')->name('generate');
-        Route::post('/generate-quick', [LearningController::class, 'generateQuick'])->middleware('throttle:15,1')->name('generate-quick');
+        Route::post('/generate', [LearningController::class, 'generateSession'])->middleware('progressive_throttle:5,1')->name('generate');
+        Route::post('/generate-quick', [LearningController::class, 'generateQuick'])->middleware('progressive_throttle:8,1')->name('generate-quick');
         Route::post('/start', [LearningController::class, 'startSession'])->name('start');
         Route::post('/next', [LearningController::class, 'next'])->name('next');
         Route::post('/mark-learned', [LearningController::class, 'markLearned'])->name('mark-learned');
@@ -69,8 +69,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Daily Test routes
     Route::prefix('test')->name('test.')->group(function () {
         Route::get('/', [TestController::class, 'index'])->name('index');
-        Route::post('/generate', [TestController::class, 'generate'])->middleware('throttle:10,1')->name('generate');
-        Route::post('/generate-daily', [TestController::class, 'generateDaily'])->middleware('throttle:5,1')->name('generate-daily');
+        Route::post('/generate', [TestController::class, 'generate'])->middleware('progressive_throttle:5,1')->name('generate');
+        Route::post('/generate-daily', [TestController::class, 'generateDaily'])->middleware('progressive_throttle:3,1')->name('generate-daily');
         Route::post('/answer', [TestController::class, 'submitAnswer'])->name('answer');
         Route::post('/complete', [TestController::class, 'complete'])->name('complete');
         Route::get('/results', [TestController::class, 'results'])->name('results');
@@ -184,7 +184,16 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
     return back()->with('message', 'Verification email sent!');
-})->middleware(['auth', 'throttle:3,1'])->name('verification.send');
+})->middleware(['auth', 'progressive_throttle:2,1'])->name('verification.send');
+
+// Admin routes for rate limit management
+Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/rate-limits', [\App\Http\Controllers\Admin\RateLimitController::class, 'index'])->name('rate-limits.index');
+    Route::post('/rate-limits/unlock-user', [\App\Http\Controllers\Admin\RateLimitController::class, 'unlock'])->name('rate-limits.unlock-user');
+    Route::post('/rate-limits/unlock-ip', [\App\Http\Controllers\Admin\RateLimitController::class, 'unlockIp'])->name('rate-limits.unlock-ip');
+    Route::post('/rate-limits/unlock-auth-ip', [\App\Http\Controllers\Admin\RateLimitController::class, 'unlockAuthIp'])->name('rate-limits.unlock-auth-ip');
+    Route::post('/rate-limits/unlock-auth-email', [\App\Http\Controllers\Admin\RateLimitController::class, 'unlockAuthEmail'])->name('rate-limits.unlock-auth-email');
+});
 
 // Breeze auth routes
 require __DIR__.'/auth.php';
