@@ -35,15 +35,15 @@ Route::get('/words', [WordController::class, 'index'])->name('words.index');
 // Word filtering routes (guest or auth)
 Route::get('/words/filter', [WordFilterController::class, 'index'])->name('words.filter');
 Route::get('/words/search', [WordFilterController::class, 'search'])->name('words.search');
-Route::get('/api/words/filter', [WordFilterController::class, 'api'])->name('api.words.filter');
-Route::get('/api/words/filter-options', [WordFilterController::class, 'filterOptions'])->name('api.words.filter-options');
-Route::get('/api/words/search', [WordSearchController::class, 'search'])->name('api.words.search');
+Route::get('/api/words/filter', [WordFilterController::class, 'api'])->middleware('throttle:60,1')->name('api.words.filter');
+Route::get('/api/words/filter-options', [WordFilterController::class, 'filterOptions'])->middleware('throttle:30,1')->name('api.words.filter-options');
+Route::get('/api/words/search', [WordSearchController::class, 'search'])->middleware('throttle:60,1')->name('api.words.search');
 
 // Subscription (guest or logged in)
-Route::post('/subscribe', [SubscriptionController::class, 'store'])->name('subscribe.store');
-Route::post('/unsubscribe', [SubscriptionController::class, 'unsubscribe'])->name('subscribe.unsubscribe');
-Route::post('/check-subscription-status', [SubscriptionController::class, 'checkStatus'])->name('subscribe.checkStatus');
-Route::get('/auth-subscription-status', [SubscriptionController::class, 'getAuthUserStatus'])->name('subscribe.authStatus');
+Route::post('/subscribe', [SubscriptionController::class, 'store'])->middleware('throttle:5,1')->name('subscribe.store');
+Route::post('/unsubscribe', [SubscriptionController::class, 'unsubscribe'])->middleware('throttle:3,1')->name('subscribe.unsubscribe');
+Route::post('/check-subscription-status', [SubscriptionController::class, 'checkStatus'])->middleware('throttle:10,1')->name('subscribe.checkStatus');
+Route::get('/auth-subscription-status', [SubscriptionController::class, 'getAuthUserStatus'])->middleware('throttle:20,1')->name('subscribe.authStatus');
 
 // Authenticated + Verified User routes
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -56,8 +56,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Learning routes
     Route::prefix('learn')->name('learning.')->group(function () {
         Route::get('/', [LearningController::class, 'index'])->name('index');
-        Route::post('/generate', [LearningController::class, 'generateSession'])->name('generate');
-        Route::post('/generate-quick', [LearningController::class, 'generateQuick'])->name('generate-quick');
+        Route::post('/generate', [LearningController::class, 'generateSession'])->middleware('throttle:10,1')->name('generate');
+        Route::post('/generate-quick', [LearningController::class, 'generateQuick'])->middleware('throttle:15,1')->name('generate-quick');
         Route::post('/start', [LearningController::class, 'startSession'])->name('start');
         Route::post('/next', [LearningController::class, 'next'])->name('next');
         Route::post('/mark-learned', [LearningController::class, 'markLearned'])->name('mark-learned');
@@ -69,8 +69,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Daily Test routes
     Route::prefix('test')->name('test.')->group(function () {
         Route::get('/', [TestController::class, 'index'])->name('index');
-        Route::post('/generate', [TestController::class, 'generate'])->name('generate');
-        Route::post('/generate-daily', [TestController::class, 'generateDaily'])->name('generate-daily');
+        Route::post('/generate', [TestController::class, 'generate'])->middleware('throttle:10,1')->name('generate');
+        Route::post('/generate-daily', [TestController::class, 'generateDaily'])->middleware('throttle:5,1')->name('generate-daily');
         Route::post('/answer', [TestController::class, 'submitAnswer'])->name('answer');
         Route::post('/complete', [TestController::class, 'complete'])->name('complete');
         Route::get('/results', [TestController::class, 'results'])->name('results');
@@ -92,16 +92,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // User Vocabulary
     Route::get('/user/words', [UserWordController::class, 'index'])->name('user.words.index');
-    Route::post('/user/words', [UserWordController::class, 'store'])->name('user.words.store');
-    Route::put('/user/words/{id}', [UserWordController::class, 'update'])->name('user.words.update');
-    Route::delete('/user/words/{id}', [UserWordController::class, 'destroy'])->name('user.words.destroy');
+    Route::post('/user/words', [UserWordController::class, 'store'])->middleware('throttle:20,1')->name('user.words.store');
+    Route::put('/user/words/{id}', [UserWordController::class, 'update'])->middleware('throttle:30,1')->name('user.words.update');
+    Route::delete('/user/words/{id}', [UserWordController::class, 'destroy'])->middleware('throttle:20,1')->name('user.words.destroy');
 
     // Topic Management
     Route::prefix('topics')->name('topics.')->group(function () {
         Route::get('/', [\App\Http\Controllers\TopicController::class, 'index'])->name('index');
-        Route::post('/', [\App\Http\Controllers\TopicController::class, 'store'])->name('store');
-        Route::put('/{id}', [\App\Http\Controllers\TopicController::class, 'update'])->name('update');
-        Route::delete('/{id}', [\App\Http\Controllers\TopicController::class, 'destroy'])->name('destroy');
+        Route::post('/', [\App\Http\Controllers\TopicController::class, 'store'])->middleware('throttle:15,1')->name('store');
+        Route::put('/{id}', [\App\Http\Controllers\TopicController::class, 'update'])->middleware('throttle:20,1')->name('update');
+        Route::delete('/{id}', [\App\Http\Controllers\TopicController::class, 'destroy'])->middleware('throttle:10,1')->name('destroy');
         Route::get('/suggested', [\App\Http\Controllers\TopicController::class, 'suggested'])->name('suggested');
         Route::get('/search', [\App\Http\Controllers\TopicController::class, 'search'])->name('search');
     });
@@ -184,7 +184,7 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
     return back()->with('message', 'Verification email sent!');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+})->middleware(['auth', 'throttle:3,1'])->name('verification.send');
 
 // Breeze auth routes
 require __DIR__.'/auth.php';
