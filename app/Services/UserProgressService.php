@@ -34,42 +34,51 @@ class UserProgressService
                 $userWord->handleIncorrectAnswer();
             }
 
+            // Invalidate user's progress cache
+            \Illuminate\Support\Facades\Cache::forget("user:progress:{$user->id}");
+
             return $userWord;
         });
     }
 
     /**
-     * Get comprehensive user progress statistics.
+     * Get comprehensive user progress statistics with Redis caching.
      *
      * @param User $user
      * @return array<string, mixed>
      */
     public function getUserProgressStats(User $user): array
     {
-        $userWords = UserWord::where('user_id', $user->id);
-        $testAttempts = TestAttempt::where('user_id', $user->id);
+        return \Illuminate\Support\Facades\Cache::remember(
+            "user:progress:{$user->id}",
+            now()->addHours(6), // Cache for 6 hours as stats update regularly
+            function () use ($user) {
+                $userWords = UserWord::where('user_id', $user->id);
+                $testAttempts = TestAttempt::where('user_id', $user->id);
 
-        return [
-            'vocabulary_stats' => [
-                'total_words_seen' => $userWords->count(),
-                'words_learned' => $userWords->clone()->where('is_learned', true)->count(),
-                'words_mastered' => $userWords->clone()->where('mastered', true)->count(),
-                'words_in_review' => $userWords->clone()->needsReview()->count(),
-                'average_consecutive_correct' => $userWords->clone()->avg('consecutive_correct') ?? 0,
-                'total_mistakes' => $userWords->clone()->sum('mistake_count'),
-            ],
-            'test_performance' => [
-                'total_attempts' => $testAttempts->count(),
-                'correct_answers' => $testAttempts->clone()->where('is_correct', true)->count(),
-                'accuracy_rate' => $this->calculateAccuracyRate($user),
-                'recent_test_scores' => $this->getRecentTestScores($user),
-            ],
-            'learning_patterns' => [
-                'most_difficult_topics' => $this->getMostDifficultTopics($user),
-                'strongest_cefr_levels' => $this->getStrongestCefrLevels($user),
-                'learning_streak' => $this->getCurrentLearningStreak($user),
-            ],
-        ];
+                return [
+                    'vocabulary_stats' => [
+                        'total_words_seen' => $userWords->count(),
+                        'words_learned' => $userWords->clone()->where('is_learned', true)->count(),
+                        'words_mastered' => $userWords->clone()->where('mastered', true)->count(),
+                        'words_in_review' => $userWords->clone()->needsReview()->count(),
+                        'average_consecutive_correct' => $userWords->clone()->avg('consecutive_correct') ?? 0,
+                        'total_mistakes' => $userWords->clone()->sum('mistake_count'),
+                    ],
+                    'test_performance' => [
+                        'total_attempts' => $testAttempts->count(),
+                        'correct_answers' => $testAttempts->clone()->where('is_correct', true)->count(),
+                        'accuracy_rate' => $this->calculateAccuracyRate($user),
+                        'recent_test_scores' => $this->getRecentTestScores($user),
+                    ],
+                    'learning_patterns' => [
+                        'most_difficult_topics' => $this->getMostDifficultTopics($user),
+                        'strongest_cefr_levels' => $this->getStrongestCefrLevels($user),
+                        'learning_streak' => $this->getCurrentLearningStreak($user),
+                    ],
+                ];
+            }
+        );
     }
 
     /**

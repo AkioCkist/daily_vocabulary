@@ -23,14 +23,20 @@ class DashboardService
      */
     public function getDashboardData(User $user): array
     {
-        return [
-            'stats' => $this->getUserStats($user),
-            'learning_heatmap' => $this->getLearningHeatmapData($user),
-            'recent_activity' => $this->getRecentActivity($user),
-            'performance_trends' => $this->getPerformanceTrends($user),
-            'available_topics' => $this->getAvailableTopics($user),
-            'cefr_levels' => $this->getCefrLevels(),
-        ];
+        return \Illuminate\Support\Facades\Cache::remember(
+            "dashboard:data:{$user->id}",
+            now()->addHours(1), // Cache for 1 hour
+            function () use ($user) {
+                return [
+                    'stats' => $this->getUserStats($user),
+                    'learning_heatmap' => $this->getLearningHeatmapData($user),
+                    'recent_activity' => $this->getRecentActivity($user),
+                    'performance_trends' => $this->getPerformanceTrends($user),
+                    'available_topics' => $this->getAvailableTopics($user),
+                    'cefr_levels' => $this->getCefrLevels(),
+                ];
+            }
+        );
     }
 
     /**
@@ -41,24 +47,30 @@ class DashboardService
      */
     public function getUserStats(User $user): array
     {
-        $userWords = UserWord::where('user_id', $user->id);
-        $testAttempts = TestAttempt::where('user_id', $user->id);
+        return \Illuminate\Support\Facades\Cache::remember(
+            "dashboard:stats:{$user->id}",
+            now()->addHours(1), // Cache for 1 hour
+            function () use ($user) {
+                $userWords = UserWord::where('user_id', $user->id);
+                $testAttempts = TestAttempt::where('user_id', $user->id);
 
-        $totalAttempts = $testAttempts->count();
-        $correctAttempts = $testAttempts->clone()->where('is_correct', true)->count();
-        $accuracyRate = $totalAttempts > 0 ? round(($correctAttempts / $totalAttempts) * 100, 1) : 0;
+                $totalAttempts = $testAttempts->count();
+                $correctAttempts = $testAttempts->clone()->where('is_correct', true)->count();
+                $accuracyRate = $totalAttempts > 0 ? round(($correctAttempts / $totalAttempts) * 100, 1) : 0;
 
-        return [
-            'words_learning' => $userWords->clone()->where('is_learned', false)->count(),
-            'words_learned' => $userWords->clone()->where('is_learned', true)->count(),
-            'words_mastered' => $userWords->clone()->where('mastered', true)->count(),
-            'total_words_seen' => $userWords->count(),
-            'accuracy_rate' => $accuracyRate,
-            'correct_answers' => $correctAttempts,
-            'total_attempts' => $totalAttempts,
-            'learning_streak' => $this->getCurrentLearningStreak($user),
-            'words_due_for_review' => $userWords->clone()->needsReview()->count(),
-        ];
+                return [
+                    'words_learning' => $userWords->clone()->where('is_learned', false)->count(),
+                    'words_learned' => $userWords->clone()->where('is_learned', true)->count(),
+                    'words_mastered' => $userWords->clone()->where('mastered', true)->count(),
+                    'total_words_seen' => $userWords->count(),
+                    'accuracy_rate' => $accuracyRate,
+                    'correct_answers' => $correctAttempts,
+                    'total_attempts' => $totalAttempts,
+                    'learning_streak' => $this->getCurrentLearningStreak($user),
+                    'words_due_for_review' => $userWords->clone()->needsReview()->count(),
+                ];
+            }
+        );
     }
 
     /**
