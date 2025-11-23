@@ -245,6 +245,11 @@ class TestService
                 ]
             ]);
 
+            // Invalidate dashboard and review caches since user progress changed
+            \Illuminate\Support\Facades\Cache::forget("dashboard:data:{$user->id}");
+            \Illuminate\Support\Facades\Cache::forget("dashboard:stats:{$user->id}");
+            \Illuminate\Support\Facades\Cache::forget("review:progress:{$user->id}");
+
             return $attempt;
         });
     }

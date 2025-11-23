@@ -15,20 +15,30 @@ class DailyWordService
     public function getTodayWord(?int $userId = null)
     {
         $today = now()->toDateString();
+        $cacheKey = "daily-word:$today";
 
-        $record = DailyWordHistory::with('word')->where('date', $today)->first();
+        // Check if we have a cached word of the day
+        $record = \Illuminate\Support\Facades\Cache::remember(
+            $cacheKey,
+            now()->addHours(24), // Cache for 24 hours (until next day)
+            function () use ($today) {
+                $record = DailyWordHistory::with('word')->where('date', $today)->first();
 
-        // If no word of the day exists yet, create one
-        if (!$record) {
-            $word = $this->wordRepo->getRandomWord();
+                // If no word of the day exists yet, create one
+                if (!$record) {
+                    $word = $this->wordRepo->getRandomWord();
 
-            DailyWordHistory::create([
-                'word_id' => $word->id,
-                'date' => $today,
-            ]);
+                    DailyWordHistory::create([
+                        'word_id' => $word->id,
+                        'date' => $today,
+                    ]);
 
-            return $word;
-        }
+                    return DailyWordHistory::with('word')->where('date', $today)->first();
+                }
+
+                return $record;
+            }
+        );
 
         // If user is not logged in, just return the word of the day
         if (!$userId) {

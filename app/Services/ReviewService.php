@@ -70,6 +70,9 @@ class ReviewService
         // Refresh the model to get updated values
         $userWord->refresh();
 
+        // Invalidate review progress cache since data has changed
+        \Illuminate\Support\Facades\Cache::forget("review:progress:{$user->id}");
+
         return [
             'is_correct' => $isCorrect,
             'correct_answer' => $this->getCorrectAnswer($userWord->word, $questionType),
@@ -131,32 +134,38 @@ class ReviewService
      */
     public function getReviewProgress(User $user): array
     {
-        $totalReviewWords = UserWord::where('user_id', $user->id)
-            ->needsReview()
-            ->count();
+        return \Illuminate\Support\Facades\Cache::remember(
+            "review:progress:{$user->id}",
+            now()->addHours(1), // Cache for 1 hour
+            function () use ($user) {
+                $totalReviewWords = UserWord::where('user_id', $user->id)
+                    ->needsReview()
+                    ->count();
 
-        $almostMasteredWords = UserWord::where('user_id', $user->id)
-            ->needsReview()
-            ->where('consecutive_correct', '>=', 2)
-            ->count();
+                $almostMasteredWords = UserWord::where('user_id', $user->id)
+                    ->needsReview()
+                    ->where('consecutive_correct', '>=', 2)
+                    ->count();
 
-        $strugglingWords = UserWord::where('user_id', $user->id)
-            ->needsReview()
-            ->where('mistake_count', '>=', 5)
-            ->count();
+                $strugglingWords = UserWord::where('user_id', $user->id)
+                    ->needsReview()
+                    ->where('mistake_count', '>=', 5)
+                    ->count();
 
-        $recentlyAddedWords = UserWord::where('user_id', $user->id)
-            ->needsReview()
-            ->where('created_at', '>=', now()->subDays(7))
-            ->count();
+                $recentlyAddedWords = UserWord::where('user_id', $user->id)
+                    ->needsReview()
+                    ->where('created_at', '>=', now()->subDays(7))
+                    ->count();
 
-        return [
-            'total_review_words' => $totalReviewWords,
-            'almost_mastered' => $almostMasteredWords,
-            'struggling_words' => $strugglingWords,
-            'recently_added' => $recentlyAddedWords,
-            'mastery_rate' => $this->calculateMasteryRate($user),
-        ];
+                return [
+                    'total_review_words' => $totalReviewWords,
+                    'almost_mastered' => $almostMasteredWords,
+                    'struggling_words' => $strugglingWords,
+                    'recently_added' => $recentlyAddedWords,
+                    'mastery_rate' => $this->calculateMasteryRate($user),
+                ];
+            }
+        );
     }
 
     /**

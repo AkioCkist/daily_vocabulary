@@ -14,30 +14,38 @@ use Illuminate\Validation\ValidationException;
 class TopicService
 {
     /**
-     * Get all system topics.
+     * Get all system topics with Redis caching.
      *
      * @return Collection<int, Topic>
      */
     public function getSystemTopics(): Collection
     {
-        return Topic::where('is_system', true)
-            ->withCount('words')
-            ->orderBy('name')
-            ->get();
+        return \Illuminate\Support\Facades\Cache::remember(
+            'topics:system:all',
+            now()->addDays(7),
+            fn() => Topic::where('is_system', true)
+                ->withCount('words')
+                ->orderBy('name')
+                ->get()
+        );
     }
 
     /**
-     * Get user's custom topics.
+     * Get user's custom topics with Redis caching.
      *
      * @param User $user
      * @return Collection<int, Topic>
      */
     public function getUserTopics(User $user): Collection
     {
-        return Topic::where('user_id', $user->id)
-            ->withCount('words')
-            ->orderBy('name')
-            ->get();
+        return \Illuminate\Support\Facades\Cache::remember(
+            "topics:user:{$user->id}",
+            now()->addDays(1), // Cache for 1 day as user topics change frequently
+            fn() => Topic::where('user_id', $user->id)
+                ->withCount('words')
+                ->orderBy('name')
+                ->get()
+        );
     }
 
     /**
@@ -71,12 +79,17 @@ class TopicService
             ]);
         }
 
-        return Topic::create([
+        $topic = Topic::create([
             'name' => $data['name'],
             'description' => $data['description'] ?? null,
             'user_id' => $user->id,
             'is_system' => false,
         ]);
+
+        // Invalidate user's topics cache
+        \Illuminate\Support\Facades\Cache::forget("topics:user:{$user->id}");
+
+        return $topic;
     }
 
     /**
@@ -108,6 +121,9 @@ class TopicService
             'description' => $data['description'] ?? $topic->description,
         ]);
 
+        // Invalidate user's topics cache
+        \Illuminate\Support\Facades\Cache::forget("topics:user:{$user->id}");
+
         return $topic->fresh();
     }
 
@@ -131,7 +147,14 @@ class TopicService
             ]);
         }
 
-        return $topic->delete();
+        $result = $topic->delete();
+
+        // Invalidate user's topics cache
+        if ($result) {
+            \Illuminate\Support\Facades\Cache::forget("topics:user:{$user->id}");
+        }
+
+        return $result;
     }
 
     /**

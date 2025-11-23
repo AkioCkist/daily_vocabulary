@@ -35,7 +35,12 @@ class UserVocabularyService
      */
     public function addWord(int $userId, int $wordId)
     {
-        return $this->repo->addWordToUser($userId, $wordId);
+        $result = $this->repo->addWordToUser($userId, $wordId);
+
+        // Invalidate user's progress cache when vocabulary changes
+        \Illuminate\Support\Facades\Cache::forget("user:progress:{$userId}");
+
+        return $result;
     }
 
     /**
@@ -47,7 +52,12 @@ class UserVocabularyService
      */
     public function removeWord(int $userId, int $wordId)
     {
-        return $this->repo->removeWord($userId, $wordId);
+        $result = $this->repo->removeWord($userId, $wordId);
+
+        // Invalidate user's progress cache when vocabulary changes
+        \Illuminate\Support\Facades\Cache::forget("user:progress:{$userId}");
+
+        return $result;
     }
 
     /**
@@ -59,7 +69,12 @@ class UserVocabularyService
      */
     public function markLearned(int $userId, int $wordId)
     {
-        return $this->repo->updateStatus($userId, $wordId, self::STATUS_LEARNED);
+        $result = $this->repo->updateStatus($userId, $wordId, self::STATUS_LEARNED);
+
+        // Invalidate user's progress cache when status changes
+        \Illuminate\Support\Facades\Cache::forget("user:progress:{$userId}");
+
+        return $result;
     }
 
     /**

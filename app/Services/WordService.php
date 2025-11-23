@@ -52,23 +52,31 @@ class WordService
     }
 
     /**
-     * Get all available topics.
+     * Get all available topics with Redis caching.
      *
      * @return \Illuminate\Support\Collection<int, string>
      */
     public function getTopics(): \Illuminate\Support\Collection
     {
-        return $this->wordRepository->getTopics();
+        return \Illuminate\Support\Facades\Cache::remember(
+            'vocabulary:topics:list',
+            now()->addDays(7), // Cache for 7 days
+            fn() => $this->wordRepository->getTopics()
+        );
     }
 
     /**
-     * Get all CEFR levels.
+     * Get all CEFR levels with Redis caching.
      *
      * @return array<string>
      */
     public function getCefrLevels(): array
     {
-        return $this->wordRepository->getCefrLevels();
+        return \Illuminate\Support\Facades\Cache::remember(
+            'vocabulary:cefr:levels',
+            now()->addDays(7), // Cache for 7 days
+            fn() => $this->wordRepository->getCefrLevels()
+        );
     }
 
     /**
