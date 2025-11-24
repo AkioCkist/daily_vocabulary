@@ -1,7 +1,8 @@
 <script setup>
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
+// Use a generic button if PrimaryButton doesn't support the new Auth0 style
+import PrimaryButton from '@/Components/PrimaryButton.vue'; 
 import TextInput from '@/Components/TextInput.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 
@@ -25,11 +26,11 @@ const form = useForm({
 <template>
     <section>
         <header>
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
                 Profile Information
             </h2>
 
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 Update your account's profile information and email address.
             </p>
         </header>
@@ -70,13 +71,14 @@ const form = useForm({
             </div>
 
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
-                <p class="mt-2 text-sm text-gray-800 dark:text-gray-200">
+                <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
                     Your email address is unverified.
+
                     <Link
                         :href="route('verification.send')"
                         method="post"
                         as="button"
-                        class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
+                        class="rounded-md text-sm text-indigo-600 dark:text-indigo-400 underline hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                     >
                         Click here to re-send the verification email.
                     </Link>
@@ -91,7 +93,15 @@ const form = useForm({
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+                <button
+                    type="submit"
+                    :disabled="form.processing"
+                    class="px-5 py-2 text-sm font-bold bg-indigo-600 text-white rounded-lg 
+                            hover:bg-indigo-700 transition-colors duration-300 
+                            shadow-md shadow-indigo-600/30 dark:shadow-indigo-500/50 disabled:opacity-50"
+                >
+                    Save
+                </button>
 
                 <Transition
                     enter-active-class="transition ease-in-out"
