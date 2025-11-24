@@ -6,7 +6,7 @@
         <div class="flex items-start gap-4">
           <div class="flex-shrink-0 bg-indigo-500/20 p-2 rounded-full">
             <svg class="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 19l-1 1-1-1-1 1-1-1-1 1-1-1-1 1-1-1-6-6a6 6 0 017.743-5.743A2 2 0 0115 7z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
           <div class="flex-1">
@@ -24,8 +24,9 @@
                 <span v-else>Copy</span>
               </button>
             </div>
-            <div class="mt-4 flex justify-end">
-              <button @click="$emit('close')" class="text-sm text-gray-400 hover:text-white transition-colors underline decoration-gray-600 underline-offset-2">
+            <div class="mt-4 flex justify-between items-center">
+              <p class="text-xs text-gray-500">Auto-closing in {{ remainingSeconds }}s</p>
+              <button @click="handleClose" class="text-sm text-gray-400 hover:text-white transition-colors underline decoration-gray-600 underline-offset-2">
                 I have saved this token
               </button>
             </div>
@@ -36,8 +37,35 @@
   </div>
 </template>
 <script setup>
+import { ref, onMounted, onUnmounted } from 'vue';
+
 defineProps({
   newTokenData: Object,
   copiedTokenId: String,
+});
+
+const emit = defineEmits(['close']);
+
+const remainingSeconds = ref(5);
+let closeTimer = null;
+
+const handleClose = () => {
+  if (closeTimer) clearInterval(closeTimer);
+  emit('close');
+};
+
+onMounted(() => {
+  remainingSeconds.value = 5;
+  closeTimer = setInterval(() => {
+    remainingSeconds.value--;
+    if (remainingSeconds.value <= 0) {
+      clearInterval(closeTimer);
+      emit('close');
+    }
+  }, 1000);
+});
+
+onUnmounted(() => {
+  if (closeTimer) clearInterval(closeTimer);
 });
 </script>

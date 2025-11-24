@@ -118,6 +118,10 @@ const copyToken = (token) => {
     }, 2000);
 };
 
+const closeTokenPanel = () => {
+    newTokenData.value = null;
+};
+
 const formatAbilities = (abilities) => {
     if (!abilities || abilities.length === 0) return 'N/A';
     if (abilities.includes('*')) return 'Full Access';
@@ -161,7 +165,7 @@ onMounted(() => {
           </button>
         </div>
         <TokenAlert :error="error" :success="success" />
-        <TokenGenerated v-if="newTokenData" :newTokenData="newTokenData" :copiedTokenId="copiedTokenId" @copy="copyToken" @close="() => newTokenData.value = null" />
+        <TokenGenerated v-if="newTokenData" :newTokenData="newTokenData" :copiedTokenId="copiedTokenId" @copy="copyToken" @close="closeTokenPanel" />
         <TokenForm v-show="showForm" :formData="formData" :scopeOptions="scopeOptions" :loading="loading" @create="createToken" />
         <TokenTable :tokens="tokens" :loading="loading" :formatAbilities="formatAbilities" :getStatusClasses="getStatusClasses" :getStatusText="getStatusText" @regenerate="regenerateToken" @revoke="revokeToken" />
         <div class="px-6 py-4 bg-gray-900/50 border-t border-gray-700">
