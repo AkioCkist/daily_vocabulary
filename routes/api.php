@@ -35,10 +35,26 @@ Route::middleware(['api'])->group(function () {
     });
 
     // API Routes with auth:sanctum and throttling
-    Route::middleware(['auth:sanctum', 'throttle:60,1'])->group(function () {
+    // GET endpoints - require 'read' ability
+    Route::middleware(['auth:sanctum', 'throttle:60,1', 'check_token_abilities:read'])->group(function () {
         Route::get('/words/filter', [App\Http\Controllers\WordFilterController::class, 'api']);
         Route::get('/words/filter-options', [App\Http\Controllers\WordFilterController::class, 'filterOptions']);
         Route::get('/words/search', [App\Http\Controllers\Api\WordSearchController::class, 'search']);
+    });
+
+    // POST endpoints - require 'create' ability
+    Route::middleware(['auth:sanctum', 'throttle:60,1', 'check_token_abilities:create'])->group(function () {
+        // Add POST endpoints here as needed
+    });
+
+    // PUT/PATCH endpoints - require 'update' ability
+    Route::middleware(['auth:sanctum', 'throttle:60,1', 'check_token_abilities:update'])->group(function () {
+        // Add PUT/PATCH endpoints here as needed
+    });
+
+    // DELETE endpoints - require 'delete' ability
+    Route::middleware(['auth:sanctum', 'throttle:60,1', 'check_token_abilities:delete'])->group(function () {
+        // Add DELETE endpoints here as needed
     });
 
 }); // End of main API middleware group

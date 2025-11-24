@@ -15,7 +15,7 @@ const error = ref('');
 const success = ref('');
 const showForm = ref(false);
 const copiedTokenId = ref(null);
-const formData = ref({ name: '', scopes: ['*'], expires_in_days: null });
+const formData = ref({ name: '', scopes: [], expires_in_days: null });
 const scopeOptions = [
     { value: '*', label: 'Full Access' },
     { value: 'read', label: 'Read' },
@@ -58,7 +58,7 @@ const createToken = async () => {
             name: formData.value.name,
             warning: response.data.warning,
         };
-        formData.value = { name: '', scopes: ['*'], expires_in_days: null };
+        formData.value = { name: '', scopes: [], expires_in_days: null };
         showForm.value = false;
         await fetchTokens();
     } catch (err) {

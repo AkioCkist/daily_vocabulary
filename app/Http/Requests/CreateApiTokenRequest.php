@@ -23,7 +23,7 @@ class CreateApiTokenRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'scopes' => ['array', 'nullable'],
+            'scopes' => ['required', 'array', 'min:1'],
             'scopes.*' => ['string', 'in:*,read,create,update,delete'],
             'expires_in_days' => ['integer', 'nullable', 'min:1', 'max:365'],
         ];
@@ -39,7 +39,9 @@ class CreateApiTokenRequest extends FormRequest
         return [
             'name.required' => 'Token name is required.',
             'name.max' => 'Token name must not exceed 255 characters.',
+            'scopes.required' => 'At least one scope/capability must be selected.',
             'scopes.array' => 'Scopes must be an array.',
+            'scopes.min' => 'At least one scope/capability must be selected.',
             'scopes.*.in' => 'Invalid scope. Allowed values: *, read, create, update, delete',
             'expires_in_days.integer' => 'Expiration days must be an integer.',
             'expires_in_days.min' => 'Expiration must be at least 1 day.',

@@ -25,11 +25,12 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\ForceJsonResponse::class,
         ]);
 
-        // Register progressive rate limiter
+        // Register progressive rate limiter and token abilities checker
         $middleware->alias([
             'progressive_throttle' => \App\Http\Middleware\ProgressiveRateLimiter::class,
             'auth_throttle' => \App\Http\Middleware\AuthRateLimiter::class,
             'check_auth_locks' => \App\Http\Middleware\CheckAuthenticationLocks::class,
+            'check_token_abilities' => \App\Http\Middleware\CheckTokenAbilities::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
