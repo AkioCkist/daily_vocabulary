@@ -107,7 +107,7 @@ const saved = ref(false)
 
 const submit = () => {
   saved.value = false;
-  form.patch(route('profile.subscription.update'), {
+  form.put(route('profile.subscription.update'), {
     preserveScroll: true,
     onSuccess: () => {
       saved.value = true

@@ -16,16 +16,7 @@
         </Link>
 
         <nav class="flex items-center gap-4">
-          <template v-if="user">
-            
-            <Link 
-              :href="currentPath === '/user/words' ? '/' : '/user/words'" 
-              class="px-3 py-2 text-sm font-medium transition-all duration-300 hidden sm:block 
-                     text-gray-600 hover:text-indigo-600 dark:text-gray-300 dark:hover:text-indigo-400"
-            >
-              {{ currentPath === '/user/words' ? 'Dashboard' : 'Browse Words' }}
-            </Link>
-            
+          <template v-if="user">         
             <div class="relative">
               <button 
                 @click="showDropdown = !showDropdown"
@@ -78,17 +69,15 @@
                 </Link>
                 
                 <hr class="my-2 border-gray-100 dark:border-gray-700">
-                <Link 
-                  href="/logout" 
-                  method="post" 
-                  as="button"
+                <button
+                  @click="logout"
                   class="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors duration-200"
                 >
                   <div class="flex items-center gap-3">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                     Logout
                   </div>
-                </Link>
+                </button>
               </div>
             </div>
           </template>
@@ -120,7 +109,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-import { Link, usePage } from '@inertiajs/vue3';
+import { Link, usePage, router } from '@inertiajs/vue3';
 
 defineProps({
   user: {
@@ -134,6 +123,11 @@ const page = usePage();
 
 // Get current URL path
 const currentPath = computed(() => page.url);
+
+// Handle logout
+const logout = () => {
+  router.post(route('logout'));
+};
 </script>
 
 <style scoped>

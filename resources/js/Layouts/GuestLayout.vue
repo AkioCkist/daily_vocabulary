@@ -5,24 +5,50 @@ import { Link, Head } from '@inertiajs/vue3';
 
 <template>
     <Head title="Welcome - DailyVocab" />
-    <div
-        class="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-slate-100 via-gray-50 to-indigo-50 px-4 dark:from-gray-900 dark:via-gray-900 dark:to-indigo-950"
-    >
-        <div class="w-full max-w-md">
-            <div class="mb-8 text-center">
-                <Link href="/" class="inline-block transition-transform hover:scale-105">
-                    <ApplicationLogo class="h-16 w-16 fill-current text-indigo-600 dark:text-indigo-400" />
+    
+    <div class="min-h-screen relative overflow-hidden bg-black flex items-center justify-center p-4">
+        
+        <video
+            autoplay
+            loop
+            muted
+            playsinline
+            src="/videos/background_2.mp4"
+            class="absolute inset-0 w-full h-full object-cover z-0 opacity-40"
+        ></video>
+        
+        <div class="absolute inset-0 bg-black/30 z-10"></div>
+        
+        <Link 
+            :href="route('home')"
+            class="absolute top-4 right-4 z-50 text-white/70 hover:text-white transition-colors p-2 rounded-full backdrop-blur-sm bg-black/20"
+            aria-label="Close"
+        >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        </Link>
+        
+        <div class="relative z-20 w-full max-w-5xl grid lg:grid-cols-2 gap-12 items-center">
+            
+            <div class="hidden lg:block space-y-6 p-6">
+                <Link href="/" class="inline-block transition-transform">
+                    <ApplicationLogo class="h-8 w-auto fill-current text-white/90" />
                 </Link>
-                <h1 class="mt-4 text-3xl font-bold text-gray-900 dark:text-white">Daily Vocabulary</h1>
-                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Expand your vocabulary, one word at a time</p>
+                
+                <h1 class="text-5xl font-bold tracking-tight leading-snug text-white">
+                    Master words <br />
+                    with daily practice.
+                </h1>
+                <p class="text-lg text-gray-400">
+                    Stop forgetting what you learn. Built for developers.
+                </p>
+
+                <div class="text-xs text-gray-600 pt-8">
+                     © {{ new Date().getFullYear() }} DailyVocab, Inc. All Rights Reserved.
+                </div>
             </div>
 
-            <div
-                class="overflow-hidden rounded-2xl bg-white/80 backdrop-blur-sm shadow-xl ring-1 ring-gray-900/5 dark:bg-gray-800/80 dark:ring-white/10"
-            >
-                <div class="px-8 py-10">
-                    <slot />
-                </div>
+            <div class="flex justify-center lg:justify-end">
+                <slot />
             </div>
         </div>
     </div>
