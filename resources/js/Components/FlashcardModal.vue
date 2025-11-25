@@ -12,7 +12,7 @@
       <div class="bg-[#0B0C10]/90 backdrop-blur-lg rounded-2xl shadow-2xl shadow-indigo-900/40 ring-1 ring-indigo-900/50 max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col text-white">
         
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-800">
-          <h2 class="text-xl font-bold">Custom Study Session</h2>
+          <h2 class="text-xl font-bold">How would you like to study ?</h2>
           <button 
             @click="$emit('close')"
             class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-700/50 transition-colors"
@@ -223,7 +223,7 @@ function startTraining() {
   if (!canStart.value) return;
 
   const trainingSettings = {
-    mode: 'custom',
+    mode: 'advanced',
     flashcard_type: settings.flashcard_type,
     word_count: settings.word_count,
   };

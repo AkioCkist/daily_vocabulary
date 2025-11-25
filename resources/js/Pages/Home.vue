@@ -118,7 +118,12 @@
                               <span class="text-red-400">{{ filteredStats?.incorrect_answers || '0' }}</span>
                           </template>
                       </p>
-                      <p class="text-xs font-medium text-gray-400">Correct / Wrong</p>
+                      <p class="text-xs font-medium text-gray-400">
+                          Correct / Wrong 
+                          <span v-if="!isLoadingStats && accuracyPercentage !== null" class="text-indigo-400">
+                              ({{ accuracyPercentage }}%)
+                          </span>
+                      </p>
                   </div>
                   
                   <div class="flex flex-col">
@@ -245,6 +250,12 @@
       @saved="handleSessionSaved"
     />
 
+    <MemoryReportModal 
+      v-if="showMemoryModal"
+      :initial-day-range="memoryDayRange"
+      @close="showMemoryModal = false"
+    />
+
     </div>
 </template>
 
@@ -265,6 +276,7 @@ import SavedSessionsSection from '@/Components/Dashboard/SavedSessionsSection.vu
 import FlashcardModal from '@/Components/FlashcardModal.vue';
 import TopicModal from '@/Components/TopicModal.vue';
 import SaveSessionModal from '@/Components/SaveSessionModal.vue';
+import MemoryReportModal from '@/Components/MemoryReportModal.vue';
 
 const props = defineProps({
   user: {
@@ -293,6 +305,16 @@ const memoryDayRange = ref(7);
 const showMemoryModal = ref(false);
 const filteredStats = ref(null);
 const isLoadingStats = ref(false);
+
+// Computed properties
+const accuracyPercentage = computed(() => {
+    if (!filteredStats.value) return null;
+    const correct = filteredStats.value.correct_answers || 0;
+    const incorrect = filteredStats.value.incorrect_answers || 0;
+    const total = correct + incorrect;
+    if (total === 0) return 0;
+    return Math.round((correct / total) * 100);
+});
 
 // Handlers
 const handleWordSelected = (word) => {

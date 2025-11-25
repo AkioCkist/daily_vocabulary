@@ -780,12 +780,12 @@ class FlashcardController extends Controller
         if (!empty($settings['time_filter']) && $settings['time_filter'] !== 'all') {
             if ($settings['time_filter'] === 'recent') {
                 // Words studied in the last 7 days
-                $query->where('user_words.last_reviewed_at', '>=', now()->subDays(7));
+                $query->where('user_words.last_seen_at', '>=', now()->subDays(7));
             } elseif ($settings['time_filter'] === 'not_recent') {
                 // Words not studied in the last 7 days or never studied
                 $query->where(function ($q) {
-                    $q->where('user_words.last_reviewed_at', '<', now()->subDays(7))
-                        ->orWhereNull('user_words.last_reviewed_at');
+                    $q->where('user_words.last_seen_at', '<', now()->subDays(7))
+                        ->orWhereNull('user_words.last_seen_at');
                 });
             }
         }
@@ -818,13 +818,33 @@ class FlashcardController extends Controller
         }
 
         // Select distinct words to avoid duplicates from joins
-        $selectFields = $needsUserWordsJoin || $sortBy === 'difficulty'
+        // Determine if we need to use qualified column names (words.*)
+        $needsQualifiedNames = $needsUserWordsJoin || $sortBy === 'difficulty';
+
+        $selectFields = $needsQualifiedNames
             ? ['words.id', 'words.word', 'words.pronunciation', 'words.definition', 'words.example', 'words.cefr_level', 'words.topic']
             : ['id', 'word', 'pronunciation', 'definition', 'example', 'cefr_level', 'topic'];
 
-        // Get words
-        $words = $query->distinct()
-            ->limit($settings['word_count'])
+        // Get words - use groupBy to avoid duplicates and ensure PostgreSQL compatibility with ORDER BY RANDOM()
+        // Apply GROUP BY when:
+        // 1. We have joins (user_words) that could create duplicates
+        // 2. We're using random ordering (to avoid DISTINCT + ORDER BY RANDOM() PostgreSQL error)
+        $needsGroupBy = $needsQualifiedNames || $sortBy === 'random';
+
+        if ($needsGroupBy) {
+            if ($needsQualifiedNames) {
+                // When sorting by difficulty, we need to include user_words.difficulty_score in GROUP BY
+                if ($sortBy === 'difficulty') {
+                    $query->groupBy('words.id', 'words.word', 'words.pronunciation', 'words.definition', 'words.example', 'words.cefr_level', 'words.topic', 'user_words.difficulty_score');
+                } else {
+                    $query->groupBy('words.id', 'words.word', 'words.pronunciation', 'words.definition', 'words.example', 'words.cefr_level', 'words.topic');
+                }
+            } else {
+                $query->groupBy('id', 'word', 'pronunciation', 'definition', 'example', 'cefr_level', 'topic');
+            }
+        }
+
+        $words = $query->limit($settings['word_count'])
             ->get($selectFields);
 
         return $words->toArray();

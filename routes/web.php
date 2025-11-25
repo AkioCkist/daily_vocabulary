@@ -54,6 +54,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard stats by day range
     Route::get('/dashboard/stats/{days}', [HomeController::class, 'getStatsByDayRange'])->name('dashboard.stats');
 
+    // Memory report (frequently forgotten/remembered words)
+    Route::get('/dashboard/memory-report/{days}', [HomeController::class, 'getMemoryReport'])->name('dashboard.memory-report');
+
 
     // Learning routes
     Route::prefix('learn')->name('learning.')->group(function () {

@@ -449,4 +449,113 @@ class DashboardService
 
         return $streak;
     }
+
+    /**
+     * Get memory report data showing frequently forgotten and remembered words.
+     *
+     * @param User $user
+     * @param int $days Number of days to look back (1, 7, or 30)
+     * @return array<string, mixed>
+     */
+    public function getMemoryReportData(User $user, int $days): array
+    {
+        $startDate = Carbon::now()->subDays($days)->startOfDay();
+
+        // Get word statistics from test attempts
+        $wordStats = TestAttempt::where('user_id', $user->id)
+            ->where('created_at', '>=', $startDate)
+            ->select(
+                'word_id',
+                DB::raw('COUNT(*) as total_attempts'),
+                DB::raw('SUM(CASE WHEN is_correct = true THEN 1 ELSE 0 END) as correct_count'),
+                DB::raw('SUM(CASE WHEN is_correct = false THEN 1 ELSE 0 END) as incorrect_count')
+            )
+            ->groupBy('word_id')
+            ->having('total_attempts', '>=', 2) // Only include words attempted at least twice
+            ->get()
+            ->map(function ($stat) {
+                $accuracy = $stat->total_attempts > 0
+                    ? round(($stat->correct_count / $stat->total_attempts) * 100)
+                    : 0;
+
+                return [
+                    'word_id' => $stat->word_id,
+                    'total_attempts' => $stat->total_attempts,
+                    'correct_count' => $stat->correct_count,
+                    'incorrect_count' => $stat->incorrect_count,
+                    'accuracy' => $accuracy,
+                ];
+            });
+
+        // Get word details
+        $wordIds = $wordStats->pluck('word_id')->toArray();
+        $words = Word::whereIn('id', $wordIds)
+            ->select('id', 'word', 'definition')
+            ->get()
+            ->keyBy('id');
+
+        // Combine stats with word details
+        $enrichedStats = $wordStats->map(function ($stat) use ($words) {
+            $word = $words->get($stat['word_id']);
+            if (!$word) {
+                return null;
+            }
+
+            return array_merge($stat, [
+                'word' => $word->word,
+                'definition' => $word->definition,
+            ]);
+        })->filter(); // Remove null entries
+
+        // Separate into frequently forgotten (low accuracy) and frequently remembered (high accuracy)
+        $frequentlyForgotten = $enrichedStats
+            ->filter(fn($stat) => $stat['accuracy'] < 70 && $stat['incorrect_count'] > 0)
+            ->sortByDesc('incorrect_count')
+            ->take(10)
+            ->values()
+            ->toArray();
+
+        $frequentlyRemembered = $enrichedStats
+            ->filter(fn($stat) => $stat['accuracy'] >= 70)
+            ->sortByDesc('correct_count')
+            ->take(10)
+            ->values()
+            ->toArray();
+
+        // Calculate summary statistics
+        $totalAttempts = TestAttempt::where('user_id', $user->id)
+            ->where('created_at', '>=', $startDate)
+            ->count();
+
+        $correctAttempts = TestAttempt::where('user_id', $user->id)
+            ->where('created_at', '>=', $startDate)
+            ->where('is_correct', true)
+            ->count();
+
+        $wordsPracticed = TestAttempt::where('user_id', $user->id)
+            ->where('created_at', '>=', $startDate)
+            ->distinct('word_id')
+            ->count('word_id');
+
+        $studySessions = TestAttempt::where('user_id', $user->id)
+            ->where('created_at', '>=', $startDate)
+            ->select(DB::raw('created_at::date as date'))
+            ->distinct()
+            ->count();
+
+        $accuracy = $totalAttempts > 0
+            ? round(($correctAttempts / $totalAttempts) * 100)
+            : 0;
+
+        return [
+            'summary' => [
+                'total_attempts' => $totalAttempts,
+                'accuracy' => $accuracy,
+                'words_practiced' => $wordsPracticed,
+                'study_sessions' => $studySessions,
+            ],
+            'frequently_forgotten' => $frequentlyForgotten,
+            'frequently_remembered' => $frequentlyRemembered,
+        ];
+    }
 }

@@ -61,5 +61,23 @@ class HomeController extends Controller
 
         return response()->json($stats);
     }
+
+    public function getMemoryReport($days)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        // Validate days parameter
+        if (!in_array($days, [1, 7, 30])) {
+            return response()->json(['error' => 'Invalid day range'], 400);
+        }
+
+        $report = $this->dashboardService->getMemoryReportData($user, (int) $days);
+
+        return response()->json($report);
+    }
 }
 
