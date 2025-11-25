@@ -1,139 +1,162 @@
 <template>
-  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden min-h-[480px] flex flex-col">
-    <!-- Header -->
-    <div class="bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 text-white p-6">
+  <div class="bg-gray-900 rounded-3xl shadow-2xl shadow-emerald-900/40 ring-1 ring-gray-700 overflow-hidden min-h-[480px] flex flex-col text-white">
+    
+    <div class="bg-gradient-to-r from-green-600 via-emerald-600 to-green-700 p-6">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <span class="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold">
+          <span class="px-3 py-1 bg-white/30 backdrop-blur-sm rounded-full text-sm font-bold text-gray-900">
             {{ word.cefr_level }}
           </span>
-          <span class="text-sm opacity-90">{{ word.topic }}</span>
+          <span class="text-sm font-medium text-green-100/70">{{ word.topic }}</span>
         </div>
         <slot name="actions"></slot>
       </div>
     </div>
 
-    <!-- Content -->
-    <div class="flex-1 flex items-center justify-center p-8 min-h-[320px]">
+    <div class="flex-1 flex items-center justify-center p-10 min-h-[320px] bg-gray-900">
       <div class="text-center w-full space-y-6 py-4">
-        <!-- Definition -->
+        
         <div class="space-y-4">
           <div class="flex items-center justify-center gap-2">
-            <h3 class="text-3xl font-semibold text-gray-900 dark:text-white leading-relaxed pb-2">
+            <h3 class="text-3xl font-light text-gray-300 leading-relaxed">
               {{ word.definition }}
             </h3>
             <SpeakerButton :text="word.definition" />
           </div>
           
-          <div v-if="word.example" class="max-w-lg mx-auto p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl">
-            <p class="text-gray-700 dark:text-gray-300 italic font-mono">
-              "{{ hiddenExample }}"
+          <div v-if="word.example" class="max-w-xl mx-auto p-6 bg-gray-800 border border-gray-700 rounded-xl shadow-inner">
+            <p class="text-xl italic font-light text-gray-300 whitespace-pre-line">
+              {{ hiddenExample }}
             </p>
           </div>
         </div>
 
-        <!-- Hint Display -->
-        <transition name="slide-down">
-          <div v-if="currentHint" class="max-w-md mx-auto p-4 bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 rounded-xl border border-yellow-200 dark:border-yellow-800">
-            <div class="flex items-center gap-2 mb-2">
-              <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-              </svg>
-              <span class="text-sm font-medium text-yellow-800 dark:text-yellow-300">Hint</span>
-            </div>
-            <div class="text-2xl font-mono font-bold text-yellow-900 dark:text-yellow-100 tracking-wider">
-              {{ currentHint }}
-            </div>
-          </div>
-        </transition>
-
-        <!-- Input Field -->
-        <transition name="fade-scale">
-          <div v-if="!answered" class="max-w-md mx-auto">
+        <div class="max-w-md mx-auto space-y-4 pt-4">
+          
+          <div :class="{ 
+            'bg-gray-800/80 border-gray-700': !answered,
+            'bg-green-700/20 border-green-500/50 shadow-green-900/50': answered && isCorrect,
+            'bg-red-700/20 border-red-500/50 shadow-red-900/50': answered && !isCorrect 
+          }" class="rounded-xl p-3 border transition-all duration-300 shadow-xl">
+            
             <input
-              ref="answerInput"
-              v-model="localAnswer"
               type="text"
-              placeholder="Type the word here..."
-              class="w-full px-6 py-4 text-2xl text-center rounded-xl border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-              @keyup.enter="$emit('submit')"
-            >
+              ref="answerInput"
+              :value="localAnswer"
+              @input="localAnswer = $event.target.value"
+              :disabled="answered"
+              @keyup.enter="!answered && $emit('submit')"
+              class="w-full text-center text-2xl font-semibold bg-transparent border-none focus:ring-0 placeholder-gray-500 dark:text-white disabled:opacity-100 disabled:cursor-not-allowed p-2"
+              placeholder="Type your answer here..."
+            />
           </div>
-        </transition>
 
-        <!-- Answer Feedback -->
-        <transition name="fade-scale">
-          <div v-if="answered" class="max-w-md mx-auto p-6 rounded-xl" :class="isCorrect ? 'bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20' : 'bg-gradient-to-r from-red-50 to-rose-50 dark:from-red-900/20 dark:to-rose-900/20'">
-            <div class="flex items-center justify-center gap-3 mb-3">
-              <svg v-if="isCorrect" class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
-              </svg>
-              <svg v-else class="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/>
-              </svg>
-              <span class="text-2xl font-bold" :class="isCorrect ? 'text-green-800 dark:text-green-300' : 'text-red-800 dark:text-red-300'">
-                {{ isCorrect ? 'Correct!' : 'Incorrect' }}
-              </span>
-            </div>
-            <div class="space-y-2">
-              <div class="text-gray-700 dark:text-gray-300">
-                <span class="font-medium">Correct answer:</span>
-                <span class="ml-2 text-xl font-bold text-gray-900 dark:text-white">{{ word.word }}</span>
+          <!-- Hint Display -->
+          <transition name="hint-slide" mode="out-in">
+            <div v-if="currentHint && !answered" :key="currentHint" class="rounded-2xl bg-gradient-to-br from-yellow-500/20 via-amber-500/20 to-orange-500/20 border-2 border-yellow-400/60 shadow-xl shadow-yellow-500/20 backdrop-blur-sm">
+              <div class="p-6 flex items-start gap-4">
+                <!-- Lightbulb icon -->
+                <div class="flex-shrink-0">
+                  <svg class="w-8 h-8 text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1h4v1a2 2 0 11-4 0zM12 14c.015-.34.208-.646.477-.859a4 4 0 10-4.954 0c.27.213.462.519.476.859h4.002z"/>
+                  </svg>
+                </div>
+                
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-semibold text-yellow-300 mb-2 uppercase tracking-wide">Hint</p>
+                  <p class="text-2xl font-semibold text-white leading-relaxed">
+                    <span
+                      v-for="(char, index) in displayedHint"
+                      :key="index"
+                      class="inline-block char-pop"
+                      :style="{ animationDelay: `${index * 0.03}s` }"
+                    >
+                      {{ char === ' ' ? '\u00A0' : char }}
+                    </span>
+                  </p>
+                </div>
               </div>
-              <div v-if="!isCorrect && localAnswer" class="text-gray-600 dark:text-gray-400">
-                <span class="font-medium">Your answer:</span>
-                <span class="ml-2 line-through">{{ localAnswer }}</span>
+            </div>
+          </transition>
+
+          <transition name="fade-scale" mode="out-in">
+            <div v-if="answered" :key="'feedback'" class="space-y-4">
+              <div v-if="isCorrect" class="text-2xl font-bold text-green-400 flex items-center justify-center gap-2">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                Correct!
+              </div>
+              <div v-else :key="'incorrect'" class="text-center space-y-2">
+                <p class="text-xl font-bold text-red-400 flex items-center justify-center gap-2">
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
+                  Incorrect.
+                </p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">The correct word was:</p>
+                <p class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-400 px-3 py-1 rounded-lg inline-block">
+                  {{ word.word }}
+                </p>
+                <div v-if="word.part_of_speech" class="text-md italic text-gray-500 dark:text-gray-400">
+                  ({{ word.part_of_speech }})
+                </div>
               </div>
             </div>
-          </div>
-        </transition>
+          </transition>
+        </div>
       </div>
     </div>
 
-    <!-- Actions -->
-    <div class="p-6 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700/50 dark:to-gray-800/50 border-t border-gray-200 dark:border-gray-600">
-      <transition name="fade" mode="out-in">
-        <div v-if="!answered" :key="'actions'" class="flex gap-3 justify-center flex-wrap">
+    <div class="p-8 border-t border-gray-800 bg-gray-900/70">
+      <div class="flex justify-center space-x-4">
+        
+        <div v-if="!answered" class="flex justify-center space-x-4">
           <button
-            @click.stop="$emit('submit')"
-            :disabled="!localAnswer.trim()"
-            class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 disabled:scale-100 disabled:shadow-none"
+            @click.stop="$emit('skip')"
+            class="bg-gray-700 hover:bg-gray-600 text-gray-300 font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 flex items-center gap-2"
           >
-            Submit Answer
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            Skip
           </button>
+          
           <button
             @click.stop="$emit('hint')"
             :disabled="maxHintsReached"
-            class="bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 disabled:scale-100 disabled:shadow-none"
+            :class="[
+              'font-bold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2',
+              maxHintsReached 
+                ? 'bg-gray-600 text-gray-400' 
+                : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-500/30'
+            ]"
           >
-            {{ maxHintsReached ? 'No More Hints' : 'Get Hint' }}
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            {{ maxHintsReached ? 'No More Hints' : 'Hint' }}
           </button>
+          
           <button
-            @click.stop="$emit('skip')"
-            class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+            @click.stop="$emit('submit')"
+            :disabled="!localAnswer.trim()"
+            class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 shadow-lg shadow-green-500/30 hover:shadow-xl hover:scale-105 active:scale-95 disabled:opacity-50 flex items-center gap-2"
           >
-            Skip
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            Submit
           </button>
         </div>
-
-        <div v-else :key="'next'" class="text-center">
+        
+        <div v-else class="flex justify-center">
           <button
-            @click="$emit('next')"
-            class="group bg-gradient-to-r from-indigo-500 via-purple-500 to-purple-600 hover:from-indigo-600 hover:via-purple-600 hover:to-purple-700 text-white font-bold py-4 px-10 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 flex items-center justify-center gap-2 mx-auto"
+            @click.stop="$emit('next')"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-12 rounded-xl transition-all duration-300 shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:scale-105 active:scale-95 flex items-center gap-2"
           >
             Next Word
-            <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-            </svg>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 12h14"/></svg>
           </button>
         </div>
-      </transition>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, watch, nextTick } from 'vue';
+// Logic remains unchanged
+import { computed, ref, watch, nextTick } from 'vue';
 import SpeakerButton from '@/Components/Flashcard/SpeakerButton.vue';
 
 const props = defineProps({
@@ -144,6 +167,10 @@ const props = defineProps({
   userAnswer: {
     type: String,
     default: ''
+  },
+  showHint: {
+    type: Boolean,
+    default: false
   },
   currentHint: {
     type: String,
@@ -167,6 +194,7 @@ const emit = defineEmits(['update:userAnswer', 'submit', 'hint', 'skip', 'next']
 
 const answerInput = ref(null);
 const localAnswer = ref(props.userAnswer);
+const displayedHint = ref('');
 
 watch(() => props.userAnswer, (newVal) => {
   localAnswer.value = newVal;
@@ -175,6 +203,11 @@ watch(() => props.userAnswer, (newVal) => {
 watch(localAnswer, (newVal) => {
   emit('update:userAnswer', newVal);
 });
+
+// Update displayed hint when currentHint changes
+watch(() => props.currentHint, (newHint) => {
+  displayedHint.value = newHint || '';
+}, { immediate: true });
 
 const hiddenExample = computed(() => {
   if (!props.word.example || !props.word.word) return props.word.example;
@@ -192,6 +225,7 @@ defineExpose({
 </script>
 
 <style scoped>
+/* Transitions */
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.3s ease;
 }
@@ -202,24 +236,55 @@ defineExpose({
 .fade-scale-enter-active, .fade-scale-leave-active {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.fade-scale-enter-from {
+.fade-scale-enter-from, .fade-scale-leave-to {
   opacity: 0;
-  transform: scale(0.95) translateY(8px);
-}
-.fade-scale-leave-to {
-  opacity: 0;
-  transform: scale(0.95) translateY(-8px);
+  transform: scale(0.95);
 }
 
-.slide-down-enter-active, .slide-down-leave-active {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+/* Hint slide animation */
+.hint-slide-enter-active {
+  animation: slideInDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.slide-down-enter-from {
-  opacity: 0;
-  transform: translateY(-15px);
+.hint-slide-leave-active {
+  animation: slideOutUp 0.4s cubic-bezier(0.4, 0, 1, 1);
 }
-.slide-down-leave-to {
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideOutUp {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+}
+
+/* Character pop animation */
+@keyframes charPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.char-pop {
+  animation: charPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   opacity: 0;
-  transform: translateY(-8px);
 }
 </style>
