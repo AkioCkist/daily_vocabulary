@@ -30,6 +30,7 @@
             <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wide">Template Settings</h3>
             <TemplateManager
               :current-settings="getCurrentSettings()"
+              :default-label="'--Select a template--'"
               @template-loaded="loadTemplate"
             />
           </div>
