@@ -97,6 +97,39 @@ class FlashcardController extends Controller
     }
 
     /**
+     * Display the flashcard practice page.
+     */
+    public function practice(): Response|RedirectResponse
+    {
+        // Check if there's an active session
+        $session = session('flashcard_session');
+
+        if (!$session) {
+            return redirect()->route('dashboard')->with('error', 'No active flashcard session.');
+        }
+
+        $user = Auth::user();
+
+        // Cache user topics for 5 minutes to reduce database queries
+        $userTopics = \Illuminate\Support\Facades\Cache::remember(
+            "user_topics_{$user->id}",
+            now()->addMinutes(5),
+            function () use ($user) {
+                return \App\Models\Topic::where('user_id', $user->id)
+                    ->select(['id', 'name', 'description'])
+                    ->orderBy('name')
+                    ->get();
+            }
+        );
+
+        return Inertia::render('Flashcards/Practice', [
+            'words' => $session['words'],
+            'settings' => $session['settings'],
+            'userTopics' => $userTopics,
+        ]);
+    }
+
+    /**
      * Get the next flashcard in the session.
      */
     public function next(Request $request): JsonResponse
@@ -569,6 +602,9 @@ class FlashcardController extends Controller
             'is_system' => false,
         ]);
 
+        // Invalidate user topics cache
+        \Illuminate\Support\Facades\Cache::forget("user_topics_{$user->id}");
+
         return response()->json([
             'success' => true,
             'message' => 'Topic created successfully.',
@@ -609,6 +645,9 @@ class FlashcardController extends Controller
 
         // Delete the topic
         $topic->delete();
+
+        // Invalidate user topics cache
+        \Illuminate\Support\Facades\Cache::forget("user_topics_{$user->id}");
 
         return response()->json([
             'success' => true,

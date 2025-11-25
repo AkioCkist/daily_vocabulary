@@ -200,8 +200,8 @@ function handleStandardAnswer(isCorrect) {
   
   submitAnswer(isCorrect, null);
   
-  // Auto-advance after 1.5s
-  setTimeout(() => nextCard(), 1500);
+  // Auto-advance after 100ms for maximum responsiveness
+  setTimeout(() => nextCard(), 100);
 }
 
 function submitAnswer(isCorrect, userAnswerText = null) {

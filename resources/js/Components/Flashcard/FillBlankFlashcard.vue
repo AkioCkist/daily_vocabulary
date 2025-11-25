@@ -52,7 +52,7 @@
           </div>
 
           <!-- Hint Display -->
-          <transition name="hint-slide" mode="out-in">
+          <transition :name="hintShownBefore ? '' : 'hint-slide'" mode="out-in">
             <div v-if="currentHint && !answered" :key="currentHint" class="rounded-2xl bg-gradient-to-br from-yellow-500/20 via-amber-500/20 to-orange-500/20 border-2 border-yellow-400/60 shadow-xl shadow-yellow-500/20 backdrop-blur-sm">
               <div class="p-6 flex items-start gap-4">
                 <!-- Lightbulb icon -->
@@ -120,7 +120,7 @@
             @click.stop="$emit('hint')"
             :disabled="maxHintsReached"
             :class="[
-              'font-bold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2',
+              'font-bold py-3 px-6 rounded-xl transition-all duration-150 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2',
               maxHintsReached 
                 ? 'bg-gray-600 text-gray-400' 
                 : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-500/30'
@@ -195,6 +195,7 @@ const emit = defineEmits(['update:userAnswer', 'submit', 'hint', 'skip', 'next']
 const answerInput = ref(null);
 const localAnswer = ref(props.userAnswer);
 const displayedHint = ref('');
+const hintShownBefore = ref(false);
 
 watch(() => props.userAnswer, (newVal) => {
   localAnswer.value = newVal;
@@ -206,8 +207,16 @@ watch(localAnswer, (newVal) => {
 
 // Update displayed hint when currentHint changes
 watch(() => props.currentHint, (newHint) => {
+  if (newHint) {
+    hintShownBefore.value = true;
+  }
   displayedHint.value = newHint || '';
 }, { immediate: true });
+
+// Reset hintShownBefore when word changes
+watch(() => props.word, () => {
+  hintShownBefore.value = false;
+});
 
 const hiddenExample = computed(() => {
   if (!props.word.example || !props.word.word) return props.word.example;

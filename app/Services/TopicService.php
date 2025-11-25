@@ -88,6 +88,7 @@ class TopicService
 
         // Invalidate user's topics cache
         \Illuminate\Support\Facades\Cache::forget("topics:user:{$user->id}");
+        \Illuminate\Support\Facades\Cache::forget("user_topics_{$user->id}");
 
         return $topic;
     }
@@ -123,6 +124,7 @@ class TopicService
 
         // Invalidate user's topics cache
         \Illuminate\Support\Facades\Cache::forget("topics:user:{$user->id}");
+        \Illuminate\Support\Facades\Cache::forget("user_topics_{$user->id}");
 
         return $topic->fresh();
     }
@@ -152,6 +154,7 @@ class TopicService
         // Invalidate user's topics cache
         if ($result) {
             \Illuminate\Support\Facades\Cache::forget("topics:user:{$user->id}");
+            \Illuminate\Support\Facades\Cache::forget("user_topics_{$user->id}");
         }
 
         return $result;
@@ -218,9 +221,9 @@ class TopicService
     public function searchTopics(User $user, string $query): Collection
     {
         return Topic::where(function ($q) use ($user, $query) {
-                $q->where('is_system', true)
-                  ->orWhere('user_id', $user->id);
-            })
+            $q->where('is_system', true)
+                ->orWhere('user_id', $user->id);
+        })
             ->where('name', 'like', "%{$query}%")
             ->withCount('words')
             ->orderBy('name')
@@ -260,10 +263,10 @@ class TopicService
     {
         return Topic::where(function ($query) use ($user, $name) {
             $query->where('is_system', true)
-                  ->orWhere('user_id', $user->id);
+                ->orWhere('user_id', $user->id);
         })
-        ->where('name', $name)
-        ->exists();
+            ->where('name', $name)
+            ->exists();
     }
 
     /**
