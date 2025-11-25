@@ -10,7 +10,6 @@
     <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 relative z-20">
       
       <div v-if="!user" class="min-h-[80vh] flex flex-col justify-center relative overflow-hidden">
-        <!-- Background Video for Guest View -->
         <video
           autoplay
           loop
@@ -19,7 +18,6 @@
           class="fixed inset-0 w-full h-full object-cover z-0"
           src="/videos/background.mp4"
         ></video>
-          <!-- Black Opacity Overlay -->
           <div class="fixed inset-0 w-full h-full bg-black/28 z-10 pointer-events-none"></div>
           
         <div class="grid lg:grid-cols-2 gap-12 items-center relative z-10">
@@ -51,16 +49,15 @@
         </div>
       </div>
 
-
       <div v-else-if="dashboard" class="space-y-8">
         
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           
-          <div class="lg:col-span-8 relative overflow-hidden rounded-2xl bg-black/80 border border-gray-800 p-8 shadow-lg group hover:border-indigo-500/50 transition-colors duration-300">
+          <div class="md:col-span-2 relative overflow-hidden rounded-2xl bg-black/80 border border-gray-800 p-8 shadow-lg group hover:border-indigo-500/50 transition-colors duration-300">
             <div class="relative z-10 flex flex-col h-full justify-between">
               <div>
                 <h2 class="text-3xl font-bold mb-2 text-white drop-shadow">Welcome back, {{ user.name }}</h2>
-                <p class="text-gray-200">You're on a {{ dashboard.stats.streak_days }} day streak. Keep the momentum going.</p>
+                <p class="text-gray-200">You're on a <span class="text-yellow-400 font-semibold">{{ dashboard.stats.streak_days }}</span> day streak. Keep the momentum going.</p>
               </div>
               <div class="mt-8">
                  <button @click="startReview" class="inline-flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-all shadow-lg shadow-indigo-500/30">
@@ -72,29 +69,70 @@
             <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-bl-full -mr-10 -mt-10"></div>
           </div>
 
-           <div class="lg:col-span-4 grid grid-rows-2 gap-6">
-            <div class="rounded-2xl bg-black/80 border border-gray-800 p-6 flex items-center justify-between shadow-lg">
-              <div>
-                <p class="text-sm font-medium text-gray-300 uppercase tracking-wider">Total Words</p>
-                <p class="text-3xl font-bold text-white mt-1">{{ dashboard.stats.total_words_learned }}</p>
+          <div 
+            class="rounded-2xl bg-black/80 border border-gray-800 p-6 flex flex-col justify-between shadow-lg hover:border-purple-500/50 transition-colors cursor-pointer" 
+            @click="viewMemoryDetails"
+          >
+              <div class="flex items-center justify-between mb-4">
+                  <h3 class="text-lg font-bold text-white">Memory Level</h3>
+                  <div class="flex items-center space-x-1 p-1 bg-black/60 rounded-md">
+                      <button 
+                          v-for="day in [1, 7, 30]" 
+                          :key="day"
+                          @click.stop="memoryDayRange = day"
+                          :class="[
+                              'px-2 py-1 text-xs font-semibold rounded-md transition-all',
+                              memoryDayRange === day 
+                                  ? 'bg-purple-700 text-white shadow-sm' 
+                                  : 'text-gray-300 hover:text-white hover:bg-gray-700/50'
+                          ]"
+                      >
+                          {{ day }}D
+                      </button>
+                  </div>
               </div>
-              <div class="w-12 h-12 rounded-lg bg-indigo-900/40 flex items-center justify-center text-indigo-200">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+              
+              <div class="grid grid-cols-2 gap-y-4 gap-x-6">
+                  <div class="flex flex-col">
+                      <p class="text-xl font-bold text-white">
+                          <span v-if="isLoadingStats" class="text-gray-500">...</span>
+                          <span v-else>{{ filteredStats?.total_study_sessions || '0' }}</span>
+                      </p>
+                      <p class="text-xs font-medium text-gray-400">Times Studied</p>
+                  </div>
+                  
+                  <div class="flex flex-col">
+                      <p class="text-xl font-bold text-white">
+                          <span v-if="isLoadingStats" class="text-gray-500">...</span>
+                          <span v-else>{{ filteredStats?.total_words_learned || '0' }}</span>
+                      </p>
+                      <p class="text-xs font-medium text-gray-400">Words Learned</p>
+                  </div>
+                  
+                  <div class="flex flex-col">
+                      <p class="text-xl font-bold">
+                          <span v-if="isLoadingStats" class="text-gray-500">...</span>
+                          <template v-else>
+                              <span class="text-green-400">{{ filteredStats?.correct_answers || '0' }}</span> 
+                              <span class="text-gray-500">/</span> 
+                              <span class="text-red-400">{{ filteredStats?.incorrect_answers || '0' }}</span>
+                          </template>
+                      </p>
+                      <p class="text-xs font-medium text-gray-400">Correct / Wrong</p>
+                  </div>
+                  
+                  <div class="flex flex-col">
+                      <p class="text-xl font-bold text-yellow-400">
+                          <span v-if="isLoadingStats" class="text-gray-500">...</span>
+                          <span v-else>{{ filteredStats?.streak_days || '0' }}</span>
+                      </p>
+                      <p class="text-xs font-medium text-gray-400">Day Streak</p>
+                  </div>
               </div>
-            </div>
-
-            <div class="rounded-2xl bg-black/80 border border-gray-800 p-6 flex items-center justify-between shadow-lg">
-              <div>
-                <p class="text-sm font-medium text-gray-300 uppercase tracking-wider">Accuracy</p>
-                <p class="text-3xl font-bold text-white mt-1">{{ dashboard.stats.accuracy_rate }}%</p>
-              </div>
-              <div class="w-12 h-12 rounded-lg bg-green-900/40 flex items-center justify-center text-green-200">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              </div>
-            </div>
+              
+              <p class="mt-4 text-xs text-purple-400/80 hover:text-purple-300 transition-colors text-right">Click to view detailed report &rarr;</p>
           </div>
-        </div>
-
+          </div>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
           <div class="lg:col-span-2 space-y-6">
@@ -134,8 +172,11 @@
             </div>
 
             <div class="rounded-2xl bg-black/80 border border-gray-800 p-6 shadow-lg">
-              <h3 class="text-lg font-bold text-white mb-4">Recent Activity</h3>
-              <RecentActivity :activities="dashboard.recent_activity" />
+                <h3 class="text-lg font-bold text-white mb-4">Learning Recap</h3>
+                <p v-if="saved_sessions.length === 0" class="text-gray-400 text-sm italic">
+                    No past sessions found. Start a study session to see your learning recap here.
+                </p>
+                <SavedSessionsSection v-else :sessions="saved_sessions" /> 
             </div>
 
           </div>
@@ -143,26 +184,26 @@
           <div class="space-y-6">
             
             <div class="rounded-2xl bg-indigo-900/90 p-6 text-white relative overflow-hidden">
-               <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
-               
-               <h3 class="text-lg font-bold mb-4 relative z-10">Quick Start</h3>
-               <div class="grid grid-cols-2 gap-3 relative z-10">
-                  <button @click="startQuickFlashcards" class="bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl p-4 text-left transition-all">
-                    <div class="mb-2 opacity-80">
-                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                    </div>
-                    <span class="text-sm font-semibold block">Blitz Mode</span>
-                    <span class="text-xs opacity-70">10 Words</span>
-                  </button>
-                  
-                  <button @click="showFlashcardModal = true" class="bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl p-4 text-left transition-all">
-                    <div class="mb-2 opacity-80">
-                       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>
-                    </div>
-                    <span class="text-sm font-semibold block">Custom</span>
-                    <span class="text-xs opacity-70">Setup</span>
-                  </button>
-               </div>
+              <video
+                autoplay
+                loop
+                muted
+                playsinline
+                class="absolute inset-0 w-full h-full object-cover z-0"
+                src="/videos/study_feature_background.webm"
+              ></video>
+              <div class="absolute inset-0 w-full h-full bg-black/40 z-0 pointer-events-none"></div>
+              <h3 class="text-lg font-bold mb-4 relative z-10">Study Feature</h3>
+              <button 
+                @click="showFlashcardModal = true" 
+                class="w-full justify-center flex items-center px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-medium rounded-lg transition-all shadow-lg shadow-white/10 relative z-10"
+              >
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span class="font-semibold text-base">Start Study</span>
+              </button>
             </div>
 
             <div class="rounded-2xl bg-black/80 border border-gray-800 p-6 shadow-lg">
@@ -178,11 +219,6 @@
               />
             </div>
 
-            <div v-if="saved_sessions.length > 0" class="rounded-2xl bg-black/80 border border-gray-800 p-6 shadow-lg">
-              <h3 class="text-lg font-bold text-white mb-4">Saved Sessions</h3>
-              <SavedSessionsSection :sessions="saved_sessions" />
-            </div>
-
           </div>
         </div>
       </div>
@@ -194,7 +230,7 @@
       @close="showFlashcardModal = false"
       @start="startFlashcards"
     />
-
+    
     <TopicModal 
       v-if="showTopicModal"
       :topics="dashboard?.available_topics"
@@ -208,11 +244,12 @@
       @close="closeSaveSessionModal"
       @saved="handleSessionSaved"
     />
-  </div>
+
+    </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import { Head, router } from '@inertiajs/vue3';
 
 // Layout Components
@@ -222,17 +259,12 @@ import Header from '@/Components/Header.vue';
 import GuestContent from '@/Components/Dashboard/GuestContent.vue';
 import GitHubHeatmap from '@/Components/Dashboard/GitHubHeatmap.vue';
 import TopicsSection from '@/Components/Dashboard/TopicsSection.vue';
-import RecentActivity from '@/Components/Dashboard/RecentActivity.vue';
 import SavedSessionsSection from '@/Components/Dashboard/SavedSessionsSection.vue';
 
 // Modal Components
 import FlashcardModal from '@/Components/FlashcardModal.vue';
 import TopicModal from '@/Components/TopicModal.vue';
 import SaveSessionModal from '@/Components/SaveSessionModal.vue';
-
-// Note: CompactStats, QuickActions, and HeroSection components 
-// are intentionally replaced by inline markup for the new layout structure,
-// but you can re-import them if you wish to wrap the inline code back into components.
 
 const props = defineProps({
   user: {
@@ -256,17 +288,15 @@ const showTopicModal = ref(false);
 const showSaveSessionModal = ref(false);
 const saveSessionData = ref(null);
 
+// New state for Memory Level card
+const memoryDayRange = ref(7);
+const showMemoryModal = ref(false);
+const filteredStats = ref(null);
+const isLoadingStats = ref(false);
+
 // Handlers
 const handleWordSelected = (word) => {
   console.log('Selected word:', word);
-};
-
-const startQuickFlashcards = () => {
-  router.post('/flashcards/start', {
-    mode: 'quick',
-    flashcard_type: 'standard',
-    word_count: 10
-  });
 };
 
 const startFlashcards = (settings) => {
@@ -289,6 +319,38 @@ const startReview = () => {
     word_count: props.dashboard.stats.words_due_for_review
   });
 };
+
+// Handler for Memory Level click
+const viewMemoryDetails = () => {
+    // This function will eventually open the modal for frequently forgotten/remembered words.
+    showMemoryModal.value = true;
+    console.log(`Open detailed memory report for last ${memoryDayRange.value} days`);
+};
+
+// Fetch stats by day range
+const fetchStatsByDayRange = async (days) => {
+    if (!props.user) return;
+    
+    isLoadingStats.value = true;
+    try {
+        const response = await fetch(`/dashboard/stats/${days}`);
+        if (response.ok) {
+            const data = await response.json();
+            filteredStats.value = data;
+        } else {
+            console.error('Failed to fetch stats:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error fetching stats:', error);
+    } finally {
+        isLoadingStats.value = false;
+    }
+};
+
+// Watch for day range changes
+watch(memoryDayRange, (newDays) => {
+    fetchStatsByDayRange(newDays);
+});
 
 const refreshDashboard = () => {
   router.reload({ only: ['dashboard', 'saved_sessions'] });
@@ -320,6 +382,11 @@ onMounted(() => {
     } catch (error) {
       console.error('Home: Error parsing save session data:', error);
     }
+  }
+  
+  // Fetch initial stats for the default day range
+  if (props.user) {
+    fetchStatsByDayRange(memoryDayRange.value);
   }
 });
 </script>

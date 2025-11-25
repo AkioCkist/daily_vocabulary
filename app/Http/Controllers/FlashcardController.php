@@ -16,7 +16,8 @@ class FlashcardController extends Controller
 {
     public function __construct(
         private DashboardService $dashboardService
-    ) {}
+    ) {
+    }
 
     /**
      * Start a flashcard session.
@@ -63,7 +64,7 @@ class FlashcardController extends Controller
         }
 
         $user = Auth::user();
-        
+
         // Generate flashcards based on settings
         $words = $this->generateFlashcards($request->all());
 
@@ -101,7 +102,7 @@ class FlashcardController extends Controller
     public function next(Request $request): JsonResponse
     {
         $session = session('flashcard_session');
-        
+
         if (!$session) {
             return response()->json(['error' => 'No active session'], 404);
         }
@@ -114,7 +115,7 @@ class FlashcardController extends Controller
         }
 
         $word = $words[$currentIndex];
-        
+
         // Update session index
         session(['flashcard_session.current_index' => $currentIndex + 1]);
 
@@ -144,7 +145,7 @@ class FlashcardController extends Controller
 
         $user = Auth::user();
         $session = session('flashcard_session');
-        
+
         if (!$session) {
             return response()->json(['error' => 'No active session'], 404);
         }
@@ -160,16 +161,16 @@ class FlashcardController extends Controller
         if ($forgotten) {
             $isCorrect = false;
             $userAnswer = '[FORGOTTEN]';
-            
+
             // Update forgotten count in user_words
             $userWord = \App\Models\UserWord::firstOrCreate(
                 ['user_id' => $user->id, 'word_id' => $wordId],
                 ['mastered' => false, 'mistake_count' => 0]
             );
-            
+
             $userWord->increment('forgotten_count');
             $userWord->increment('mistake_count');
-            
+
             if ($hintsUsed > 0) {
                 $userWord->increment('hint_reveals_used', $hintsUsed);
             }
@@ -180,17 +181,17 @@ class FlashcardController extends Controller
             $word = \App\Models\Word::find($wordId);
             $correctAnswer = strtolower(trim($word->word));
             $submittedAnswer = strtolower(trim($userAnswer ?? ''));
-            
+
             $isCorrect = $correctAnswer === $submittedAnswer;
-            
+
             // Update fill_blank_attempts count
             $userWord = \App\Models\UserWord::firstOrCreate(
                 ['user_id' => $user->id, 'word_id' => $wordId],
                 ['mastered' => false, 'mistake_count' => 0]
             );
-            
+
             $userWord->increment('fill_blank_attempts');
-            
+
             if ($hintsUsed > 0) {
                 $userWord->increment('hint_reveals_used', $hintsUsed);
             }
@@ -245,17 +246,17 @@ class FlashcardController extends Controller
         $word = \App\Models\Word::find($request->get('word_id'));
         $hintLevel = $request->get('current_hint_level');
         $targetWord = $word->word;
-        
+
         // Calculate how many characters to reveal (progressive hints)
         $wordLength = strlen($targetWord);
         $charactersToReveal = min($hintLevel + 1, $wordLength);
-        
+
         // Create hint by revealing characters and hiding the rest
         $hint = substr($targetWord, 0, $charactersToReveal) . str_repeat('_', $wordLength - $charactersToReveal);
-        
+
         // Check if this is the complete word (no more hints available)
         $maxHintsReached = $charactersToReveal >= $wordLength;
-        
+
         return response()->json([
             'hint' => $hint,
             'hint_level' => $hintLevel + 1,
@@ -276,7 +277,7 @@ class FlashcardController extends Controller
         );
 
         $currentScore = $userWord->difficulty_score ?? 0.5;
-        
+
         // Calculate new difficulty score (0.0 = very easy, 1.0 = very hard)
         if ($forgotten) {
             $newScore = min(1.0, $currentScore + 0.3); // Forgotten = significant difficulty increase
@@ -307,14 +308,14 @@ class FlashcardController extends Controller
                 'X-Inertia-Partial-Component' => request()->header('X-Inertia-Partial-Component'),
             ]
         ]);
-        
+
         $session = session('flashcard_session');
-        
+
         Log::info('FlashcardController::complete - Session check', [
             'has_session' => !!$session,
             'session_keys' => $session ? array_keys($session) : [],
         ]);
-        
+
         if (!$session) {
             Log::warning('FlashcardController::complete - No active session found');
             if (request()->header('X-Inertia')) {
@@ -345,12 +346,14 @@ class FlashcardController extends Controller
         $shouldShowSavePopup = false;
 
         // Check if this is a study session (not a review of saved session)
-        if (!isset($session['settings']['saved_session_id']) && 
-            isset($session['words']) && 
-            count($session['words']) > 0) {
-            
+        if (
+            !isset($session['settings']['saved_session_id']) &&
+            isset($session['words']) &&
+            count($session['words']) > 0
+        ) {
+
             $shouldShowSavePopup = true;
-            
+
             // Extract flashcard IDs from session
             $flashcardIds = [];
             foreach ($session['words'] as $word) {
@@ -398,13 +401,13 @@ class FlashcardController extends Controller
 
         // For regular requests, redirect with data
         $url = route('home');
-        
+
         Log::info('FlashcardController::complete - Preparing redirect', [
             'base_url' => $url,
             'should_show_save_popup' => $shouldShowSavePopup,
             'is_inertia_request' => !!request()->header('X-Inertia'),
         ]);
-        
+
         if ($shouldShowSavePopup) {
             // Add query parameters for save session popup
             $queryParams = [
@@ -412,7 +415,7 @@ class FlashcardController extends Controller
                 'save_session_data' => urlencode(json_encode($saveSessionData))
             ];
             $url .= '?' . http_build_query($queryParams);
-            
+
             Log::info('FlashcardController::complete - Built URL with save popup params', [
                 'final_url' => $url,
                 'query_params' => $queryParams,
@@ -653,21 +656,21 @@ class FlashcardController extends Controller
     private function generateFlashcards(array $settings): array
     {
         $user = Auth::user();
-        
+
         // For saved_session mode, get words from flashcard_ids
         if ($settings['mode'] === 'saved_session' && !empty($settings['flashcard_ids'])) {
             $flashcardIds = $settings['flashcard_ids'];
-            
+
             // If shuffle is enabled, shuffle the IDs
             if (!empty($settings['shuffle'])) {
                 shuffle($flashcardIds);
             }
-            
+
             // Get words in the specified order
             $words = \App\Models\Word::whereIn('id', $flashcardIds)
                 ->get(['id', 'word', 'pronunciation', 'definition', 'example', 'cefr_level', 'topic'])
                 ->keyBy('id');
-            
+
             // Maintain the order of flashcard_ids
             $orderedWords = [];
             foreach ($flashcardIds as $id) {
@@ -675,10 +678,10 @@ class FlashcardController extends Controller
                     $orderedWords[] = $words[$id]->toArray();
                 }
             }
-            
+
             return $orderedWords;
         }
-        
+
         // For review mode, get words that need review (same logic as DashboardService)
         if ($settings['mode'] === 'review') {
             $words = \App\Models\Word::select(['words.id', 'words.word', 'words.pronunciation', 'words.definition', 'words.example', 'words.cefr_level', 'words.topic'])
@@ -713,28 +716,324 @@ class FlashcardController extends Controller
             $topics = \App\Models\Topic::whereIn('id', $settings['topic_ids'])->get();
             $systemTopicNames = $topics->where('is_system', true)->pluck('name')->toArray();
             $userTopicIds = $topics->where('is_system', false)->pluck('id')->toArray();
-            
+
             $query->where(function ($q) use ($systemTopicNames, $userTopicIds, $user) {
                 // Include words from system topics (matched by topic name)
                 if (!empty($systemTopicNames)) {
                     $q->whereIn('topic', $systemTopicNames);
                 }
-                
+
                 // Include words from user's personal topics (from user_word_topics)
                 if (!empty($userTopicIds)) {
                     $q->orWhereHas('userTopics', function ($subQuery) use ($userTopicIds, $user) {
                         $subQuery->whereIn('topics.id', $userTopicIds)
-                                 ->where('user_word_topics.user_id', $user->id);
+                            ->where('user_word_topics.user_id', $user->id);
                     });
                 }
             });
         }
 
-        // Get random words
-        $words = $query->inRandomOrder()
+        // Apply advanced filters if they exist
+        // Join with user_words for advanced filtering
+        $needsUserWordsJoin = !empty($settings['difficulty_filter']) ||
+            !empty($settings['mastery_filter']) ||
+            !empty($settings['time_filter']);
+
+        if ($needsUserWordsJoin) {
+            $query->leftJoin('user_words', function ($join) use ($user) {
+                $join->on('words.id', '=', 'user_words.word_id')
+                    ->where('user_words.user_id', '=', $user->id);
+            });
+        }
+
+        // Difficulty filter
+        if (!empty($settings['difficulty_filter']) && $settings['difficulty_filter'] !== 'all') {
+            switch ($settings['difficulty_filter']) {
+                case 'easy':
+                    $query->where(function ($q) {
+                        $q->where('user_words.difficulty_score', '<=', 0.33)
+                            ->orWhereNull('user_words.difficulty_score');
+                    });
+                    break;
+                case 'medium':
+                    $query->whereBetween('user_words.difficulty_score', [0.34, 0.66]);
+                    break;
+                case 'hard':
+                    $query->where('user_words.difficulty_score', '>=', 0.67);
+                    break;
+            }
+        }
+
+        // Mastery filter
+        if (!empty($settings['mastery_filter']) && $settings['mastery_filter'] !== 'all') {
+            if ($settings['mastery_filter'] === 'mastered') {
+                $query->where('user_words.mastered', true);
+            } elseif ($settings['mastery_filter'] === 'not_mastered') {
+                $query->where(function ($q) {
+                    $q->where('user_words.mastered', false)
+                        ->orWhereNull('user_words.mastered');
+                });
+            }
+        }
+
+        // Time-based filter
+        if (!empty($settings['time_filter']) && $settings['time_filter'] !== 'all') {
+            if ($settings['time_filter'] === 'recent') {
+                // Words studied in the last 7 days
+                $query->where('user_words.last_reviewed_at', '>=', now()->subDays(7));
+            } elseif ($settings['time_filter'] === 'not_recent') {
+                // Words not studied in the last 7 days or never studied
+                $query->where(function ($q) {
+                    $q->where('user_words.last_reviewed_at', '<', now()->subDays(7))
+                        ->orWhereNull('user_words.last_reviewed_at');
+                });
+            }
+        }
+
+        // Apply sorting
+        $sortBy = $settings['sort_by'] ?? 'random';
+
+        switch ($sortBy) {
+            case 'alphabetical':
+                $query->orderBy('words.word', 'asc');
+                break;
+            case 'difficulty':
+                if (!$needsUserWordsJoin) {
+                    $query->leftJoin('user_words', function ($join) use ($user) {
+                        $join->on('words.id', '=', 'user_words.word_id')
+                            ->where('user_words.user_id', '=', $user->id);
+                    });
+                }
+                $query->orderByRaw('COALESCE(user_words.difficulty_score, 0.5) DESC');
+                break;
+            case 'frequency':
+                // If you have a frequency column in words table, use it
+                // Otherwise, fall back to random
+                $query->inRandomOrder();
+                break;
+            case 'random':
+            default:
+                $query->inRandomOrder();
+                break;
+        }
+
+        // Select distinct words to avoid duplicates from joins
+        $selectFields = $needsUserWordsJoin || $sortBy === 'difficulty'
+            ? ['words.id', 'words.word', 'words.pronunciation', 'words.definition', 'words.example', 'words.cefr_level', 'words.topic']
+            : ['id', 'word', 'pronunciation', 'definition', 'example', 'cefr_level', 'topic'];
+
+        // Get words
+        $words = $query->distinct()
             ->limit($settings['word_count'])
-            ->get(['id', 'word', 'pronunciation', 'definition', 'example', 'cefr_level', 'topic']);
+            ->get($selectFields);
 
         return $words->toArray();
+    }
+
+    /**
+     * Save current settings as a template.
+     */
+    public function saveTemplate(Request $request): JsonResponse
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'settings' => 'required|array',
+            'settings.word_count' => 'required|integer|min:5|max:50',
+            'settings.flashcard_type' => 'required|in:standard,fill_blank,mixed',
+            'settings.cefr_levels' => 'nullable|array',
+            'settings.topic_ids' => 'nullable|array',
+            'settings.difficulty_filter' => 'nullable|string|in:all,easy,medium,hard',
+            'settings.mastery_filter' => 'nullable|string|in:all,mastered,not_mastered',
+            'settings.time_filter' => 'nullable|string|in:all,recent,not_recent',
+            'settings.sort_by' => 'nullable|string|in:random,alphabetical,difficulty,frequency',
+        ]);
+
+        $user = Auth::user();
+
+        // Check if template with same name exists for this user
+        $existing = \App\Models\FlashcardTemplate::where('user_id', $user->id)
+            ->where('name', $request->get('name'))
+            ->first();
+
+        if ($existing) {
+            return response()->json([
+                'success' => false,
+                'message' => 'A template with this name already exists.'
+            ], 409);
+        }
+
+        $template = \App\Models\FlashcardTemplate::create([
+            'user_id' => $user->id,
+            'name' => $request->get('name'),
+            'settings' => $request->get('settings'),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Template saved successfully.',
+            'template' => $template
+        ]);
+    }
+
+    /**
+     * List all templates for the current user.
+     */
+    public function listTemplates(): JsonResponse
+    {
+        $user = Auth::user();
+
+        $templates = \App\Models\FlashcardTemplate::where('user_id', $user->id)
+            ->orderBy('name')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'templates' => $templates
+        ]);
+    }
+
+    /**
+     * Load a specific template.
+     */
+    public function loadTemplate(int $id): JsonResponse
+    {
+        $user = Auth::user();
+
+        $template = \App\Models\FlashcardTemplate::where('id', $id)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$template) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Template not found.'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'template' => $template
+        ]);
+    }
+
+    /**
+     * Delete a template.
+     */
+    public function deleteTemplate(int $id): JsonResponse
+    {
+        $user = Auth::user();
+
+        $template = \App\Models\FlashcardTemplate::where('id', $id)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$template) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Template not found.'
+            ], 404);
+        }
+
+        $template->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Template deleted successfully.'
+        ]);
+    }
+
+    /**
+     * Export a template as JSON file.
+     */
+    public function exportTemplate(int $id)
+    {
+        $user = Auth::user();
+
+        $template = \App\Models\FlashcardTemplate::where('id', $id)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$template) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Template not found.'
+            ], 404);
+        }
+
+        $exportData = [
+            'name' => $template->name,
+            'settings' => $template->settings,
+            'exported_at' => now()->toIso8601String(),
+            'version' => '1.0'
+        ];
+
+        $filename = 'flashcard_template_' . str_replace(' ', '_', strtolower($template->name)) . '.json';
+
+        return response()->json($exportData)
+            ->header('Content-Type', 'application/json')
+            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+    }
+
+    /**
+     * Import a template from JSON file.
+     */
+    public function importTemplate(Request $request): JsonResponse
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:json,txt|max:1024', // Max 1MB
+        ]);
+
+        $user = Auth::user();
+
+        try {
+            $file = $request->file('file');
+            $content = file_get_contents($file->getRealPath());
+            $data = json_decode($content, true);
+
+            if (!$data || !isset($data['name']) || !isset($data['settings'])) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid template file format.'
+                ], 400);
+            }
+
+            // Validate settings
+            if (!\App\Models\FlashcardTemplate::validateSettings($data['settings'])) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid template settings.'
+                ], 400);
+            }
+
+            // Check if template with same name exists
+            $existing = \App\Models\FlashcardTemplate::where('user_id', $user->id)
+                ->where('name', $data['name'])
+                ->first();
+
+            if ($existing) {
+                // Add suffix to make it unique
+                $data['name'] = $data['name'] . ' (imported)';
+            }
+
+            $template = \App\Models\FlashcardTemplate::create([
+                'user_id' => $user->id,
+                'name' => $data['name'],
+                'settings' => $data['settings'],
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Template imported successfully.',
+                'template' => $template
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Template import failed:', ['error' => $e->getMessage()]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to import template.'
+            ], 500);
+        }
     }
 }

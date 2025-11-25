@@ -7,87 +7,116 @@
     leave-from-class="opacity-100 scale-100"
     leave-to-class="opacity-0 scale-95"
   >
-    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-        <!-- Header -->
-        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-          <h2 class="text-xl font-bold text-gray-900 dark:text-white">Flashcard Training</h2>
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
+      
+      <div class="bg-[#0B0C10]/90 backdrop-blur-lg rounded-2xl shadow-2xl shadow-indigo-900/40 ring-1 ring-indigo-900/50 max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col text-white">
+        
+        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+          <h2 class="text-xl font-bold">Custom Study Session</h2>
           <button 
             @click="$emit('close')"
-            class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-700/50 transition-colors"
           >
-            <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
           </button>
         </div>
 
-        <!-- Content - Scrollable -->
         <div class="flex-1 overflow-y-auto px-6 py-6 space-y-6">
-          <!-- Mode Selection -->
-          <ModeSelector v-model="settings.mode" />
+          
+          <!-- Template Manager -->
+          <div class="space-y-2">
+            <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wide">Template Settings</h3>
+            <TemplateManager
+              :current-settings="getCurrentSettings()"
+              @template-loaded="loadTemplate"
+            />
+          </div>
 
-          <!-- Flashcard Type Selection -->
-          <FlashcardTypeSelector v-model="settings.flashcard_type" />
+          <div class="border-t border-gray-800 pt-6 space-y-6">
+            <!-- Flashcard Type -->
+            <div>
+              <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Flashcard Type</h3>
+              <FlashcardTypeSelector v-model="settings.flashcard_type" />
+            </div>
 
-          <!-- Advanced Options -->
-          <transition
-            enter-active-class="transition-all duration-300 ease-out"
-            enter-from-class="opacity-0 max-h-0"
-            enter-to-class="opacity-100 max-h-[1000px]"
-            leave-active-class="transition-all duration-200 ease-in"
-            leave-from-class="opacity-100 max-h-[1000px]"
-            leave-to-class="opacity-0 max-h-0"
-          >
-            <div v-if="settings.mode === 'advanced'" class="space-y-6">
-              <AdvancedSettings
-                :cefr-levels="dashboard.cefr_levels"
-                v-model:selected-levels="settings.cefr_levels"
-                v-model:word-count="settings.word_count"
-              />
+            <!-- CEFR Level Selection (moved from advanced) -->
+            <div class="space-y-3">
+              <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wide">CEFR Level</h3>
+              <div class="flex flex-wrap gap-2">
+                <button
+                  v-for="(label, level) in dashboard.cefr_levels"
+                  :key="level"
+                  @click="toggleLevel(level)"
+                  :class="[
+                    'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
+                    settings.cefr_levels.includes(level)
+                      ? 'bg-indigo-500 text-white shadow-md scale-105'
+                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                  ]"
+                >
+                  {{ level }}
+                </button>
+              </div>
+              <p class="text-xs text-gray-400">
+                {{ settings.cefr_levels.length > 0 ? settings.cefr_levels.join(', ') : 'All levels' }}
+              </p>
+            </div>
 
+            <!-- Topics (moved from advanced) -->
+            <div>
+              <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Topics</h3>
               <TopicSelector
                 :topics="dashboard.available_topics"
                 v-model:selected-topics="settings.topic_ids"
                 @topic-created="handleTopicCreated"
               />
             </div>
+          </div>
+
+          <!-- Advanced Settings (Collapsible) -->
+          <div class="pt-2">
+            <button
+              @click="showAdvancedSettings = !showAdvancedSettings"
+              class="w-full flex items-center justify-between p-3 rounded-xl bg-gray-800/70 hover:bg-gray-700/70 transition-colors text-sm font-semibold"
+            >
+              <span>Advanced Filters (Optional)</span>
+              <svg 
+                class="w-4 h-4 transition-transform" 
+                :class="{'rotate-180': showAdvancedSettings}" 
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
+
+          <transition
+            enter-active-class="transition-all duration-300 ease-out overflow-hidden"
+            enter-from-class="opacity-0 max-h-0"
+            enter-to-class="opacity-100 max-h-[1000px]"
+            leave-active-class="transition-all duration-200 ease-in overflow-hidden"
+            leave-from-class="opacity-100 max-h-[1000px]"
+            leave-to-class="opacity-0 max-h-0"
+          >
+            <div v-if="showAdvancedSettings" class="space-y-6 p-4 border border-gray-700 rounded-xl bg-gray-900/50">
+              <h4 class="text-md font-bold text-indigo-400">Advanced Options</h4>
+              <AdvancedSettings
+                v-model:word-count="settings.word_count"
+                v-model:difficulty-filter="settings.difficulty_filter"
+                v-model:mastery-filter="settings.mastery_filter"
+                v-model:time-filter="settings.time_filter"
+                v-model:sort-by="settings.sort_by"
+              />
+            </div>
           </transition>
 
-          <!-- Summary -->
-          <div class="p-4 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl border border-indigo-100 dark:border-indigo-800">
-            <h3 class="font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-              <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-              </svg>
-              Summary
-            </h3>
-            <div class="grid grid-cols-2 gap-3 text-sm">
-              <div class="flex items-center gap-2">
-                <span class="text-gray-600 dark:text-gray-400">Mode:</span>
-                <span class="font-medium text-gray-900 dark:text-white">{{ settings.mode === 'basic' ? 'Quick' : 'Custom' }}</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <span class="text-gray-600 dark:text-gray-400">Type:</span>
-                <span class="font-medium text-gray-900 dark:text-white">{{ getFlashcardTypeLabel }}</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <span class="text-gray-600 dark:text-gray-400">Words:</span>
-                <span class="font-medium text-gray-900 dark:text-white">{{ settings.word_count }}</span>
-              </div>
-              <div v-if="settings.mode === 'advanced'" class="flex items-center gap-2">
-                <span class="text-gray-600 dark:text-gray-400">Topics:</span>
-                <span class="font-medium text-gray-900 dark:text-white">{{ settings.topic_ids.length || 'All' }}</span>
-              </div>
-            </div>
-          </div>
         </div>
 
-        <!-- Footer Actions -->
-        <div class="flex gap-3 px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
+        <div class="flex gap-3 px-6 py-4 border-t border-gray-800 bg-gray-900/50">
           <button
             @click="$emit('close')"
-            class="flex-1 py-2.5 px-4 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors font-medium"
+            class="flex-1 py-2.5 px-4 border border-gray-700 text-gray-300 rounded-lg hover:bg-gray-800 transition-colors font-medium"
           >
             Cancel
           </button>
@@ -97,11 +126,11 @@
             :class="[
               'flex-1 py-2.5 px-4 rounded-lg font-medium transition-all duration-200',
               canStart
-                ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 shadow-md hover:shadow-lg'
-                : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 shadow-lg shadow-indigo-600/30'
+                : 'bg-gray-600 text-gray-400 cursor-not-allowed opacity-70'
             ]"
           >
-            Start Training
+            Start Training ({{ settings.word_count }} Words)
           </button>
         </div>
       </div>
@@ -110,11 +139,11 @@
 </template>
 
 <script setup>
-import { reactive, computed } from 'vue';
-import ModeSelector from './Flashcard/ModeSelector.vue';
+import { reactive, computed, ref } from 'vue';
 import FlashcardTypeSelector from './Flashcard/FlashcardTypeSelector.vue';
 import AdvancedSettings from './Flashcard/AdvancedSettings.vue';
 import TopicSelector from './Flashcard/TopicSelector.vue';
+import TemplateManager from './Flashcard/TemplateManager.vue';
 
 const props = defineProps({
   dashboard: {
@@ -125,13 +154,19 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'start']);
 
+// New state for advanced settings toggle
+const showAdvancedSettings = ref(false);
+
 // Training settings
 const settings = reactive({
-  mode: 'basic',
   flashcard_type: 'standard',
   word_count: 10,
   cefr_levels: [],
-  topic_ids: []
+  topic_ids: [],
+  difficulty_filter: 'all',
+  mastery_filter: 'all',
+  time_filter: 'all',
+  sort_by: 'random'
 });
 
 // Computed properties
@@ -139,43 +174,80 @@ const canStart = computed(() => {
   return settings.word_count >= 5 && settings.word_count <= 50;
 });
 
-const getFlashcardTypeLabel = computed(() => {
-  const types = {
-    standard: 'Standard',
-    fill_blank: 'Fill-Blank',
-    mixed: 'Mixed'
-  };
-  return types[settings.flashcard_type] || 'Standard';
-});
-
 // Methods
+function toggleLevel(level) {
+  const index = settings.cefr_levels.indexOf(level);
+  
+  if (index > -1) {
+    settings.cefr_levels.splice(index, 1);
+  } else {
+    settings.cefr_levels.push(level);
+  }
+}
+
 function handleTopicCreated(topic) {
-  // Add the new topic to the dashboard data
   if (!props.dashboard.available_topics.user) {
     props.dashboard.available_topics.user = [];
   }
   props.dashboard.available_topics.user.push(topic);
   
-  // Automatically select the new topic
   settings.topic_ids.push(topic.id);
+}
+
+function getCurrentSettings() {
+  return {
+    flashcard_type: settings.flashcard_type,
+    word_count: settings.word_count,
+    cefr_levels: settings.cefr_levels,
+    topic_ids: settings.topic_ids,
+    difficulty_filter: settings.difficulty_filter,
+    mastery_filter: settings.mastery_filter,
+    time_filter: settings.time_filter,
+    sort_by: settings.sort_by
+  };
+}
+
+function loadTemplate(templateSettings) {
+  // Load all settings from template
+  settings.flashcard_type = templateSettings.flashcard_type || 'standard';
+  settings.word_count = templateSettings.word_count || 10;
+  settings.cefr_levels = templateSettings.cefr_levels || [];
+  settings.topic_ids = templateSettings.topic_ids || [];
+  settings.difficulty_filter = templateSettings.difficulty_filter || 'all';
+  settings.mastery_filter = templateSettings.mastery_filter || 'all';
+  settings.time_filter = templateSettings.time_filter || 'all';
+  settings.sort_by = templateSettings.sort_by || 'random';
 }
 
 function startTraining() {
   if (!canStart.value) return;
 
   const trainingSettings = {
-    mode: settings.mode,
+    mode: 'custom',
     flashcard_type: settings.flashcard_type,
-    word_count: settings.word_count
+    word_count: settings.word_count,
   };
 
-  if (settings.mode === 'advanced') {
-    if (settings.cefr_levels.length > 0) {
-      trainingSettings.cefr_levels = settings.cefr_levels;
-    }
-    if (settings.topic_ids.length > 0) {
-      trainingSettings.topic_ids = settings.topic_ids;
-    }
+  // Only include optional filters if they are selected
+  if (settings.cefr_levels.length > 0) {
+    trainingSettings.cefr_levels = settings.cefr_levels;
+  }
+  if (settings.topic_ids.length > 0) {
+    trainingSettings.topic_ids = settings.topic_ids;
+  }
+  
+  // Include advanced filters
+  if (settings.difficulty_filter !== 'all') {
+    trainingSettings.difficulty_filter = settings.difficulty_filter;
+  }
+  if (settings.mastery_filter !== 'all') {
+    trainingSettings.mastery_filter = settings.mastery_filter;
+  }
+  if (settings.time_filter !== 'all') {
+    trainingSettings.time_filter = settings.time_filter;
+  }
+  if (settings.sort_by !== 'random') {
+    trainingSettings.sort_by = settings.sort_by;
   }
 
   emit('start', trainingSettings);

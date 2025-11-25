@@ -109,8 +109,8 @@ class DashboardService
                 'date' => $dateString,
                 'attempts' => $activity ? $activity->attempts : 0,
                 'correct' => $activity ? $activity->correct : 0,
-                'accuracy' => $activity && $activity->attempts > 0 
-                    ? round(($activity->correct / $activity->attempts) * 100, 1) 
+                'accuracy' => $activity && $activity->attempts > 0
+                    ? round(($activity->correct / $activity->attempts) * 100, 1)
                     : 0,
                 'level' => $this->getHeatmapLevel($activity ? $activity->attempts : 0),
             ];
@@ -209,9 +209,11 @@ class DashboardService
 
         // For user topics, count words from user_word_topics pivot table
         $userTopics = Topic::where('user_id', $user->id)
-            ->withCount(['collectedWords' => function ($query) use ($user) {
-                $query->where('user_word_topics.user_id', $user->id);
-            }])
+            ->withCount([
+                'collectedWords' => function ($query) use ($user) {
+                    $query->where('user_word_topics.user_id', $user->id);
+                }
+            ])
             ->orderBy('name')
             ->get()
             ->map(function ($topic) {
@@ -288,10 +290,14 @@ class DashboardService
      */
     private function getHeatmapLevel(int $attempts): int
     {
-        if ($attempts === 0) return 0;
-        if ($attempts <= 5) return 1;
-        if ($attempts <= 15) return 2;
-        if ($attempts <= 30) return 3;
+        if ($attempts === 0)
+            return 0;
+        if ($attempts <= 5)
+            return 1;
+        if ($attempts <= 15)
+            return 2;
+        if ($attempts <= 30)
+            return 3;
         return 4;
     }
 
@@ -355,8 +361,92 @@ class DashboardService
         $recent = $trends->slice(-7)->avg('accuracy');
         $previous = $trends->slice(-14, 7)->avg('accuracy');
 
-        if ($recent > $previous + 5) return 'up';
-        if ($recent < $previous - 5) return 'down';
+        if ($recent > $previous + 5)
+            return 'up';
+        if ($recent < $previous - 5)
+            return 'down';
         return 'stable';
+    }
+
+    /**
+     * Get user statistics filtered by day range.
+     *
+     * @param User $user
+     * @param int $days Number of days to look back (1, 7, or 30)
+     * @return array<string, mixed>
+     */
+    public function getUserStatsByDayRange(User $user, int $days): array
+    {
+        $startDate = Carbon::now()->subDays($days)->startOfDay();
+
+        // Get test attempts within the date range
+        $testAttempts = TestAttempt::where('user_id', $user->id)
+            ->where('created_at', '>=', $startDate);
+
+        // Count unique study sessions (group by date)
+        $studySessions = TestAttempt::where('user_id', $user->id)
+            ->where('created_at', '>=', $startDate)
+            ->select(DB::raw('created_at::date as date'))
+            ->distinct()
+            ->count();
+
+        // Get words learned within the date range
+        $wordsLearned = UserWord::where('user_id', $user->id)
+            ->where('is_learned', true)
+            ->where('updated_at', '>=', $startDate)
+            ->count();
+
+        // Get correct and incorrect answers
+        $correctAnswers = $testAttempts->clone()->where('is_correct', true)->count();
+        $incorrectAnswers = $testAttempts->clone()->where('is_correct', false)->count();
+
+        // Get streak days within the range
+        $streakDays = $this->getStreakWithinRange($user, $days);
+
+        return [
+            'total_study_sessions' => $studySessions,
+            'total_words_learned' => $wordsLearned,
+            'correct_answers' => $correctAnswers,
+            'incorrect_answers' => $incorrectAnswers,
+            'streak_days' => $streakDays,
+        ];
+    }
+
+    /**
+     * Calculate streak within a specific day range.
+     *
+     * @param User $user
+     * @param int $days
+     * @return int
+     */
+    private function getStreakWithinRange(User $user, int $days): int
+    {
+        $startDate = Carbon::now()->subDays($days)->startOfDay();
+
+        $dates = TestAttempt::where('user_id', $user->id)
+            ->where('created_at', '>=', $startDate)
+            ->select(DB::raw('created_at::date as date'))
+            ->distinct()
+            ->orderBy('date', 'desc')
+            ->pluck('date')
+            ->toArray();
+
+        if (empty($dates)) {
+            return 0;
+        }
+
+        $streak = 0;
+        $currentDate = Carbon::now()->format('Y-m-d');
+
+        foreach ($dates as $date) {
+            if ($date === $currentDate) {
+                $streak++;
+                $currentDate = Carbon::parse($currentDate)->subDay()->format('Y-m-d');
+            } else {
+                break;
+            }
+        }
+
+        return $streak;
     }
 }

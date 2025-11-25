@@ -1,30 +1,5 @@
 <template>
   <div class="space-y-6">
-    <!-- CEFR Level Selection -->
-    <div class="space-y-3">
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-        CEFR Level
-      </label>
-      <div class="flex flex-wrap gap-2">
-        <button
-          v-for="(label, level) in cefrLevels"
-          :key="level"
-          @click="toggleLevel(level)"
-          :class="[
-            'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
-            selectedLevels.includes(level)
-              ? 'bg-indigo-500 text-white shadow-md scale-105'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-          ]"
-        >
-          {{ level }}
-        </button>
-      </div>
-      <p class="text-xs text-gray-500 dark:text-gray-400">
-        {{ selectedLevels.length > 0 ? selectedLevels.join(', ') : 'All levels' }}
-      </p>
-    </div>
-
     <!-- Word Count Slider -->
     <div class="space-y-3">
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -45,37 +20,116 @@
         <span>50</span>
       </div>
     </div>
+
+    <!-- Difficulty Filter -->
+    <div class="space-y-3">
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        Difficulty Level
+      </label>
+      <select
+        :value="difficultyFilter"
+        @change="$emit('update:difficultyFilter', $event.target.value)"
+        class="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+      >
+        <option value="all">All Difficulties</option>
+        <option value="easy">Easy (Low difficulty score)</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard (High difficulty score)</option>
+      </select>
+      <p class="text-xs text-gray-500 dark:text-gray-400">
+        Based on your past performance with each word
+      </p>
+    </div>
+
+    <!-- Mastery Filter -->
+    <div class="space-y-3">
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        Mastery Status
+      </label>
+      <select
+        :value="masteryFilter"
+        @change="$emit('update:masteryFilter', $event.target.value)"
+        class="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+      >
+        <option value="all">All Words</option>
+        <option value="mastered">Mastered Only</option>
+        <option value="not_mastered">Not Mastered</option>
+      </select>
+      <p class="text-xs text-gray-500 dark:text-gray-400">
+        Filter by whether you've mastered the words
+      </p>
+    </div>
+
+    <!-- Time-based Filter -->
+    <div class="space-y-3">
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        Study Recency
+      </label>
+      <select
+        :value="timeFilter"
+        @change="$emit('update:timeFilter', $event.target.value)"
+        class="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+      >
+        <option value="all">All Words</option>
+        <option value="recent">Recently Studied (Last 7 days)</option>
+        <option value="not_recent">Not Recently Studied</option>
+      </select>
+      <p class="text-xs text-gray-500 dark:text-gray-400">
+        Filter by when you last studied the words
+      </p>
+    </div>
+
+    <!-- Sorting Options -->
+    <div class="space-y-3">
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        Sort Order
+      </label>
+      <select
+        :value="sortBy"
+        @change="$emit('update:sortBy', $event.target.value)"
+        class="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+      >
+        <option value="random">Random</option>
+        <option value="alphabetical">Alphabetical (A-Z)</option>
+        <option value="difficulty">By Difficulty (Hardest First)</option>
+        <option value="frequency">By Frequency</option>
+      </select>
+      <p class="text-xs text-gray-500 dark:text-gray-400">
+        Choose how words should be ordered
+      </p>
+    </div>
   </div>
 </template>
 
 <script setup>
 const props = defineProps({
-  cefrLevels: {
-    type: Object,
-    required: true
-  },
-  selectedLevels: {
-    type: Array,
-    default: () => []
-  },
   wordCount: {
     type: Number,
     default: 10
+  },
+  difficultyFilter: {
+    type: String,
+    default: 'all'
+  },
+  masteryFilter: {
+    type: String,
+    default: 'all'
+  },
+  timeFilter: {
+    type: String,
+    default: 'all'
+  },
+  sortBy: {
+    type: String,
+    default: 'random'
   }
 });
 
-const emit = defineEmits(['update:selectedLevels', 'update:wordCount']);
-
-function toggleLevel(level) {
-  const currentLevels = [...props.selectedLevels];
-  const index = currentLevels.indexOf(level);
-  
-  if (index > -1) {
-    currentLevels.splice(index, 1);
-  } else {
-    currentLevels.push(level);
-  }
-  
-  emit('update:selectedLevels', currentLevels);
-}
+const emit = defineEmits([
+  'update:wordCount',
+  'update:difficultyFilter',
+  'update:masteryFilter',
+  'update:timeFilter',
+  'update:sortBy'
+]);
 </script>

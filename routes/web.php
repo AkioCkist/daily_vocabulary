@@ -51,6 +51,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
+    // Dashboard stats by day range
+    Route::get('/dashboard/stats/{days}', [HomeController::class, 'getStatsByDayRange'])->name('dashboard.stats');
+
+
     // Learning routes
     Route::prefix('learn')->name('learning.')->group(function () {
         Route::get('/', [LearningController::class, 'index'])->name('index');
@@ -107,7 +111,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Flashcard System
     Route::prefix('flashcards')->name('flashcards.')->group(function () {
         Route::post('/start', [\App\Http\Controllers\FlashcardController::class, 'start'])->name('start');
-        Route::get('/practice', function() {
+        Route::get('/practice', function () {
             // Render the practice page using session data
             $session = session('flashcard_session');
             if (!$session) {
@@ -127,15 +131,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/answer', [\App\Http\Controllers\FlashcardController::class, 'answer'])->name('answer');
         Route::post('/hint', [\App\Http\Controllers\FlashcardController::class, 'getHint'])->name('hint');
         Route::post('/complete', [\App\Http\Controllers\FlashcardController::class, 'complete'])->name('complete');
-        
+
         // Word-to-topic management
         Route::post('/words/add-to-topic', [\App\Http\Controllers\FlashcardController::class, 'addToTopic'])->name('words.add-to-topic');
         Route::post('/words/remove-from-topic', [\App\Http\Controllers\FlashcardController::class, 'removeFromTopic'])->name('words.remove-from-topic');
         Route::get('/words/{wordId}/topics', [\App\Http\Controllers\FlashcardController::class, 'getWordTopics'])->name('words.topics');
-        
+
         // Topic management
         Route::post('/topics/quick-create', [\App\Http\Controllers\FlashcardController::class, 'quickCreateTopic'])->name('topics.quick-create');
         Route::delete('/topics/{topicId}', [\App\Http\Controllers\FlashcardController::class, 'deleteTopic'])->name('topics.delete');
+
+        // Template management
+        Route::post('/templates', [\App\Http\Controllers\FlashcardController::class, 'saveTemplate'])->name('templates.save');
+        Route::get('/templates', [\App\Http\Controllers\FlashcardController::class, 'listTemplates'])->name('templates.list');
+        Route::get('/templates/{id}', [\App\Http\Controllers\FlashcardController::class, 'loadTemplate'])->name('templates.load');
+        Route::delete('/templates/{id}', [\App\Http\Controllers\FlashcardController::class, 'deleteTemplate'])->name('templates.delete');
+        Route::post('/templates/import', [\App\Http\Controllers\FlashcardController::class, 'importTemplate'])->name('templates.import');
+        Route::get('/templates/{id}/export', [\App\Http\Controllers\FlashcardController::class, 'exportTemplate'])->name('templates.export');
     });
 
     // Saved Sessions
@@ -146,10 +158,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{slug}', [\App\Http\Controllers\SavedSessionController::class, 'show'])->name('show');
         Route::put('/{slug}', [\App\Http\Controllers\SavedSessionController::class, 'update'])->name('update');
         Route::delete('/{slug}', [\App\Http\Controllers\SavedSessionController::class, 'destroy'])->name('destroy');
-        
+
         // Review session (start study from saved session)
         Route::post('/{slug}/review', [\App\Http\Controllers\SavedSessionController::class, 'review'])->name('review');
-        
+
         // Item management within sessions
         Route::prefix('{slug}/items')->name('items.')->group(function () {
             Route::post('/', [\App\Http\Controllers\SavedSessionItemController::class, 'store'])->name('store');
@@ -197,4 +209,4 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 });
 
 // Breeze auth routes
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
