@@ -1,6 +1,6 @@
 <template>
   <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" @click.self="$emit('close')">
-    <div class="bg-[#1a1d29] rounded-2xl shadow-2xl border border-gray-700 w-full max-w-5xl max-h-[90vh] overflow-hidden">
+    <div class="bg-[#1a1d29] rounded-2xl shadow-2xl border border-gray-700 w-full max-w-6xl max-h-[90vh] overflow-hidden">
       <!-- Header -->
       <div class="flex items-center justify-between p-6 border-b border-gray-700">
         <div>
@@ -25,6 +25,18 @@
               {{ day }}D
             </button>
           </div>
+          
+          <!-- Export Button -->
+          <button 
+            @click="exportReport"
+            :disabled="isLoading || !reportData"
+            class="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-lg transition-all shadow-lg"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Export CSV
+          </button>
           
           <button @click="$emit('close')" class="text-gray-400 hover:text-white transition-colors">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,6 +76,19 @@
             <div class="bg-black/40 rounded-lg p-4 border border-gray-700">
               <p class="text-xs text-gray-400 mb-1">Study Sessions</p>
               <p class="text-2xl font-bold text-purple-400">{{ reportData.summary.study_sessions }}</p>
+            </div>
+          </div>
+
+          <!-- Performance Chart -->
+          <div v-if="reportData.daily_performance && reportData.daily_performance.length > 0" class="bg-black/40 rounded-lg p-6 border border-gray-700">
+            <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              Daily Performance Trends
+            </h3>
+            <div class="relative h-64">
+              <Line :data="chartData" :options="chartOptions" />
             </div>
           </div>
 
@@ -168,7 +193,31 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, computed } from 'vue';
+import { Line } from 'vue-chartjs';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+} from 'chart.js';
+
+// Register Chart.js components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+);
 
 const props = defineProps({
   initialDayRange: {
@@ -197,6 +246,162 @@ const fetchReportData = async (days) => {
     console.error('Error fetching memory report:', error);
   } finally {
     isLoading.value = false;
+  }
+};
+
+const exportReport = () => {
+  const url = `/dashboard/memory-report/${selectedDayRange.value}/export`;
+  window.location.href = url;
+};
+
+// Chart data computed property
+const chartData = computed(() => {
+  if (!reportData.value || !reportData.value.daily_performance) {
+    return { labels: [], datasets: [] };
+  }
+
+  const dailyData = reportData.value.daily_performance;
+  const labels = dailyData.map(day => {
+    const date = new Date(day.date);
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  });
+
+  return {
+    labels,
+    datasets: [
+      {
+        label: 'Accuracy (%)',
+        data: dailyData.map(day => day.accuracy),
+        borderColor: 'rgb(99, 102, 241)',
+        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+        tension: 0.4,
+        fill: true,
+        yAxisID: 'y',
+      },
+      {
+        label: 'Attempts',
+        data: dailyData.map(day => day.attempts),
+        borderColor: 'rgb(168, 85, 247)',
+        backgroundColor: 'rgba(168, 85, 247, 0.1)',
+        tension: 0.4,
+        fill: true,
+        yAxisID: 'y1',
+      }
+    ]
+  };
+});
+
+// Chart options
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  interaction: {
+    mode: 'index',
+    intersect: false,
+  },
+  plugins: {
+    legend: {
+      display: true,
+      position: 'top',
+      labels: {
+        color: 'rgb(209, 213, 219)',
+        font: {
+          size: 12,
+          family: 'Inter, system-ui, sans-serif'
+        },
+        padding: 15,
+        usePointStyle: true,
+      }
+    },
+    tooltip: {
+      backgroundColor: 'rgba(17, 24, 39, 0.95)',
+      titleColor: 'rgb(243, 244, 246)',
+      bodyColor: 'rgb(209, 213, 219)',
+      borderColor: 'rgb(75, 85, 99)',
+      borderWidth: 1,
+      padding: 12,
+      displayColors: true,
+      callbacks: {
+        label: function(context) {
+          let label = context.dataset.label || '';
+          if (label) {
+            label += ': ';
+          }
+          if (context.parsed.y !== null) {
+            if (context.dataset.label === 'Accuracy (%)') {
+              label += context.parsed.y + '%';
+            } else {
+              label += context.parsed.y;
+            }
+          }
+          return label;
+        }
+      }
+    }
+  },
+  scales: {
+    x: {
+      grid: {
+        color: 'rgba(75, 85, 99, 0.3)',
+        drawBorder: false,
+      },
+      ticks: {
+        color: 'rgb(156, 163, 175)',
+        font: {
+          size: 11
+        }
+      }
+    },
+    y: {
+      type: 'linear',
+      display: true,
+      position: 'left',
+      grid: {
+        color: 'rgba(75, 85, 99, 0.3)',
+        drawBorder: false,
+      },
+      ticks: {
+        color: 'rgb(99, 102, 241)',
+        font: {
+          size: 11
+        },
+        callback: function(value) {
+          return value + '%';
+        }
+      },
+      title: {
+        display: true,
+        text: 'Accuracy (%)',
+        color: 'rgb(99, 102, 241)',
+        font: {
+          size: 12,
+          weight: 'bold'
+        }
+      }
+    },
+    y1: {
+      type: 'linear',
+      display: true,
+      position: 'right',
+      grid: {
+        drawOnChartArea: false,
+      },
+      ticks: {
+        color: 'rgb(168, 85, 247)',
+        font: {
+          size: 11
+        }
+      },
+      title: {
+        display: true,
+        text: 'Attempts',
+        color: 'rgb(168, 85, 247)',
+        font: {
+          size: 12,
+          weight: 'bold'
+        }
+      }
+    }
   }
 };
 

@@ -57,6 +57,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Memory report (frequently forgotten/remembered words)
     Route::get('/dashboard/memory-report/{days}', [HomeController::class, 'getMemoryReport'])->name('dashboard.memory-report');
 
+    // Memory report CSV export
+    Route::get('/dashboard/memory-report/{days}/export', [HomeController::class, 'exportMemoryReport'])->name('dashboard.memory-report.export');
+
 
     // Learning routes
     Route::prefix('learn')->name('learning.')->group(function () {

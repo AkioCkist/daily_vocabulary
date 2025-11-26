@@ -471,7 +471,7 @@ class DashboardService
                 DB::raw('SUM(CASE WHEN is_correct = false THEN 1 ELSE 0 END) as incorrect_count')
             )
             ->groupBy('word_id')
-            ->having('total_attempts', '>=', 2) // Only include words attempted at least twice
+            ->havingRaw('COUNT(*) >= ?', [2]) // Only include words attempted at least twice
             ->get()
             ->map(function ($stat) {
                 $accuracy = $stat->total_attempts > 0
@@ -547,6 +547,33 @@ class DashboardService
             ? round(($correctAttempts / $totalAttempts) * 100)
             : 0;
 
+        // Get daily breakdown for chart visualization
+        $dailyPerformance = TestAttempt::where('user_id', $user->id)
+            ->where('created_at', '>=', $startDate)
+            ->select(
+                DB::raw('created_at::date as date'),
+                DB::raw('COUNT(*) as attempts'),
+                DB::raw('SUM(CASE WHEN is_correct = true THEN 1 ELSE 0 END) as correct'),
+                DB::raw('SUM(CASE WHEN is_correct = false THEN 1 ELSE 0 END) as incorrect')
+            )
+            ->groupBy(DB::raw('created_at::date'))
+            ->orderBy('date')
+            ->get()
+            ->map(function ($day) {
+                $accuracy = $day->attempts > 0
+                    ? round(($day->correct / $day->attempts) * 100)
+                    : 0;
+
+                return [
+                    'date' => $day->date,
+                    'attempts' => $day->attempts,
+                    'correct' => $day->correct,
+                    'incorrect' => $day->incorrect,
+                    'accuracy' => $accuracy,
+                ];
+            })
+            ->toArray();
+
         return [
             'summary' => [
                 'total_attempts' => $totalAttempts,
@@ -556,6 +583,7 @@ class DashboardService
             ],
             'frequently_forgotten' => $frequentlyForgotten,
             'frequently_remembered' => $frequentlyRemembered,
+            'daily_performance' => $dailyPerformance,
         ];
     }
 }
