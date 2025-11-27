@@ -1,265 +1,240 @@
 <template>
   <Head title="Saved Sessions - DailyVocab" />
   
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
-    <!-- Header -->
-    <Header :user="user" />
+  <div class="min-h-screen bg-[#0B0C10] text-slate-100 font-sans selection:bg-indigo-500 selection:text-white relative overflow-hidden">
+    
+    <div class="sticky top-0 z-50 bg-black/90 backdrop-blur-md border-b border-gray-800">
+      <Header :user="user" />
+    </div>
 
-    <div class="max-w-7xl mx-auto px-4 py-8">
-      <!-- Page Header -->
-      <div class="mb-8">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 relative z-20">
+      
+      <div class="mb-10">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-              <BookmarkIcon class="w-6 h-6 inline mr-2" />
-              Saved Sessions
+            <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
+              <BookmarkIcon class="w-8 h-8 inline mr-2 align-text-bottom" />
+              Your Saved Sessions
             </h1>
-            <p class="text-gray-600 dark:text-gray-400 mt-1">
-              Your saved study sessions for future review
+            <p class="text-gray-400 mt-2 text-lg font-light">
+              Review and manage your custom study sessions
             </p>
           </div>
           
           <Link 
             :href="route('home')"
-            class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+            class="inline-flex items-center px-6 py-3 border border-gray-700 rounded-xl shadow-lg shadow-gray-900/40 text-sm font-semibold text-gray-300 bg-gray-800/70 hover:bg-gray-700/70 transition-all duration-200 hover:scale-[1.02] active:scale-95"
           >
-            <ArrowLeftIcon class="w-4 h-4 mr-2" />
+            <ArrowLeftIcon class="w-5 h-5 mr-2" />
             Back to Dashboard
           </Link>
         </div>
       </div>
 
-      <!-- Sessions Grid -->
-      <div v-if="sessions.data && sessions.data.length > 0" class="space-y-6">
-        <!-- Sessions List -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div 
-            v-for="session in sessions.data" 
-            :key="session.id"
-            class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-all duration-200 group"
-          >
-            <!-- Session Header -->
+      <div v-if="sessions.data && sessions.data.length > 0" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        
+        <div 
+          v-for="session in sessions.data" 
+          :key="session.id"
+          class="bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-xl shadow-indigo-900/20 ring-1 ring-gray-700/50 p-6 flex flex-col justify-between transition-all duration-300 hover:ring-indigo-600 hover:shadow-2xl hover:shadow-indigo-900/40"
+        >
+          <div>
             <div class="flex items-start justify-between mb-4">
-              <div class="flex-1 min-w-0">
-                <h3 class="font-semibold text-gray-900 dark:text-white text-lg truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                  {{ session.name }}
-                </h3>
-                
-                <div v-if="session.topic" class="mt-2">
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                    {{ session.topic }}
-                  </span>
-                </div>
-              </div>
-
-              <!-- Dropdown Menu -->
+              <span class="px-3 py-1 text-xs font-semibold rounded-full"
+                    :class="[session.topic ? 'bg-indigo-900/50 text-indigo-300' : 'bg-gray-700/50 text-gray-300']">
+                {{ session.topic ? session.topic.name : 'Personal Session' }}
+              </span>
+              
               <div class="relative">
                 <button
-                  @click="toggleDropdown(session.id)"
-                  class="p-1 rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  @click.stop="toggleDropdown(session.id)"
+                  class="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-700/50 transition-colors"
                 >
                   <EllipsisVerticalIcon class="w-5 h-5" />
                 </button>
-
-                <!-- Dropdown Menu -->
-                <div 
-                  v-if="activeDropdown === session.id"
-                  @click.stop
-                  class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-10"
+                
+                <transition
+                  enter-active-class="transition ease-out duration-100"
+                  enter-from-class="transform opacity-0 scale-95"
+                  enter-to-class="transform opacity-100 scale-100"
+                  leave-active-class="transition ease-in duration-75"
+                  leave-from-class="transform opacity-100 scale-100"
+                  leave-to-class="transform opacity-0 scale-95"
                 >
-                  <div class="py-1">
-                    <Link
-                      :href="route('saved-sessions.show', session.slug)"
-                      class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      <EyeIcon class="w-4 h-4 mr-2" />
-                      View Details
-                    </Link>
-                    
-                    <button
-                      @click="reviewSession(session)"
-                      class="flex items-center w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      <PlayIcon class="w-4 h-4 mr-2" />
-                      Review Session
-                    </button>
-                    
-                    <button
-                      @click="deleteSession(session)"
-                      class="flex items-center w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
-                    >
-                      <TrashIcon class="w-4 h-4 mr-2" />
-                      Delete Session
-                    </button>
+                  <div 
+                    v-if="activeDropdown === session.id" 
+                    class="absolute right-0 mt-2 w-48 rounded-lg shadow-xl bg-gray-800 ring-1 ring-gray-700/50 z-10 origin-top-right"
+                    @click.stop
+                  >
+                    <div class="py-1">
+                      <a 
+                        @click.prevent="viewSession(session)"
+                        class="flex items-center px-4 py-2 text-sm text-indigo-300 hover:bg-gray-700/50 cursor-pointer transition-colors"
+                      >
+                        <PencilSquareIcon class="w-4 h-4 mr-2" />
+                        View &amp; Edit
+                      </a>
+                      <a 
+                        @click.prevent="deleteSession(session)"
+                        class="flex items-center px-4 py-2 text-sm text-red-400 hover:bg-red-900/30 cursor-pointer transition-colors"
+                      >
+                        <TrashIcon class="w-4 h-4 mr-2" />
+                        Delete Session
+                      </a>
+                    </div>
                   </div>
-                </div>
+                </transition>
               </div>
             </div>
 
-            <!-- Session Stats -->
-            <div class="space-y-3 mb-4">
-              <div class="flex items-center justify-between text-sm">
-                <span class="text-gray-600 dark:text-gray-400 flex items-center">
-                  <Square3Stack3DIcon class="w-4 h-4 mr-1" />
-                  Flashcards
-                </span>
-                <span class="font-medium text-gray-900 dark:text-white">
-                  {{ session.flashcard_count }}
-                </span>
-              </div>
-              
-              <div class="flex items-center justify-between text-sm">
-                <span class="text-gray-600 dark:text-gray-400 flex items-center">
-                  <CalendarIcon class="w-4 h-4 mr-1" />
-                  Created
-                </span>
-                <span class="font-medium text-gray-900 dark:text-white">
-                  {{ formatDate(session.created_at) }}
-                </span>
-              </div>
-            </div>
+            <h2 class="text-2xl font-bold text-white mb-2 line-clamp-2">
+              {{ session.name }}
+            </h2>
 
-            <!-- Action Buttons -->
-            <div class="flex gap-2">
-              <button
-                @click="reviewSession(session)"
-                class="flex-1 inline-flex items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
-              >
-                <PlayIcon class="w-4 h-4 mr-2" />
-                Review
-              </button>
-              
-              <Link
-                :href="route('saved-sessions.show', session.slug)"
-                class="inline-flex items-center justify-center px-3 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-              >
-                <EyeIcon class="w-4 h-4" />
-              </Link>
+            <div class="space-y-3 mt-4 text-sm text-gray-300">
+              <p class="flex items-center gap-2">
+                <TagIcon class="w-4 h-4 text-indigo-400" />
+                <span class="font-medium">Words:</span> {{ session.flashcard_count }}
+              </p>
+              <p class="flex items-center gap-2">
+                <CalendarIcon class="w-4 h-4 text-purple-400" />
+                <span class="font-medium">Created:</span> {{ formatRelativeDate(session.created_at) }}
+              </p>
             </div>
           </div>
+
+          <button
+            @click.prevent="reviewSession(session)"
+            class="w-full mt-6 inline-flex items-center justify-center py-2.5 px-4 rounded-xl font-bold transition-all duration-200 
+                   bg-gradient-to-r from-indigo-600 to-purple-700 text-white hover:from-indigo-700 hover:to-purple-800 shadow-lg shadow-indigo-600/30 hover:shadow-xl hover:scale-[1.02] active:scale-95"
+          >
+            <ArrowRightIcon class="w-5 h-5 mr-2" />
+            Review Session
+          </button>
+
         </div>
 
-        <!-- Pagination -->
-        <div v-if="sessions.links && sessions.links.length > 3" class="flex justify-center">
-          <nav class="flex items-center space-x-1">
-            <Link
-              v-for="link in sessions.links"
-              :key="link.label"
-              :href="link.url"
-              :class="[
-                'px-3 py-2 text-sm font-medium rounded-md transition-colors',
-                link.active 
-                  ? 'bg-indigo-600 text-white' 
-                  : link.url 
-                    ? 'text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-100 dark:hover:bg-gray-700' 
-                    : 'text-gray-400 dark:text-gray-600 cursor-not-allowed'
-              ]"
-              v-html="link.label"
-            />
-          </nav>
+        <div v-if="sessions.links && sessions.links.length > 3" class="lg:col-span-3 xl:col-span-4 mt-8">
+          <div class="flex justify-center space-x-2">
+            <template v-for="(link, key) in sessions.links" :key="key">
+              <Link
+                v-if="link.url"
+                :href="link.url"
+                v-html="link.label"
+                class="px-4 py-2 rounded-lg text-sm transition-colors"
+                :class="{
+                  'bg-indigo-600 text-white font-bold shadow-md shadow-indigo-600/30': link.active,
+                  'bg-gray-800 text-gray-300 hover:bg-gray-700/70': !link.active
+                }"
+              />
+              <span
+                v-else
+                v-html="link.label"
+                class="px-4 py-2 rounded-lg text-sm text-gray-500 cursor-not-allowed"
+              />
+            </template>
+          </div>
         </div>
       </div>
-
-      <!-- Empty State -->
-      <div v-else class="text-center py-12">
-        <BookmarkIcon class="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
-          No saved sessions yet
-        </h3>
-        <p class="text-gray-500 dark:text-gray-400 mb-6">
-          Complete some study sessions and save them for later review.
+      
+      <div v-else class="text-center py-20 bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-xl shadow-indigo-900/20 ring-1 ring-gray-700/50">
+        <BookmarkIcon class="w-12 h-12 text-gray-600 mx-auto mb-4" />
+        <p class="text-xl font-semibold text-white mb-2">No Saved Sessions Found</p>
+        <p class="text-gray-400 max-w-md mx-auto">
+          Complete a flashcard session and choose to save it to see your saved sessions here.
         </p>
         <Link 
-          :href="route('home')"
-          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
-        >
-          Start Learning
+            :href="route('home')"
+            class="inline-flex items-center mt-6 px-6 py-3 border border-transparent rounded-xl shadow-lg text-sm font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-700 hover:from-indigo-700 hover:to-purple-800 transition-all duration-200 hover:scale-[1.02] active:scale-95"
+          >
+            Start a New Session
         </Link>
       </div>
     </div>
-
-    <!-- Review Modal -->
-    <ReviewSessionModal 
-      v-if="showReviewModal"
-      :session="selectedSession"
-      @close="showReviewModal = false"
-      @start="startReview"
-    />
-
-    <!-- Delete Confirmation Modal -->
-    <ConfirmationModal 
-      v-if="showDeleteModal"
-      :title="`Delete ${sessionToDelete?.name}`"
-      :message="'Are you sure you want to delete this saved session? This action cannot be undone.'"
-      :confirm-text="'Delete'"
-      :confirm-class="'bg-red-600 hover:bg-red-700 focus:ring-red-500'"
-      @confirm="confirmDelete"
-      @cancel="showDeleteModal = false"
-    />
   </div>
+  
+  <ReviewSessionModal
+    :show="showReviewModal"
+    :session="selectedSession"
+    @close="showReviewModal = false; selectedSession = null"
+    @start-review="startReview"
+  />
+  
+  <ConfirmationModal
+    :show="showDeleteModal"
+    title="Delete Saved Session"
+    message="Are you sure you want to delete this saved session? This action cannot be undone."
+    confirm-text="Delete"
+    cancel-text="Cancel"
+    @confirm="confirmDelete"
+    @close="showDeleteModal = false; sessionToDelete = null"
+  />
+
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
-import { 
-  BookmarkIcon,
-  ArrowLeftIcon,
-  PlayIcon,
-  EyeIcon,
-  TrashIcon,
-  EllipsisVerticalIcon,
-  Square3Stack3DIcon,
-  CalendarIcon
-} from '@heroicons/vue/24/outline';
-
-// Layout Components
-import Header from '@/Components/Header.vue';
-
-// Modal Components
-import ReviewSessionModal from '@/Components/Dashboard/ReviewSessionModal.vue';
-import ConfirmationModal from '@/Components/ConfirmationModal.vue';
+import Header from '@/Components/Header.vue'; 
+import ReviewSessionModal from '@/Components/Modals/ReviewSessionModal.vue'; 
+import ConfirmationModal from '@/Components/Modals/ConfirmationModal.vue'; 
+import { BookmarkIcon, ArrowLeftIcon, EllipsisVerticalIcon, PencilSquareIcon, TrashIcon, TagIcon, CalendarIcon, ArrowRightIcon } from '@heroicons/vue/24/outline'; 
 
 const props = defineProps({
-  user: {
-    type: Object,
-    required: true
-  },
-  sessions: {
-    type: Object,
-    required: true
-  }
+  user: Object,
+  sessions: Object, // Inertia Paginator data
+  // REMOVED: route: Function, 
 });
 
-// State
-const activeDropdown = ref(null);
 const showReviewModal = ref(false);
-const showDeleteModal = ref(false);
 const selectedSession = ref(null);
+const showDeleteModal = ref(false);
 const sessionToDelete = ref(null);
+const activeDropdown = ref(null);
 
-// Methods
-const formatDate = (dateString) => {
+// Utility function to format date
+const formatRelativeDate = (dateString) => {
   const date = new Date(dateString);
   const now = new Date();
-  const diffTime = Math.abs(now - date);
+  // Set both dates to midnight to compare days accurately
+  const dateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const nowOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  const diffTime = Math.abs(nowOnly - dateOnly);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   
-  if (diffDays === 1) return 'Today';
-  if (diffDays === 2) return 'Yesterday';
-  if (diffDays <= 7) return `${diffDays - 1} days ago`;
+  if (diffDays === 0) return 'Today';
+  if (diffDays === 1) return 'Yesterday';
+  if (diffDays <= 7) return `${diffDays} days ago`; 
   
-  return date.toLocaleDateString();
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
 };
 
 const toggleDropdown = (sessionId) => {
   activeDropdown.value = activeDropdown.value === sessionId ? null : sessionId;
 };
 
+// Close dropdown when clicking outside
+const handleClickOutside = (event) => {
+  // Check if the click is outside the dropdown trigger and content
+  if (activeDropdown.value && event.target.closest('.relative') === null) {
+      activeDropdown.value = null;
+  }
+};
+
 const reviewSession = (session) => {
   selectedSession.value = session;
   showReviewModal.value = true;
   activeDropdown.value = null;
+};
+
+const viewSession = (session) => {
+  activeDropdown.value = null;
+  router.visit(route('saved-sessions.show', session.slug));
 };
 
 const startReview = (settings) => {
@@ -274,19 +249,19 @@ const deleteSession = (session) => {
 
 const confirmDelete = () => {
   if (sessionToDelete.value) {
+    // CHANGED: Using global route() function directly
     router.delete(route('saved-sessions.destroy', sessionToDelete.value.slug), {
       onSuccess: () => {
         showDeleteModal.value = false;
         sessionToDelete.value = null;
+        // Reload page data to remove deleted session from list
+        router.reload({ only: ['sessions'] });
+      },
+      onFinish: () => {
+        showDeleteModal.value = false;
+        sessionToDelete.value = null;
       }
     });
-  }
-};
-
-// Close dropdown when clicking outside
-const handleClickOutside = (event) => {
-  if (!event.target.closest('.relative')) {
-    activeDropdown.value = null;
   }
 };
 
@@ -298,3 +273,7 @@ onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside);
 });
 </script>
+
+<style scoped>
+/* Scoped styles can be used for custom animations or utility overrides */
+</style>

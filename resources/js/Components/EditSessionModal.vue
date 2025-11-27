@@ -110,6 +110,7 @@ import {
   PencilIcon,
   ExclamationTriangleIcon
 } from '@heroicons/vue/24/outline';
+import WordListItem from '@/Pages/SavedSessions/WordListItem.vue';
 
 // Simple spinner component
 const SpinnerIcon = {
