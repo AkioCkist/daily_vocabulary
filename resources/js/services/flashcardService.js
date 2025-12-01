@@ -6,7 +6,16 @@
 import { router } from '@inertiajs/vue3';
 
 export const startFlashcards = (settings) => {
-  return router.post('/flashcards/start', settings);
+  return router.post('/flashcards/start', settings, {
+    onError: (errors) => {
+      // Errors are passed to the calling component via the returned promise
+      // This allows components to handle validation errors gracefully
+      if (errors.words) {
+        throw new Error(errors.words);
+      }
+      throw new Error('Failed to start flashcards');
+    }
+  });
 };
 
 export const startReview = (wordCount) => {
@@ -25,3 +34,4 @@ export const selectTopic = (topicId, wordCount = 10) => {
     word_count: wordCount
   });
 };
+

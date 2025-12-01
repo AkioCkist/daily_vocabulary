@@ -43,6 +43,9 @@ class FlashcardController extends Controller
             'flashcard_ids' => 'nullable|array',
             'flashcard_ids.*' => 'integer',
             'shuffle' => 'nullable|boolean',
+            'mastery_filter' => 'nullable|string|in:all,mastered,not_mastered',
+            'time_filter' => 'nullable|string|in:all,recent,not_recent',
+            'sort_by' => 'nullable|string|in:random,alphabetical,difficulty,frequency',
         ];
 
         // For review mode, allow smaller word counts (minimum 1)
@@ -73,7 +76,9 @@ class FlashcardController extends Controller
 
         // Check if we have words available
         if (empty($words)) {
-            return back()->with('error', 'No words available for flashcard practice. Please add some words first.');
+            return back()->withErrors([
+                'words' => 'No words available with your current filters. Please try adjusting your selection - there may be no words matching your difficulty level, mastery status, or study recency preferences.'
+            ])->withInput();
         }
 
         // Store session in session storage
@@ -774,8 +779,7 @@ class FlashcardController extends Controller
 
         // Apply advanced filters if they exist
         // Join with user_words for advanced filtering
-        $needsUserWordsJoin = !empty($settings['difficulty_filter']) ||
-            !empty($settings['mastery_filter']) ||
+        $needsUserWordsJoin = !empty($settings['mastery_filter']) ||
             !empty($settings['time_filter']);
 
         if ($needsUserWordsJoin) {
@@ -783,24 +787,6 @@ class FlashcardController extends Controller
                 $join->on('words.id', '=', 'user_words.word_id')
                     ->where('user_words.user_id', '=', $user->id);
             });
-        }
-
-        // Difficulty filter
-        if (!empty($settings['difficulty_filter']) && $settings['difficulty_filter'] !== 'all') {
-            switch ($settings['difficulty_filter']) {
-                case 'easy':
-                    $query->where(function ($q) {
-                        $q->where('user_words.difficulty_score', '<=', 0.33)
-                            ->orWhereNull('user_words.difficulty_score');
-                    });
-                    break;
-                case 'medium':
-                    $query->whereBetween('user_words.difficulty_score', [0.34, 0.66]);
-                    break;
-                case 'hard':
-                    $query->where('user_words.difficulty_score', '>=', 0.67);
-                    break;
-            }
         }
 
         // Mastery filter
@@ -901,7 +887,6 @@ class FlashcardController extends Controller
             'settings.flashcard_type' => 'required|in:standard,fill_blank,mixed',
             'settings.cefr_levels' => 'nullable|array',
             'settings.topic_ids' => 'nullable|array',
-            'settings.difficulty_filter' => 'nullable|string|in:all,easy,medium,hard',
             'settings.mastery_filter' => 'nullable|string|in:all,mastered,not_mastered',
             'settings.time_filter' => 'nullable|string|in:all,recent,not_recent',
             'settings.sort_by' => 'nullable|string|in:random,alphabetical,difficulty,frequency',

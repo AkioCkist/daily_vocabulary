@@ -96,12 +96,22 @@
       @close="closeMemoryModal"
     />
 
+    <!-- Alert Modal -->
+    <AlertModal
+      :is-visible="alert.isVisible"
+      :type="alert.type"
+      :title="alert.title"
+      :message="alert.message"
+      :details="alert.details"
+      @close="closeAlert"
+    />
+
   </div>
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
-import { Head } from '@inertiajs/vue3';
+import { onMounted, watch } from 'vue';
+import { Head, router, usePage } from '@inertiajs/vue3';
 
 // Layout Components
 import Header from '@/Components/Header.vue';
@@ -120,6 +130,7 @@ import FlashcardModal from '@/Components/FlashcardModal.vue';
 import TopicModal from '@/Components/TopicModal.vue';
 import SaveSessionModal from '@/Components/SaveSessionModal.vue';
 import MemoryReportModal from '@/Components/MemoryReportModal.vue';
+import AlertModal from '@/Components/Modals/AlertModal.vue';
 
 // Composables
 import { useDashboardStats } from '@/composables/useDashboardStats';
@@ -127,6 +138,7 @@ import { useModalState } from '@/composables/useModalState';
 import { useFlashcardActions } from '@/composables/useFlashcardActions';
 import { useSessionManagement } from '@/composables/useSessionManagement';
 import { useURLParams } from '@/composables/useURLParams';
+import { useAlert } from '@/composables/useAlert';
 
 const props = defineProps({
   user: {
@@ -161,12 +173,26 @@ const {
   closeMemoryModal
 } = useModalState();
 const {
-  handleStartFlashcards,
+  handleStartFlashcards: startFlashcardsFromComposable,
   handleStartReview: startReviewFromComposable,
   handleSelectTopic,
   handleWordSelected
 } = useFlashcardActions();
 const { refreshDashboard, handleSessionSaved: performSessionSaved } = useSessionManagement();
+const { alert, showError, closeAlert } = useAlert();
+
+// Error handler wrapper for starting flashcards
+const handleStartFlashcards = (settings) => {
+  try {
+    return startFlashcardsFromComposable(settings);
+  } catch (error) {
+    console.error('Error starting flashcards:', error);
+    showError(
+      'Unable to Start Training',
+      'There was an error starting your flashcard training. Please try again.'
+    );
+  }
+};
 
 // Heatmap period state
 import { ref } from 'vue';
@@ -188,6 +214,21 @@ const handleSessionSaved = () => {
   });
   refreshDashboard();
 };
+
+// Watch for validation errors from flashcard service
+const page = usePage();
+watch(
+  () => page.props.errors,
+  (errors) => {
+    if (errors?.words) {
+      showError(
+        'No Words Available',
+        errors.words
+      );
+    }
+  },
+  { deep: true }
+);
 
 // Initialize
 onMounted(() => {

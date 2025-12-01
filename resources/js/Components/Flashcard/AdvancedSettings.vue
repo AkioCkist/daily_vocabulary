@@ -21,26 +21,6 @@
       </div>
     </div>
 
-    <!-- Difficulty Filter -->
-    <div class="space-y-3">
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-        Difficulty Level
-      </label>
-      <select
-        :value="difficultyFilter"
-        @change="$emit('update:difficultyFilter', $event.target.value)"
-        class="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-      >
-        <option value="all">All Difficulties</option>
-        <option value="easy">Easy (Low difficulty score)</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard (High difficulty score)</option>
-      </select>
-      <p class="text-xs text-gray-500 dark:text-gray-400">
-        Based on your past performance with each word
-      </p>
-    </div>
-
     <!-- Mastery Filter -->
     <div class="space-y-3">
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -107,10 +87,6 @@ const props = defineProps({
     type: Number,
     default: 10
   },
-  difficultyFilter: {
-    type: String,
-    default: 'all'
-  },
   masteryFilter: {
     type: String,
     default: 'all'
@@ -127,7 +103,6 @@ const props = defineProps({
 
 const emit = defineEmits([
   'update:wordCount',
-  'update:difficultyFilter',
   'update:masteryFilter',
   'update:timeFilter',
   'update:sortBy'

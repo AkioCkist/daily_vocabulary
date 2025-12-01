@@ -18,8 +18,11 @@ import TopicsSection from '@/Components/Dashboard/TopicsSection.vue';
 
 defineProps({
   topics: {
-    type: Array,
-    default: () => []
+    type: Object,
+    default: () => ({
+      system: [],
+      user: []
+    })
   }
 });
 

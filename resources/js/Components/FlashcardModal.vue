@@ -104,7 +104,6 @@
               <h4 class="text-md font-bold text-indigo-400">Advanced Options</h4>
               <AdvancedSettings
                 v-model:word-count="settings.word_count"
-                v-model:difficulty-filter="settings.difficulty_filter"
                 v-model:mastery-filter="settings.mastery_filter"
                 v-model:time-filter="settings.time_filter"
                 v-model:sort-by="settings.sort_by"
@@ -137,6 +136,16 @@
       </div>
     </div>
   </transition>
+
+  <!-- Alert Modal -->
+  <AlertModal
+    :is-visible="alert.isVisible"
+    :type="alert.type"
+    :title="alert.title"
+    :message="alert.message"
+    :details="alert.details"
+    @close="closeAlert"
+  />
 </template>
 
 <script setup>
@@ -145,6 +154,8 @@ import FlashcardTypeSelector from './Flashcard/FlashcardTypeSelector.vue';
 import AdvancedSettings from './Flashcard/AdvancedSettings.vue';
 import TopicSelector from './Flashcard/TopicSelector.vue';
 import TemplateManager from './Flashcard/TemplateManager.vue';
+import AlertModal from './Modals/AlertModal.vue';
+import { useAlert } from '@/composables/useAlert';
 
 const props = defineProps({
   dashboard: {
@@ -155,6 +166,9 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'start']);
 
+// Alert management
+const { alert, showError, closeAlert } = useAlert();
+
 // New state for advanced settings toggle
 const showAdvancedSettings = ref(false);
 
@@ -164,7 +178,6 @@ const settings = reactive({
   word_count: 10,
   cefr_levels: [],
   topic_ids: [],
-  difficulty_filter: 'all',
   mastery_filter: 'all',
   time_filter: 'all',
   sort_by: 'random'
@@ -201,7 +214,6 @@ function getCurrentSettings() {
     word_count: settings.word_count,
     cefr_levels: settings.cefr_levels,
     topic_ids: settings.topic_ids,
-    difficulty_filter: settings.difficulty_filter,
     mastery_filter: settings.mastery_filter,
     time_filter: settings.time_filter,
     sort_by: settings.sort_by
@@ -214,7 +226,6 @@ function loadTemplate(templateSettings) {
   settings.word_count = templateSettings.word_count || 10;
   settings.cefr_levels = templateSettings.cefr_levels || [];
   settings.topic_ids = templateSettings.topic_ids || [];
-  settings.difficulty_filter = templateSettings.difficulty_filter || 'all';
   settings.mastery_filter = templateSettings.mastery_filter || 'all';
   settings.time_filter = templateSettings.time_filter || 'all';
   settings.sort_by = templateSettings.sort_by || 'random';
@@ -238,9 +249,6 @@ function startTraining() {
   }
   
   // Include advanced filters
-  if (settings.difficulty_filter !== 'all') {
-    trainingSettings.difficulty_filter = settings.difficulty_filter;
-  }
   if (settings.mastery_filter !== 'all') {
     trainingSettings.mastery_filter = settings.mastery_filter;
   }
