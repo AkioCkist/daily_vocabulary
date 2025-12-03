@@ -1,6 +1,6 @@
 <template>
   <div class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-    <div class="bg-[#1F2937] rounded-2xl shadow-2xl shadow-black/60 max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col border border-indigo-700/50">
+    <div class="bg-[#0B0C10] rounded-2xl shadow-2xl shadow-black/60 max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col border border-indigo-700/50">
       
       <!-- Header -->
       <TopicModalHeader @close="$emit('close')" />
@@ -83,7 +83,7 @@
       </div>
 
       <!-- Footer -->
-      <div class="p-6 border-t border-indigo-700/50 bg-[#1F2937] shadow-inner">
+      <div class="p-6 border-t border-indigo-700/50 bg-[#0B0C10] shadow-inner">
         <div class="flex justify-between items-center">
           <div class="text-sm text-gray-400">
             Total: <span class="font-semibold text-white">{{ (topics?.system?.length || 0) + (topics?.user?.length || 0) }}</span> topics

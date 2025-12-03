@@ -44,6 +44,7 @@ class SavedSessionController extends Controller
         // Add flashcard count to each session
         $sessions->getCollection()->transform(function ($session) {
             $session->flashcard_count = $session->items->count();
+            $session->word_count = $session->items->count();
             return $session;
         });
 

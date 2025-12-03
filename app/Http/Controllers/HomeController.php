@@ -32,6 +32,7 @@ class HomeController extends Controller
                 ->get()
                 ->map(function ($session) {
                     $session->flashcard_count = $session->items->count();
+                    $session->word_count = $session->items->count();
                     return $session;
                 });
         }

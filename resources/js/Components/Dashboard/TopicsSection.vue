@@ -1,89 +1,107 @@
 <template>
-  <div class="bg-[#1F2937] rounded-xl border border-indigo-800/50 overflow-hidden shadow-2xl shadow-black/50 transition-all duration-300">
-    <button 
-      @click="isExpanded = !isExpanded"
-      class="w-full px-6 py-4 flex items-center justify-between cursor-pointer transition-all hover:bg-indigo-900/30"
-    >
-      <h2 class="text-xl font-bold text-white">
-        Topics
-      </h2>
-      <svg 
-        :class="['w-6 h-6 text-indigo-400 transition-transform', isExpanded ? 'rotate-180' : '']"
-        fill="none" 
-        stroke="currentColor" 
-        viewBox="0 0 24 24"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-      </svg>
-    </button>
+  <div class="space-y-4">
     
-    <Transition
-      enter-active-class="transition-all duration-300 ease-out"
-      leave-active-class="transition-all duration-200 ease-in"
-      enter-from-class="opacity-0 max-h-0"
-      enter-to-class="opacity-100 max-h-[500px]"
-      leave-from-class="opacity-100 max-h-[500px]"
-      leave-to-class="opacity-0 max-h-0"
-    >
+    <div v-if="userTopicsToDisplay.length > 0" class="space-y-3">
+      <div class="flex items-center justify-between">
+        <h4 class="text-xs font-bold text-indigo-400 uppercase tracking-wider">My Personal Topics</h4>
+        <span v-if="hasMoreUserTopics" class="text-xs font-semibold text-indigo-400 bg-indigo-500/10 px-2 py-1 rounded">
+          +{{ props.topics.user.length - 2 }} more
+        </span>
+      </div>
+      
       <div 
-        v-show="isExpanded"
-        class="border-t border-indigo-700/50 px-6 py-4 space-y-2 bg-[#0B0C10] overflow-hidden"
-      >
-      <div 
-        v-for="topic in displayTopics" 
-        :key="topic.id"
-        class="flex items-center justify-between p-3 rounded-lg bg-[#1F2937] transition-all cursor-pointer border border-gray-700 hover:border-indigo-500 hover:shadow-lg shadow-black/20"
+        v-for="topic in userTopicsToDisplay" 
+        :key="topic.id" 
         @click="$emit('select', topic)"
+        class="flex items-center justify-between p-3 bg-gray-900/50 rounded-xl cursor-pointer hover:bg-gray-700/70 transition-colors border-l-4 border-indigo-600 shadow-md"
       >
-        <div>
-          <div class="font-medium text-white text-base">
-            {{ topic.name }}
-          </div>
-          <div class="text-xs text-gray-400">
-            {{ topic.words_count }} words
-          </div>
+        <div class="min-w-0 flex-1">
+          <p class="text-sm font-medium text-white truncate">{{ topic.name }}</p>
+          <p class="text-xs text-gray-500">{{ topic.words_count }} words</p>
         </div>
-        <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
+        <button 
+          class="flex-shrink-0 ml-3 text-xs font-semibold text-white bg-indigo-500/20 px-3 py-1 rounded-full hover:bg-indigo-500/30 transition-colors"
+          title="Start flashcards with this topic"
+        >
+          Study
+        </button>
       </div>
-
-      <button 
-        @click="$emit('manage')"
-        class="w-full py-2.5 px-4 border-2 border-dashed border-indigo-700 rounded-lg text-indigo-400 hover:border-indigo-500 hover:bg-indigo-900/20 transition-colors text-sm font-semibold mt-4"
+      
+      <div v-if="hasMoreUserTopics" class="text-xs text-indigo-400 bg-indigo-500/5 border border-indigo-500/30 rounded-lg p-3 text-center">
+        <p>Showing 2 of {{ props.topics.user.length }} personal topics</p>
+        <p class="mt-1 text-indigo-300">Go to <strong>Create / Manage</strong> to view all your topics</p>
+      </div>
+    </div>
+    
+    <div 
+      v-if="systemTopicsToDisplay.length > 0" 
+      class="space-y-3" 
+      :class="{'pt-4 border-t border-gray-800/50': userTopicsToDisplay.length > 0}"
+    >
+      <h4 class="text-xs font-bold text-purple-400 uppercase tracking-wider mb-2">General Topics</h4>
+      
+      <div 
+        v-for="topic in systemTopicsToDisplay" 
+        :key="topic.id" 
+        @click="$emit('select', topic)"
+        class="flex items-center justify-between p-3 bg-gray-900/50 rounded-xl cursor-pointer hover:bg-gray-700/70 transition-colors border-l-4 border-purple-600 shadow-md"
       >
-        + Create Custom Topic
-      </button>
+        <div class="min-w-0 flex-1">
+          <p class="text-sm font-medium text-white truncate">{{ topic.name }}</p>
+          <p class="text-xs text-gray-500">{{ topic.words_count }} words</p>
+        </div>
+        <button 
+          class="flex-shrink-0 ml-3 text-xs font-semibold text-white bg-purple-500/20 px-3 py-1 rounded-full hover:bg-purple-500/30 transition-colors"
+          title="Start flashcards with this topic"
+        >
+          Study
+        </button>
       </div>
-    </Transition>
+    </div>
+    
+    <div v-if="userTopicsToDisplay.length === 0 && systemTopicsToDisplay.length === 0" class="text-center py-4">
+        <p class="text-gray-500 text-sm">No topics available. Click **Create / Manage** to start your first one!</p>
+    </div>
+    
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 
-// --- PROPS PRESERVATION ---
 const props = defineProps({
   topics: {
     type: Object,
-    required: true
+    default: () => ({
+      system: [],
+      user: []
+    })
   },
   limit: {
     type: Number,
-    default: 5
+    default: Infinity
   }
 });
 
-// --- EMITS PRESERVATION ---
-defineEmits(['select', 'manage']);
+defineEmits(['select']);
 
-// --- STATE PRESERVATION ---
-const isExpanded = ref(false);
+const userTopicsToDisplay = computed(() => {
+    return props.topics.user.slice(0, 2);
+});
 
-// --- COMPUTED PROPERTY PRESERVATION ---
-const displayTopics = computed(() => {
-  // Logic preserved: slices the 'system' topics based on the 'limit' prop
-  // Note: The original implementation only showed system topics.
-  return props.topics?.system?.slice(0, props.limit) || [];
+const hasMoreUserTopics = computed(() => {
+    return props.topics.user.length > 2;
+});
+
+const systemTopicsToDisplay = computed(() => {
+    // Calculate remaining limit after showing user topics
+    const remainingLimit = props.limit - userTopicsToDisplay.value.length;
+    
+    if (remainingLimit <= 0) {
+        return [];
+    }
+    
+    // Show system topics up to the remaining limit.
+    return props.topics.system.slice(0, remainingLimit);
 });
 </script>

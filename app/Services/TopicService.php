@@ -86,9 +86,11 @@ class TopicService
             'is_system' => false,
         ]);
 
-        // Invalidate user's topics cache
+        // Invalidate user's topics cache and dashboard cache
         \Illuminate\Support\Facades\Cache::forget("topics:user:{$user->id}");
         \Illuminate\Support\Facades\Cache::forget("user_topics_{$user->id}");
+        \Illuminate\Support\Facades\Cache::forget("dashboard:data:{$user->id}");
+        \Illuminate\Support\Facades\Cache::forget("dashboard:stats:{$user->id}");
 
         return $topic;
     }
@@ -122,9 +124,11 @@ class TopicService
             'description' => $data['description'] ?? $topic->description,
         ]);
 
-        // Invalidate user's topics cache
+        // Invalidate user's topics cache and dashboard cache
         \Illuminate\Support\Facades\Cache::forget("topics:user:{$user->id}");
         \Illuminate\Support\Facades\Cache::forget("user_topics_{$user->id}");
+        \Illuminate\Support\Facades\Cache::forget("dashboard:data:{$user->id}");
+        \Illuminate\Support\Facades\Cache::forget("dashboard:stats:{$user->id}");
 
         return $topic->fresh();
     }
@@ -151,10 +155,12 @@ class TopicService
 
         $result = $topic->delete();
 
-        // Invalidate user's topics cache
+        // Invalidate user's topics cache and dashboard cache
         if ($result) {
             \Illuminate\Support\Facades\Cache::forget("topics:user:{$user->id}");
             \Illuminate\Support\Facades\Cache::forget("user_topics_{$user->id}");
+            \Illuminate\Support\Facades\Cache::forget("dashboard:data:{$user->id}");
+            \Illuminate\Support\Facades\Cache::forget("dashboard:stats:{$user->id}");
         }
 
         return $result;
