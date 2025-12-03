@@ -68,10 +68,9 @@
             <!-- Topics (moved from advanced) -->
             <div>
               <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Topics</h3>
-              <TopicSelector
+              <SearchableTopicCombobox
                 :topics="dashboard.available_topics"
                 v-model:selected-topics="settings.topic_ids"
-                @topic-created="handleTopicCreated"
               />
             </div>
           </div>
@@ -152,7 +151,7 @@
 import { reactive, computed, ref } from 'vue';
 import FlashcardTypeSelector from './Flashcard/FlashcardTypeSelector.vue';
 import AdvancedSettings from './Flashcard/AdvancedSettings.vue';
-import TopicSelector from './Flashcard/TopicSelector.vue';
+import SearchableTopicCombobox from './Flashcard/SearchableTopicCombobox.vue';
 import TemplateManager from './Flashcard/TemplateManager.vue';
 import AlertModal from './Modals/AlertModal.vue';
 import { useAlert } from '@/composables/useAlert';
