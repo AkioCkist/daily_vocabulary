@@ -2,6 +2,12 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\AverageScoresChart;
+use App\Filament\Widgets\LatestTestsTable;
+use App\Filament\Widgets\StatsOverviewWidget;
+use App\Filament\Widgets\TestCompletionTrendChart;
+use App\Filament\Widgets\UserGrowthChart;
+use App\Filament\Widgets\WordDifficultyDistributionChart;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -36,8 +42,13 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
+                StatsOverviewWidget::class,
+                TestCompletionTrendChart::class,
+                WordDifficultyDistributionChart::class,
+                UserGrowthChart::class,
+                AverageScoresChart::class,
+                LatestTestsTable::class,
                 AccountWidget::class,
                 FilamentInfoWidget::class,
             ])
