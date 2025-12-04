@@ -7,6 +7,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Profile\SubscriptionSettingsController;
 use Inertia\Inertia;
+use Laravel\Pulse\Pulse;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LearningController;
