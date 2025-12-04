@@ -29,7 +29,7 @@
       
       <div v-if="hasMoreUserTopics" class="text-xs text-indigo-400 bg-indigo-500/5 border border-indigo-500/30 rounded-lg p-3 text-center">
         <p>Showing 2 of {{ props.topics.user.length }} personal topics</p>
-        <p class="mt-1 text-indigo-300">Go to <strong>Create / Manage</strong> to view all your topics</p>
+        <p class="mt-1 text-indigo-300">Go to <button @click="$emit('manage-topics')" class="font-semibold text-indigo-400 hover:text-indigo-300 hover:underline transition-colors cursor-pointer">Create / Manage</button> to view all your topics</p>
       </div>
     </div>
     
@@ -83,7 +83,7 @@ const props = defineProps({
   }
 });
 
-defineEmits(['select']);
+defineEmits(['select', 'manage-topics']);
 
 const userTopicsToDisplay = computed(() => {
     return props.topics.user.slice(0, 2);

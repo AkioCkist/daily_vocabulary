@@ -5,10 +5,10 @@
       <h3 class="text-lg font-bold text-white">Topics</h3>
       <button 
         @click="$emit('open-topic-modal')"
-        class="inline-flex items-center px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg transition-colors shadow-md"
+        class="inline-flex items-center px-4 py-2 bg-indigo-600/80 hover:bg-indigo-600 text-white text-xs font-semibold rounded-lg transition-all duration-200"
         title="Manage all topics or create a new one"
       >
-        <PlusIcon class="w-4 h-4 mr-1 -ml-0.5" />
+        <PlusIcon class="w-4 h-4 mr-1.5" />
         Create / Manage
       </button>
     </div>
@@ -17,6 +17,7 @@
       :topics="topics"
       :limit="5" 
       @select="$emit('topic-selected', $event)"
+      @manage-topics="$emit('open-topic-modal')"
     />
     
   </div>
