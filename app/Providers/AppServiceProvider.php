@@ -10,7 +10,7 @@ use App\Repositories\Interfaces\{
     UserWordRepositoryInterface
 };
 use App\Repositories\Eloquent\{
-    EloquentWordRepository,
+    WordRepository,
     EloquentSubscriptionRepository,
     EloquentUserWordRepository
 };
@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-    $this->app->bind(WordRepositoryInterface::class, EloquentWordRepository::class);
+    $this->app->bind(WordRepositoryInterface::class, WordRepository::class);
     $this->app->bind(SubscriptionRepositoryInterface::class, EloquentSubscriptionRepository::class);
     $this->app->bind(UserWordRepositoryInterface::class, EloquentUserWordRepository::class);
     }

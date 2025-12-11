@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -346,6 +347,14 @@ class FlashcardController extends Controller
                 'X-Inertia-Partial-Component' => request()->header('X-Inertia-Partial-Component'),
             ]
         ]);
+
+        // Clear dashboard cache for the current user so fresh data is displayed
+        $user = auth()->user();
+        if ($user) {
+            Cache::forget("dashboard:data:{$user->id}");
+            Cache::forget("dashboard:stats:{$user->id}");
+            Log::info('Dashboard cache cleared for user', ['user_id' => $user->id]);
+        }
 
         $session = session('flashcard_session');
 

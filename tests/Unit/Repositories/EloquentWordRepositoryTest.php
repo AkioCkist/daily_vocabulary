@@ -3,7 +3,7 @@
 namespace Tests\Unit\Repositories;
 
 use App\Models\Word;
-use App\Repositories\Eloquent\EloquentWordRepository;
+use App\Repositories\Eloquent\WordRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -16,7 +16,7 @@ class EloquentWordRepositoryTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = new EloquentWordRepository();
+        $this->repository = new WordRepository();
     }
 
     /** @test */

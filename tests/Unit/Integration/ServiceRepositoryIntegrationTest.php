@@ -9,7 +9,7 @@ use App\Models\UserWord;
 use App\Models\Word;
 use App\Repositories\Eloquent\EloquentSubscriptionRepository;
 use App\Repositories\Eloquent\EloquentUserWordRepository;
-use App\Repositories\Eloquent\EloquentWordRepository;
+use App\Repositories\Eloquent\WordRepository;
 use App\Services\DailyWordService;
 use App\Services\SubscriptionService;
 use App\Services\UserVocabularyService;
