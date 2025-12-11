@@ -6,7 +6,7 @@ import Button from '@/Components/Button.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 
 const page = usePage();
-const user = computed(() => page.props.auth.user);
+const twoFactorData = computed(() => page.props.twoFactorData);
 const status = computed(() => page.props.status);
 
 const showRecoveryCodes = ref(false);
@@ -16,7 +16,12 @@ const confirmForm = useForm({
 });
 
 const submitConfirm = () => {
-    confirmForm.post(route('two-factor.confirm'));
+    confirmForm.post(route('two-factor.confirm'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            confirmForm.reset();
+        },
+    });
 };
 
 const enableForm = useForm({});
@@ -79,7 +84,7 @@ const copyToClipboard = async (text) => {
 
         <div class="p-8">
             <!-- Two-Factor Not Enabled -->
-            <template v-if="!user.two_factor_confirmed_at">
+            <template v-if="!twoFactorData.confirmed">
                 <!-- Confirm Two-Factor -->
                 <div v-if="status === 'two-factor-authentication-enabled'" class="space-y-6">
                     <!-- Status Card - Bento Box Style -->
@@ -108,20 +113,20 @@ const copyToClipboard = async (text) => {
                         </div>
 
                         <!-- QR Code Section - Bento Box -->
-                        <div v-if="user.two_factor_qr_code_svg" class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900/80 dark:to-gray-800/50 rounded-xl p-8 text-center border border-gray-200 dark:border-gray-700/50 shadow-inner">
-                            <div class="inline-block p-5 bg-white dark:bg-gray-950 rounded-2xl shadow-2xl ring-1 ring-gray-200 dark:ring-gray-700" v-html="user.two_factor_qr_code_svg"></div>
+                        <div v-if="twoFactorData.qr_code" class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900/80 dark:to-gray-800/50 rounded-xl p-8 text-center border border-gray-200 dark:border-gray-700/50 shadow-inner">
+                            <div class="inline-block p-5 bg-white dark:bg-gray-950 rounded-2xl shadow-2xl ring-1 ring-gray-200 dark:ring-gray-700" v-html="twoFactorData.qr_code"></div>
                         </div>
 
                         <!-- Setup Key - Bento Box -->
-                        <div v-if="user.two_factor_secret" class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900/80 dark:to-gray-800/50 rounded-xl p-5 border border-gray-200 dark:border-gray-700/50 shadow-lg">
+                        <div v-if="twoFactorData.secret" class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900/80 dark:to-gray-800/50 rounded-xl p-5 border border-gray-200 dark:border-gray-700/50 shadow-lg">
                             <div class="flex items-center justify-between gap-4">
                                 <div class="flex-1">
                                     <label class="text-sm font-semibold text-gray-800 dark:text-gray-200">Setup Key:</label>
-                                    <code class="block mt-2 text-sm font-mono bg-white dark:bg-[#0B0C10] px-4 py-3 rounded-lg border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 shadow-inner">{{ user.two_factor_secret }}</code>
+                                    <code class="block mt-2 text-sm font-mono bg-white dark:bg-[#0B0C10] px-4 py-3 rounded-lg border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 shadow-inner">{{ twoFactorData.secret }}</code>
                                 </div>
                                 <button 
                                     type="button" 
-                                    @click="copyToClipboard(user.two_factor_secret)"
+                                    @click="copyToClipboard(twoFactorData.secret)"
                                     class="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 transition-all duration-200 hover:scale-110"
                                     title="Copy to clipboard"
                                 >
@@ -269,10 +274,10 @@ const copyToClipboard = async (text) => {
                     </p>
                     
                     <div v-show="showRecoveryCodes" class="space-y-4">
-                        <div v-if="user.two_factor_recovery_codes" class="bg-white dark:bg-[#0B0C10] border-2 border-gray-300 dark:border-gray-700 rounded-xl p-5 shadow-inner">
+                        <div v-if="twoFactorData.recovery_codes" class="bg-white dark:bg-[#0B0C10] border-2 border-gray-300 dark:border-gray-700 rounded-xl p-5 shadow-inner">
                             <div class="grid grid-cols-2 gap-3 font-mono text-sm">
                                 <span 
-                                    v-for="code in user.two_factor_recovery_codes" 
+                                    v-for="code in twoFactorData.recovery_codes" 
                                     :key="code"
                                     class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900/80 dark:to-gray-800/50 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 font-semibold shadow-sm hover:shadow-md transition-shadow"
                                 >
