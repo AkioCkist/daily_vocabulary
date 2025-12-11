@@ -140,7 +140,9 @@ class DatabaseIntegrityTest extends TestCase
         $testItem = DailyTestItem::create([
             'daily_test_id' => $dailyTest->id,
             'word_id' => $word->id,
-            'question_type' => 'multiple_choice',
+            'question_type' => 'word_to_definition',
+            'options' => ['option1', 'option2', 'option3', 'option4'],
+            'correct_answer' => 'option1',
         ]);
 
         $this->assertCount(1, DailyTestItem::where('daily_test_id', $dailyTest->id)->get());
@@ -377,7 +379,9 @@ class DatabaseIntegrityTest extends TestCase
         $testItem = DailyTestItem::create([
             'daily_test_id' => $dailyTest->id,
             'word_id' => $word->id,
-            'question_type' => 'multiple_choice',
+            'question_type' => 'word_to_definition',
+            'options' => ['option1', 'option2', 'option3', 'option4'],
+            'correct_answer' => 'option1',
         ]);
 
         // Both should exist
@@ -485,7 +489,9 @@ class DatabaseIntegrityTest extends TestCase
             DailyTestItem::create([
                 'daily_test_id' => $dailyTest->id,
                 'word_id' => $word->id,
-                'question_type' => 'multiple_choice',
+                'question_type' => 'word_to_definition',
+                'options' => ['option1', 'option2', 'option3', 'option4'],
+                'correct_answer' => 'option1',
             ]);
         }
 
