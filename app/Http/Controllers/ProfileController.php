@@ -18,15 +18,30 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
-        $subscription = $request->user()->subscription()->first();
+        $user = $request->user();
+        $subscription = $user->subscription()->first();
+        
         return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'mustVerifyEmail' => $user instanceof MustVerifyEmail,
             'status' => session('status'),
             'subscriptionPreferences' => $subscription ? [
                 'receive_ads' => (bool)$subscription->receive_ads,
                 'incorrect_words_frequency' => $subscription->incorrect_words_frequency,
                 'topic_summary_frequency' => $subscription->topic_summary_frequency,
             ] : null,
+            'twoFactorData' => [
+                'enabled' => !is_null($user->two_factor_secret),
+                'confirmed' => !is_null($user->two_factor_confirmed_at),
+                'qr_code' => $user->two_factor_secret && is_null($user->two_factor_confirmed_at) 
+                    ? $user->twoFactorQrCodeSvg() 
+                    : null,
+                'secret' => $user->two_factor_secret && is_null($user->two_factor_confirmed_at)
+                    ? decrypt($user->two_factor_secret)
+                    : null,
+                'recovery_codes' => $user->two_factor_recovery_codes && !is_null($user->two_factor_confirmed_at)
+                    ? json_decode(decrypt($user->two_factor_recovery_codes), true)
+                    : null,
+            ],
         ]);
     }
 

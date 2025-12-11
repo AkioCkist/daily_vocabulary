@@ -74,8 +74,12 @@ class SavedSession extends Model
         $baseSlug = Str::slug($name);
         $slug = $baseSlug;
         $counter = 1;
+        // Truy vấn tất cả các slug của user một lần
+        $existingSlugs = static::where('user_id', $userId)
+            ->where('slug', 'LIKE', $baseSlug . '%')
+            ->pluck('slug')->toArray();
 
-        while (static::where('user_id', $userId)->where('slug', $slug)->exists()) {
+        while (in_array($slug, $existingSlugs)) {
             $slug = $baseSlug . '-' . $counter;
             $counter++;
         }

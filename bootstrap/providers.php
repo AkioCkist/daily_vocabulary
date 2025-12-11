@@ -2,7 +2,9 @@
 
 return [
     App\Providers\AppServiceProvider::class,
+    App\Providers\Filament\AdminPanelProvider::class,
     App\Providers\FortifyServiceProvider::class,
     App\Providers\RepositoryServiceProvider::class,
     App\Providers\TelescopeServiceProvider::class,
+    Laravel\Pulse\PulseServiceProvider::class,
 ];
