@@ -280,6 +280,31 @@ class ReviewService
     }
 
     /**
+     * Get aggregated review statistics for user (optimized single query).
+     * Combines all stat calculations into one aggregate query instead of 4 separate count queries.
+     *
+     * @param User $user
+     * @return array<string, int>
+     */
+    public function getAggregatedStats(User $user): array
+    {
+        $stats = \Illuminate\Support\Facades\DB::table('user_words')
+            ->where('user_id', $user->id)
+            ->selectRaw('COUNT(*) as total_words')
+            ->selectRaw('SUM(CASE WHEN is_learned = true THEN 1 ELSE 0 END) as learned_words')
+            ->selectRaw('SUM(CASE WHEN mastered != true THEN 1 ELSE 0 END) as review_words')
+            ->selectRaw('SUM(CASE WHEN mastered = true THEN 1 ELSE 0 END) as mastered_words')
+            ->first();
+
+        return [
+            'total_words' => (int) ($stats->total_words ?? 0),
+            'learned_words' => (int) ($stats->learned_words ?? 0),
+            'review_words' => (int) ($stats->review_words ?? 0),
+            'mastered_words' => (int) ($stats->mastered_words ?? 0),
+        ];
+    }
+
+    /**
      * Get review statistics for user.
      *
      * @param User $user

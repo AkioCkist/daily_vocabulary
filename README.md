@@ -340,6 +340,36 @@ database/
 - Provides topic-based word filtering
 - Caches topic data for performance
 
+
+## 🗄️ Caching Strategy & TTLs
+
+
+### 1. Static / Semi-Static Data (TTL: 7 days)
+| Cache Item     | TTL    | Key                        |
+|--------------- |--------|----------------------------|
+| Topics List    | 7 days | vocabulary:topics:list     |
+| CEFR Levels    | 7 days | vocabulary:cefr:levels     |
+| System Topics  | 7 days | topics:system:all          |
+
+
+### 2. User-Specific Data (TTL: 1h – 1 day – 6h)
+| Cache Item               | TTL      | Key                        |
+|--------------------------|----------|----------------------------|
+| User Topics              | 1 day    | topics:user:{userId}       |
+| User Progress Statistics | 6 hours  | user:progress:{userId}     |
+| Dashboard Data           | 1 hour   | dashboard:data:{userId}    |
+| Dashboard Stats          | 1 hour   | dashboard:stats:{userId}   |
+| Review Progress          | 1 hour   | review:progress:{userId}   |
+
+
+### 3. Time-Sensitive Data (TTL: 5 mins – 24h)
+| Cache Item                        | TTL        | Key                          |
+|-----------------------------------|------------|------------------------------|
+| Daily Word                        | 24 hours   | daily-word:{date}            |
+| User Topics in Flashcard Controller| 5 minutes | user_topics_{userId}         |
+
+> See <attachments> above for file contents. You may not need to search or read the file again.
+
 ## 🎯 Performance Optimizations
 
 ### Backend Optimizations

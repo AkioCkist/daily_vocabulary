@@ -20,18 +20,14 @@ class ReviewController extends Controller
 
     /**
      * Display the review page with words that need practice.
+     * OPTIMIZED: Uses single aggregate query for stats instead of 4 separate count queries.
      */
     public function index(Request $request): Response
     {
         $user = $request->user();
         
         // Get user's vocabulary words for review (all words that are not mastered)
-        $reviewWords = $user->userWords()
-            ->with('word')
-            ->where('mastered', '!=', true) // Include all words that are not mastered
-            ->orderBy('last_seen_at', 'asc')
-            ->take(20)
-            ->get()
+        $reviewWords = $this->reviewService->getReviewWords($user, 20)
             ->map(function ($userWord) {
                 return [
                     'id' => $userWord->word->id,
@@ -39,18 +35,13 @@ class ReviewController extends Controller
                     'definition' => $userWord->word->definition,
                     'pronunciation' => $userWord->word->pronunciation,
                     'example' => $userWord->word->example,
-                    'level' => $userWord->word->cefr_level, // Fixed: was 'level', should be 'cefr_level'
+                    'level' => $userWord->word->cefr_level,
                     'topic' => $userWord->word->topic,
                 ];
             });
 
-        // Simple stats - updated to count all vocabulary words, not just learned ones
-        $stats = [
-            'total_words' => $user->userWords()->count(),
-            'learned_words' => $user->userWords()->where('is_learned', true)->count(),
-            'review_words' => $user->userWords()->where('mastered', '!=', true)->count(),
-            'mastered_words' => $user->userWords()->where('mastered', true)->count(),
-        ];
+        // OPTIMIZED: Single aggregate query instead of 4 separate count queries
+        $stats = $this->reviewService->getAggregatedStats($user);
         
         return Inertia::render('Review/Index', [
             'reviewWords' => $reviewWords,

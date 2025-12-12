@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
+use App\Jobs\SendIncorrectWordsDigestJob;
+use App\Jobs\SendTopicSummaryDigestJob;
 use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 
 class EmailDigestService
@@ -39,30 +40,50 @@ class EmailDigestService
         return $baseline->diffInDays($now) >= $intervalDays;
     }
 
+    /**
+     * OPTIMIZED: Dispatches incorrect words digest email to queue instead of sending synchronously.
+     * This prevents blocking the HTTP request while waiting for email delivery.
+     */
     public function sendIncorrectWordsReport(User $user): void
     {
         $subject = 'Your Frequently Incorrect Words';
-        try {
-            Mail::to($user->email)->send(new \App\Mail\IncorrectWordsDigestMail($user));
-        } catch (\Throwable $e) {
-            Log::warning('Failed to send Incorrect Words digest: '.$e->getMessage());
-        }
+        
+        // Dispatch job to queue asynchronously
+        SendIncorrectWordsDigestJob::dispatch($user)
+            ->onQueue('default')
+            ->delay(now()->addSeconds(5)); // Small delay to batch jobs
+        
         $this->logEmail($user->id, 'incorrect_words', $subject);
 
         $user->subscription?->update(['last_incorrect_words_sent_at' => now()]);
+        
+        Log::info('Incorrect Words digest job queued', [
+            'user_id' => $user->id,
+            'email' => $user->email,
+        ]);
     }
 
+    /**
+     * OPTIMIZED: Dispatches topic summary digest email to queue instead of sending synchronously.
+     * This prevents blocking the HTTP request while waiting for email delivery.
+     */
     public function sendTopicSummary(User $user): void
     {
         $subject = 'Your Learning Topic Summary';
-        try {
-            Mail::to($user->email)->send(new \App\Mail\TopicSummaryDigestMail($user));
-        } catch (\Throwable $e) {
-            Log::warning('Failed to send Topic Summary digest: '.$e->getMessage());
-        }
+        
+        // Dispatch job to queue asynchronously
+        SendTopicSummaryDigestJob::dispatch($user)
+            ->onQueue('default')
+            ->delay(now()->addSeconds(5)); // Small delay to batch jobs
+        
         $this->logEmail($user->id, 'topic_summary', $subject);
 
         $user->subscription?->update(['last_topic_summary_sent_at' => now()]);
+        
+        Log::info('Topic Summary digest job queued', [
+            'user_id' => $user->id,
+            'email' => $user->email,
+        ]);
     }
 
     public function logEmail(int $userId, string $type, string $subject, array $meta = []): void
