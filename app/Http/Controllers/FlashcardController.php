@@ -880,7 +880,8 @@ class FlashcardController extends Controller
         if ($sortBy === 'random' || $sortBy === 'frequency') {
             // Build a separate query to count total results with same filters
             $countQuery = clone $query;
-            $totalCount = $countQuery->count('DISTINCT words.id');
+            // Use distinct() method for proper PostgreSQL syntax
+            $totalCount = $countQuery->distinct('words.id')->count('words.id');
             
             if ($totalCount > $settings['word_count']) {
                 $offset = rand(0, max(0, $totalCount - $settings['word_count']));
