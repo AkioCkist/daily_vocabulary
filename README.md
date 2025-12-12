@@ -323,7 +323,11 @@ The application implements a sophisticated multi-layered Redis caching strategy 
 
 ---
 
-### Layer 1: Static Data Cache (7-day TTL)
+| Layer             | Typical TTL      | Data Type & Use Case                | Key Pattern                 |
+|-------------------|-----------------|-------------------------------------|------------------------------------|
+| **Static Data**   | 7 days           | Rarely-changing reference data (e.g., topics, CEFR levels) | `vocabulary:*`                     |
+| **User Data**     | 1–6 hours        | User-specific stats, progress, dashboard metrics | `user:*:{userId}`                  |
+| **Time-Sensitive**| 5 min–24 hours   | Daily word, flashcard topics, session data | `daily-word:*`, `user_topics_{userId}` |
 
 Static reference data that rarely changes. Cached for maximum duration to minimize database queries.
 
