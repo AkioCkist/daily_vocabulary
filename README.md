@@ -323,7 +323,7 @@ php artisan test --coverage
 
 The application implements a multi-layered caching strategy using Redis to optimize performance, reduce database load, and ensure a responsive user experience. Each cache layer is tailored to the volatility and access patterns of the underlying data:
 
-| Layer             | Typical TTL      | Data Type & Use Case                | Key Pattern Example                |
+| Layer             | Typical TTL      | Data Type & Use Case                | Key Pattern                 |
 |-------------------|-----------------|-------------------------------------|------------------------------------|
 | **Static Data**   | 7 days           | Rarely-changing reference data (e.g., topics, CEFR levels) | `vocabulary:*`                     |
 | **User Data**     | 1–6 hours        | User-specific stats, progress, dashboard metrics | `user:*:{userId}`                  |
