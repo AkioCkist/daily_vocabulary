@@ -75,11 +75,30 @@ class DashboardService
 
     /**
      * Get learning heatmap data for the past year.
+     * OPTIMIZED: Caches heatmap for 24 hours since historical data doesn't change frequently.
      *
      * @param User $user
      * @return array<string, mixed>
      */
     public function getLearningHeatmapData(User $user): array
+    {
+        return \Illuminate\Support\Facades\Cache::remember(
+            "dashboard:heatmap:{$user->id}:" . now()->format('Y-m-d'),
+            now()->addHours(24),
+            function () use ($user) {
+                return $this->generateHeatmapData($user);
+            }
+        );
+    }
+
+    /**
+     * Generate learning heatmap data for the past year.
+     * This is the actual computation logic separated from caching.
+     *
+     * @param User $user
+     * @return array<string, mixed>
+     */
+    private function generateHeatmapData(User $user): array
     {
         $startDate = Carbon::now()->subYear();
         $endDate = Carbon::now();

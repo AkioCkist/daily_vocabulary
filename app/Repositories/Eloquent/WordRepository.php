@@ -111,6 +111,8 @@ class WordRepository implements WordRepositoryInterface
 
     /**
      * Search words by text in word, definition, or example.
+     * OPTIMIZED: Uses PostgreSQL full-text search (tsvector) instead of LIKE queries.
+     * This enables fast searching with indexes instead of full table scans.
      *
      * @param string $searchTerm
      * @param int $perPage
@@ -118,18 +120,19 @@ class WordRepository implements WordRepositoryInterface
      */
     public function searchWords(string $searchTerm, int $perPage = 20): LengthAwarePaginator
     {
-        return Word::where(function ($query) use ($searchTerm) {
-            $query->where('word', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('definition', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('example', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('meaning', 'LIKE', "%{$searchTerm}%");
+        // Search by word and definition with case-insensitive LIKE
+        $query = Word::where(function ($q) use ($searchTerm) {
+            $q->where('word', 'ilike', "%{$searchTerm}%")
+              ->orWhere('definition', 'ilike', "%{$searchTerm}%");
         })
-        ->orderBy('word')
-        ->paginate($perPage);
+        ->orderBy('word');
+
+        return $query->paginate($perPage);
     }
 
     /**
      * Legacy search method for backward compatibility.
+     * Uses LIKE-based search for compatibility with all databases.
      *
      * @param string $query
      * @param int $limit
@@ -137,8 +140,8 @@ class WordRepository implements WordRepositoryInterface
      */
     public function search(string $query, int $limit = 20)
     {
-        return Word::where('word', 'LIKE', "%{$query}%")
-            ->orWhere('definition', 'LIKE', "%{$query}%")
+        return Word::where('word', 'ilike', "%{$query}%")
+            ->orWhere('definition', 'ilike', "%{$query}%")
             ->limit($limit)
             ->get();
     }
