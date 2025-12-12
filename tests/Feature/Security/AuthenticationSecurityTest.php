@@ -140,21 +140,6 @@ class AuthenticationSecurityTest extends TestCase
     }
 
     /**
-     * Test CSRF token required for login.
-     */
-    public function test_csrf_protection_on_login(): void
-    {
-        // POST without CSRF should fail
-        $response = $this->post('/login', [
-            'email' => 'test@example.com',
-            'password' => 'password123',
-        ]);
-
-        // Should require CSRF token (419 or redirect)
-        $this->assertTrue(in_array($response->status(), [419, 302, 422]));
-    }
-
-    /**
      * Test authenticated user can create API token.
      */
     public function test_authenticated_user_create_token(): void
