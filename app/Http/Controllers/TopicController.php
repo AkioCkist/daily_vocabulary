@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\TopicService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 
@@ -27,6 +28,7 @@ class TopicController extends Controller
 
     /**
      * Create a new custom topic.
+     * OPTIMIZED: Clears user topics cache after creation
      */
     public function store(Request $request)
     {
@@ -39,6 +41,9 @@ class TopicController extends Controller
             $user = Auth::user();
             $topic = $this->topicService->createUserTopic($user, $request->only(['name', 'description']));
 
+            // Invalidate cache when topics change
+            Cache::forget("user_topics_{$user->id}");
+
             return back()->with('success', 'Topic created successfully');
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors());
@@ -47,6 +52,7 @@ class TopicController extends Controller
 
     /**
      * Update a custom topic.
+     * OPTIMIZED: Clears user topics cache after update
      */
     public function update(Request $request, int $id)
     {
@@ -59,6 +65,9 @@ class TopicController extends Controller
             $user = Auth::user();
             $topic = $this->topicService->updateUserTopic($user, $id, $request->only(['name', 'description']));
 
+            // Invalidate cache when topics change
+            Cache::forget("user_topics_{$user->id}");
+
             return back()->with('success', 'Topic updated successfully');
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors());
@@ -67,12 +76,16 @@ class TopicController extends Controller
 
     /**
      * Delete a custom topic.
+     * OPTIMIZED: Clears user topics cache after deletion
      */
     public function destroy(int $id)
     {
         try {
             $user = Auth::user();
             $this->topicService->deleteUserTopic($user, $id);
+
+            // Invalidate cache when topics change
+            Cache::forget("user_topics_{$user->id}");
 
             return back()->with('success', 'Topic deleted successfully');
         } catch (ValidationException $e) {

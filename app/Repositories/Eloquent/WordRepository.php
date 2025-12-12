@@ -120,15 +120,11 @@ class WordRepository implements WordRepositoryInterface
      */
     public function searchWords(string $searchTerm, int $perPage = 20): LengthAwarePaginator
     {
-        // Convert search term to PostgreSQL tsquery format
-        $query = Word::whereRaw(
-            'search_vector @@ plainto_tsquery(\'english\', ?)',
-            [$searchTerm]
-        )
-        ->orderByRaw(
-            'ts_rank(search_vector, plainto_tsquery(\'english\', ?)) DESC',
-            [$searchTerm]
-        )
+        // Search by word and definition with case-insensitive LIKE
+        $query = Word::where(function ($q) use ($searchTerm) {
+            $q->where('word', 'ilike', "%{$searchTerm}%")
+              ->orWhere('definition', 'ilike', "%{$searchTerm}%");
+        })
         ->orderBy('word');
 
         return $query->paginate($perPage);
@@ -136,7 +132,7 @@ class WordRepository implements WordRepositoryInterface
 
     /**
      * Legacy search method for backward compatibility.
-     * OPTIMIZED: Uses PostgreSQL full-text search (tsvector) instead of LIKE queries.
+     * Uses LIKE-based search for compatibility with all databases.
      *
      * @param string $query
      * @param int $limit
@@ -144,16 +140,10 @@ class WordRepository implements WordRepositoryInterface
      */
     public function search(string $query, int $limit = 20)
     {
-        return Word::whereRaw(
-            'search_vector @@ plainto_tsquery(\'english\', ?)',
-            [$query]
-        )
-        ->orderByRaw(
-            'ts_rank(search_vector, plainto_tsquery(\'english\', ?)) DESC',
-            [$query]
-        )
-        ->limit($limit)
-        ->get();
+        return Word::where('word', 'ilike', "%{$query}%")
+            ->orWhere('definition', 'ilike', "%{$query}%")
+            ->limit($limit)
+            ->get();
     }
 
     /**
