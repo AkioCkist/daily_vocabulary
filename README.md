@@ -11,39 +11,6 @@ A comprehensive web application for vocabulary learning and management, built wi
 
 ---
 
-
-## Table of Contents
-
-1. Quick Start
-3. Tech Stack
-4. Installation & Setup
-5. Architecture & Design
-6. Caching Strategy
-7. Configuration
-8. Testing
-9. Development Workflow
-10. Deployment
-11. Performance Report
-12. Contributing
-13. License
-14. Support
-15. Report Illustrations
-
----
-
-## Report Illustrations
-
-Below are comprehensive report illustrations from the application. All images are located in the `public/report` folder and referenced for GitHub display:
-
-| Image | Description |
-|-------|-------------|
-| ![api_manager](public/report/api_manager.png) | API Manager Overview |
-| ![api_manager_generate](public/report/api_manager_generate.png) | API Token Generation |
-| ![database](public/report/database.png) | Database Schema |
-| ![edit_profile](public/report/edit_profile.png) | Edit Profile Page |
-| ![edit_profile_1](public/report/edit_profile_1.png) | Edit Profile (Step 1) |
-| ![edit_profile_2](public/report/edit_profile_2.png) | Edit Profile (Step 2) |
-| ![flashcard_fill_in_blank](public/report/flashcard_fill_in_blank.png) | Flashcard Fill-in-the-Blank Mode |
 ## Table of Contents
 1. Report Illustrations
 2. Quick Start
@@ -102,8 +69,6 @@ Below are comprehensive report illustrations from the application, ordered to ma
 | ![unauthenticate_homepage](public/report/unauthenticate_homepage.png) | Unauthenticated Homepage |
 
 ---
-
-
 
 git clone https://github.com/AkioCkist/daily_vocabulary.git
 ## Quick Start
