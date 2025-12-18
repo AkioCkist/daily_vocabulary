@@ -39,15 +39,14 @@ Below are comprehensive report illustrations from the application, ordered to ma
 | Image | Description |
 |-------|-------------|
 | ![unauthenticate_homepage](public/report/unauthenticate_homepage.png) | Unauthenticated Homepage |
-| ![homepage](public/report/homepage.png) | Homepage (after login) |
 | ![login](public/report/login.png) | Login Page |
+| ![homepage](public/report/homepage.png) | Homepage (after login) |
 | ![edit_profile](public/report/edit_profile.png) | Edit Profile Page |
 | ![edit_profile_1](public/report/edit_profile_1.png) | Edit Profile (Step 1) |
 | ![edit_profile_2](public/report/edit_profile_2.png) | Edit Profile (Step 2) |
 | ![api_manager](public/report/api_manager.png) | API Manager Overview |
 | ![api_manager_generate](public/report/api_manager_generate.png) | API Token Generation |
 | ![topic_manager](public/report/topic_manager.png) | Topic Manager |
-| ![database](public/report/database.png) | Database Schema |
 | ![study_option](public/report/study_option.png) | Study Option Selection |
 | ![study_option_1](public/report/study_option_1.png) | Study Option (Alternative) |
 | ![flashcard_standard](public/report/flashcard_standard.png) | Flashcard Standard Mode |
@@ -55,18 +54,8 @@ Below are comprehensive report illustrations from the application, ordered to ma
 | ![save_study_session](public/report/save_study_session.png) | Save Study Session |
 | ![session_complete](public/report/session_complete.png) | Session Complete Screen |
 | ![memory_report](public/report/memory_report.png) | Memory Report |
+| ![database](public/report/database.png) | Database Schema |
 | ![redis](public/report/redis.png) | Redis Caching Overview |
-| ![flashcard_standard](public/report/flashcard_standard.png) | Flashcard Standard Mode |
-| ![homepage](public/report/homepage.png) | Homepage |
-| ![login](public/report/login.png) | Login Page |
-| ![memory_report](public/report/memory_report.png) | Memory Report |
-| ![redis](public/report/redis.png) | Redis Caching Overview |
-| ![save_study_session](public/report/save_study_session.png) | Save Study Session |
-| ![session_complete](public/report/session_complete.png) | Session Complete Screen |
-| ![study_option](public/report/study_option.png) | Study Option Selection |
-| ![study_option_1](public/report/study_option_1.png) | Study Option (Alternative) |
-| ![topic_manager](public/report/topic_manager.png) | Topic Manager |
-| ![unauthenticate_homepage](public/report/unauthenticate_homepage.png) | Unauthenticated Homepage |
 
 ---
 
