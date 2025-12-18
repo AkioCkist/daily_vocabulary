@@ -15,7 +15,6 @@ A comprehensive web application for vocabulary learning and management, built wi
 ## Table of Contents
 
 1. Quick Start
-2. Core Features
 3. Tech Stack
 4. Installation & Setup
 5. Architecture & Design
@@ -28,6 +27,79 @@ A comprehensive web application for vocabulary learning and management, built wi
 12. Contributing
 13. License
 14. Support
+15. Report Illustrations
+
+---
+
+## Report Illustrations
+
+Below are comprehensive report illustrations from the application. All images are located in the `public/report` folder and referenced for GitHub display:
+
+| Image | Description |
+|-------|-------------|
+| ![api_manager](public/report/api_manager.png) | API Manager Overview |
+| ![api_manager_generate](public/report/api_manager_generate.png) | API Token Generation |
+| ![database](public/report/database.png) | Database Schema |
+| ![edit_profile](public/report/edit_profile.png) | Edit Profile Page |
+| ![edit_profile_1](public/report/edit_profile_1.png) | Edit Profile (Step 1) |
+| ![edit_profile_2](public/report/edit_profile_2.png) | Edit Profile (Step 2) |
+| ![flashcard_fill_in_blank](public/report/flashcard_fill_in_blank.png) | Flashcard Fill-in-the-Blank Mode |
+## Table of Contents
+1. Report Illustrations
+2. Quick Start
+3. Core Features
+4. Tech Stack
+5. Architecture & Design
+6. Installation & Setup
+7. Common Commands
+8. Testing
+9. Caching Strategy & TTLs
+10. Configuration
+11. Development Workflow
+12. Deployment
+13. Performance Optimization Report (December 2025)
+14. 🤝 Contributing
+15. 📄 License
+16. 🆘 Support
+17. 🙏 Acknowledgments
+
+---
+
+## Report Illustrations
+
+Below are comprehensive report illustrations from the application, ordered to match the typical system usage flow. All images are located in the `public/report` folder and referenced for GitHub display:
+
+| Image | Description |
+|-------|-------------|
+| ![unauthenticate_homepage](public/report/unauthenticate_homepage.png) | Unauthenticated Homepage |
+| ![homepage](public/report/homepage.png) | Homepage (after login) |
+| ![login](public/report/login.png) | Login Page |
+| ![edit_profile](public/report/edit_profile.png) | Edit Profile Page |
+| ![edit_profile_1](public/report/edit_profile_1.png) | Edit Profile (Step 1) |
+| ![edit_profile_2](public/report/edit_profile_2.png) | Edit Profile (Step 2) |
+| ![api_manager](public/report/api_manager.png) | API Manager Overview |
+| ![api_manager_generate](public/report/api_manager_generate.png) | API Token Generation |
+| ![topic_manager](public/report/topic_manager.png) | Topic Manager |
+| ![database](public/report/database.png) | Database Schema |
+| ![study_option](public/report/study_option.png) | Study Option Selection |
+| ![study_option_1](public/report/study_option_1.png) | Study Option (Alternative) |
+| ![flashcard_standard](public/report/flashcard_standard.png) | Flashcard Standard Mode |
+| ![flashcard_fill_in_blank](public/report/flashcard_fill_in_blank.png) | Flashcard Fill-in-the-Blank Mode |
+| ![save_study_session](public/report/save_study_session.png) | Save Study Session |
+| ![session_complete](public/report/session_complete.png) | Session Complete Screen |
+| ![memory_report](public/report/memory_report.png) | Memory Report |
+| ![redis](public/report/redis.png) | Redis Caching Overview |
+| ![flashcard_standard](public/report/flashcard_standard.png) | Flashcard Standard Mode |
+| ![homepage](public/report/homepage.png) | Homepage |
+| ![login](public/report/login.png) | Login Page |
+| ![memory_report](public/report/memory_report.png) | Memory Report |
+| ![redis](public/report/redis.png) | Redis Caching Overview |
+| ![save_study_session](public/report/save_study_session.png) | Save Study Session |
+| ![session_complete](public/report/session_complete.png) | Session Complete Screen |
+| ![study_option](public/report/study_option.png) | Study Option Selection |
+| ![study_option_1](public/report/study_option_1.png) | Study Option (Alternative) |
+| ![topic_manager](public/report/topic_manager.png) | Topic Manager |
+| ![unauthenticate_homepage](public/report/unauthenticate_homepage.png) | Unauthenticated Homepage |
 
 ---
 

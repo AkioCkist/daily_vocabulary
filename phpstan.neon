@@ -1,0 +1,22 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - phpstan-baseline.neon
+
+parameters:
+    paths:
+        - app
+        - config
+        - database
+        - routes
+        - tests
+
+    # Level of rule options - the higher the stricter
+    # 0-9 available, 6 is a good starting point
+    level: 6
+
+    ignoreErrors:
+        # Add specific errors to ignore here if needed
+        # - '#PHPDoc tag @var#'
+
+    excludePaths:
+        - ./*/*/FileToBeExcluded.php
