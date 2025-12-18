@@ -1,0 +1,2347 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Actions/EvaluateAnswerAction.php
+
+		-
+			message: '#^Method App\\Actions\\Fortify\\CustomRedirectIfTwoFactorAuthenticatable\:\:fireFailedEvent\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Actions/Fortify/CustomRedirectIfTwoFactorAuthenticatable.php
+
+		-
+			message: '#^Method App\\Actions\\Fortify\\CustomRedirectIfTwoFactorAuthenticatable\:\:fireFailedEvent\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Actions/Fortify/CustomRedirectIfTwoFactorAuthenticatable.php
+
+		-
+			message: '#^Method App\\Actions\\Fortify\\CustomRedirectIfTwoFactorAuthenticatable\:\:fireFailedEvent\(\) has parameter \$user with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Actions/Fortify/CustomRedirectIfTwoFactorAuthenticatable.php
+
+		-
+			message: '#^Method App\\Actions\\Fortify\\CustomRedirectIfTwoFactorAuthenticatable\:\:throwFailedAuthenticationException\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Actions/Fortify/CustomRedirectIfTwoFactorAuthenticatable.php
+
+		-
+			message: '#^Method App\\Actions\\Fortify\\CustomRedirectIfTwoFactorAuthenticatable\:\:throwFailedAuthenticationException\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Actions/Fortify/CustomRedirectIfTwoFactorAuthenticatable.php
+
+		-
+			message: '#^Method App\\Actions\\Fortify\\CustomRedirectIfTwoFactorAuthenticatable\:\:twoFactorChallengeResponse\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Actions/Fortify/CustomRedirectIfTwoFactorAuthenticatable.php
+
+		-
+			message: '#^Method App\\Actions\\Fortify\\CustomRedirectIfTwoFactorAuthenticatable\:\:twoFactorChallengeResponse\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Actions/Fortify/CustomRedirectIfTwoFactorAuthenticatable.php
+
+		-
+			message: '#^Method App\\Actions\\Fortify\\CustomRedirectIfTwoFactorAuthenticatable\:\:twoFactorChallengeResponse\(\) has parameter \$user with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Actions/Fortify/CustomRedirectIfTwoFactorAuthenticatable.php
+
+		-
+			message: '#^Method App\\Actions\\Fortify\\CustomRedirectIfTwoFactorAuthenticatable\:\:validateCredentials\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Actions/Fortify/CustomRedirectIfTwoFactorAuthenticatable.php
+
+		-
+			message: '#^Method App\\Actions\\Fortify\\CustomRedirectIfTwoFactorAuthenticatable\:\:validateCredentials\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Actions/Fortify/CustomRedirectIfTwoFactorAuthenticatable.php
+
+		-
+			message: '#^Property App\\Actions\\Fortify\\CustomRedirectIfTwoFactorAuthenticatable\:\:\$guard has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: app/Actions/Fortify/CustomRedirectIfTwoFactorAuthenticatable.php
+
+		-
+			message: '#^Property App\\Actions\\Fortify\\CustomRedirectIfTwoFactorAuthenticatable\:\:\$limiter has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: app/Actions/Fortify/CustomRedirectIfTwoFactorAuthenticatable.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>two_factor_confirmed_at" in empty\(\) is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Actions/Fortify/CustomRedirectIfTwoFactorAuthenticatable.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>two_factor_secret" in empty\(\) is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Actions/Fortify/CustomRedirectIfTwoFactorAuthenticatable.php
+
+		-
+			message: '#^Instanceof between App\\Models\\User and Illuminate\\Contracts\\Auth\\MustVerifyEmail will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: app/Actions/Fortify/UpdateUserProfileInformation.php
+
+		-
+			message: '#^Method App\\Console\\Commands\\MakeUserAdmin\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Console/Commands/MakeUserAdmin.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Services\\EmailDigestService\:\:sendIncorrectWordsReport\(\) expects App\\Models\\User, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Console/Commands/ProcessEmailDigests.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Services\\EmailDigestService\:\:sendTopicSummary\(\) expects App\\Models\\User, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Console/Commands/ProcessEmailDigests.php
+
+		-
+			message: '#^Method App\\Console\\Commands\\TestDashboard\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Console/Commands/TestDashboard.php
+
+		-
+			message: '#^Call to static method make\(\) on an unknown class Filament\\Forms\\Components\\Section\.$#'
+			identifier: class.notFound
+			count: 3
+			path: app/Filament/Resources/DailyTestResource.php
+
+		-
+			message: '#^Call to static method make\(\) on an unknown class Filament\\Forms\\Components\\Section\.$#'
+			identifier: class.notFound
+			count: 2
+			path: app/Filament/Resources/FlashcardTemplateResource.php
+
+		-
+			message: '#^Call to static method make\(\) on an unknown class Filament\\Forms\\Components\\Section\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Filament/Resources/TopicResource.php
+
+		-
+			message: '#^Call to static method make\(\) on an unknown class Filament\\Forms\\Components\\Section\.$#'
+			identifier: class.notFound
+			count: 3
+			path: app/Filament/Resources/UserResource.php
+
+		-
+			message: '#^Call to static method make\(\) on an unknown class Filament\\Forms\\Components\\Section\.$#'
+			identifier: class.notFound
+			count: 3
+			path: app/Filament/Resources/WordResource.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Admin\\RateLimitController\:\:calculateRemainingTime\(\) has parameter \$lockData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Controllers/Admin/RateLimitController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Admin\\RateLimitController\:\:getLockedUsers\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Controllers/Admin/RateLimitController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Admin\\RateLimitController\:\:getUserViolations\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Controllers/Admin/RateLimitController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Admin\\RateLimitController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Admin/RateLimitController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Admin\\RateLimitController\:\:unlock\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Admin/RateLimitController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Admin\\RateLimitController\:\:unlockAuthEmail\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Admin/RateLimitController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Admin\\RateLimitController\:\:unlockAuthIp\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Admin/RateLimitController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Admin\\RateLimitController\:\:unlockIp\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Admin/RateLimitController.php
+
+		-
+			message: '#^Parameter \#4 \$expiresInDays of method App\\Actions\\CreateApiTokenAction\:\:execute\(\) expects int\|null, float\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Api/TokenController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\FlashcardController\:\:answer\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/FlashcardController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\FlashcardController\:\:complete\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/FlashcardController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\FlashcardController\:\:exportTemplate\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/FlashcardController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\FlashcardController\:\:generateFlashcards\(\) has parameter \$settings with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Controllers/FlashcardController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\FlashcardController\:\:generateFlashcards\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Controllers/FlashcardController.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: app/Http/Controllers/FlashcardController.php
+
+		-
+			message: '#^Property App\\Http\\Controllers\\FlashcardController\:\:\$dashboardService is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: app/Http/Controllers/FlashcardController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\SavedSession\:\:\$flashcard_count\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/HomeController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\SavedSession\:\:\$word_count\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/HomeController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\HomeController\:\:exportMemoryReport\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/HomeController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\HomeController\:\:exportMemoryReport\(\) has parameter \$days with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Controllers/HomeController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\HomeController\:\:generateMemoryReportCsv\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/HomeController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\HomeController\:\:generateMemoryReportCsv\(\) has parameter \$days with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Controllers/HomeController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\HomeController\:\:generateMemoryReportCsv\(\) has parameter \$report with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Controllers/HomeController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\HomeController\:\:getMemoryReport\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/HomeController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\HomeController\:\:getMemoryReport\(\) has parameter \$days with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Controllers/HomeController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\HomeController\:\:getStatsByDayRange\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/HomeController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\HomeController\:\:getStatsByDayRange\(\) has parameter \$days with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Controllers/HomeController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\HomeController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/HomeController.php
+
+		-
+			message: '#^If condition is always false\.$#'
+			identifier: if.alwaysFalse
+			count: 1
+			path: app/Http/Controllers/LearningController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\LearningController\:\:addToReview\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/LearningController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\LearningController\:\:markLearned\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/LearningController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\LearningController\:\:startSession\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/LearningController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\LearningController\:\:updateProgress\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/LearningController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Profile\\SubscriptionSettingsController\:\:metrics\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Profile/SubscriptionSettingsController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Profile\\SubscriptionSettingsController\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Profile/SubscriptionSettingsController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$incorrect_words_frequency\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/ProfileController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$receive_ads\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/ProfileController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$topic_summary_frequency\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/ProfileController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$cefr_level\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/ReviewController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$consecutive_correct\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/ReviewController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$definition\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/ReviewController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$example\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/ReviewController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/ReviewController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$mistake_count\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/ReviewController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$pronunciation\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/ReviewController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$topic\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/ReviewController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$word\.$#'
+			identifier: property.notFound
+			count: 4
+			path: app/Http/Controllers/ReviewController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ReviewController\:\:markMastered\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ReviewController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ReviewController\:\:nextWord\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ReviewController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ReviewController\:\:resetToReview\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ReviewController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ReviewController\:\:submitAnswer\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ReviewController.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\UserWord\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Controllers/ReviewController.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\UserWord\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Controllers/ReviewController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\SavedSession\:\:\$flashcard_count\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/SavedSessionController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\SavedSession\:\:\$word_count\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/SavedSessionController.php
+
+		-
+			message: '#^If condition is always false\.$#'
+			identifier: if.alwaysFalse
+			count: 1
+			path: app/Http/Controllers/SavedSessionController.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: app/Http/Controllers/SavedSessionItemController.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: app/Http/Controllers/SavedSessionItemController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\SubscriptionController\:\:checkStatus\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/SubscriptionController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\SubscriptionController\:\:getAuthUserStatus\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/SubscriptionController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\SubscriptionController\:\:store\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/SubscriptionController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\SubscriptionController\:\:unsubscribe\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/SubscriptionController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$correct_answer\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/TestController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$options\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/TestController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$question_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/TestController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$word\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Controllers/TestController.php
+
+		-
+			message: '#^Access to protected property Illuminate\\Database\\Eloquent\\Collection\<int, Illuminate\\Database\\Eloquent\\Model\>\:\:\$items\.$#'
+			identifier: property.protected
+			count: 4
+			path: app/Http/Controllers/TestController.php
+
+		-
+			message: '#^Cannot call method count\(\) on array\<int, Illuminate\\Database\\Eloquent\\Model\>\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: app/Http/Controllers/TestController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\TopicController\:\:destroy\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/TopicController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\TopicController\:\:store\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/TopicController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\TopicController\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/TopicController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\UserWordController\:\:destroy\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/UserWordController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\UserWordController\:\:destroy\(\) has parameter \$id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Controllers/UserWordController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\UserWordController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/UserWordController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\UserWordController\:\:store\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/UserWordController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\WordController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/WordController.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\AuthRateLimiter\:\:calculateRemainingTime\(\) has parameter \$lockData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Middleware/AuthRateLimiter.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\CheckAuthenticationLocks\:\:calculateRemainingTime\(\) has parameter \$lockData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Middleware/CheckAuthenticationLocks.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\GlobalRateLimitCheck\:\:calculateRemainingTime\(\) has parameter \$lockData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Middleware/GlobalRateLimitCheck.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\GlobalRateLimitCheck\:\:calculateRemainingTimeout\(\) has parameter \$timeoutData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Middleware/GlobalRateLimitCheck.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\HandleInertiaRequests\:\:getTwoFactorQrCode\(\) has parameter \$user with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Middleware/HandleInertiaRequests.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\HandleInertiaRequests\:\:getTwoFactorRecoveryCodes\(\) has parameter \$user with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Middleware/HandleInertiaRequests.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\HandleInertiaRequests\:\:getTwoFactorRecoveryCodes\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Middleware/HandleInertiaRequests.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\HandleInertiaRequests\:\:getTwoFactorSecret\(\) has parameter \$user with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Middleware/HandleInertiaRequests.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\ProgressiveRateLimiter\:\:calculateRemainingTimeout\(\) has parameter \$timeoutData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Middleware/ProgressiveRateLimiter.php
+
+		-
+			message: '#^Method App\\Http\\Requests\\DailyTestRequest\:\:withValidator\(\) has parameter \$validator with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Requests/DailyTestRequest.php
+
+		-
+			message: '#^Method App\\Http\\Requests\\LearningSessionRequest\:\:withValidator\(\) has parameter \$validator with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Requests/LearningSessionRequest.php
+
+		-
+			message: '#^Method App\\Http\\Requests\\ReviewSavedSessionRequest\:\:validated\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Requests/ReviewSavedSessionRequest.php
+
+		-
+			message: '#^Method App\\Jobs\\ProcessUserProgressJob\:\:checkForAchievements\(\) has parameter \$userWord with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Jobs/ProcessUserProgressJob.php
+
+		-
+			message: '#^Method App\\Mail\\IncorrectWordsDigestMail\:\:build\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Mail/IncorrectWordsDigestMail.php
+
+		-
+			message: '#^Method App\\Mail\\TopicSummaryDigestMail\:\:build\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Mail/TopicSummaryDigestMail.php
+
+		-
+			message: '#^Method App\\Mail\\WelcomeSubscriptionMail\:\:build\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Mail/WelcomeSubscriptionMail.php
+
+		-
+			message: '#^Class App\\Models\\DailyTest has PHPDoc tag @property for property \$meta with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/DailyTest.php
+
+		-
+			message: '#^Class App\\Models\\DailyTest uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DailyTest.php
+
+		-
+			message: '#^Method App\\Models\\DailyTest\:\:attempts\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DailyTest.php
+
+		-
+			message: '#^Method App\\Models\\DailyTest\:\:items\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DailyTest.php
+
+		-
+			message: '#^Method App\\Models\\DailyTest\:\:scopeForDate\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/DailyTest.php
+
+		-
+			message: '#^Method App\\Models\\DailyTest\:\:scopeForDate\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/DailyTest.php
+
+		-
+			message: '#^Method App\\Models\\DailyTest\:\:scopeTodayForUser\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/DailyTest.php
+
+		-
+			message: '#^Method App\\Models\\DailyTest\:\:scopeTodayForUser\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/DailyTest.php
+
+		-
+			message: '#^Method App\\Models\\DailyTest\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DailyTest.php
+
+		-
+			message: '#^PHPDoc type array\<int, string\> of property App\\Models\\DailyTest\:\:\$fillable is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/DailyTest.php
+
+		-
+			message: '#^Class App\\Models\\DailyTestItem has PHPDoc tag @property for property \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/DailyTestItem.php
+
+		-
+			message: '#^Class App\\Models\\DailyTestItem has PHPDoc tag @property for property \$result with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/DailyTestItem.php
+
+		-
+			message: '#^Class App\\Models\\DailyTestItem uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DailyTestItem.php
+
+		-
+			message: '#^Method App\\Models\\DailyTestItem\:\:attempts\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DailyTestItem.php
+
+		-
+			message: '#^Method App\\Models\\DailyTestItem\:\:dailyTest\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DailyTestItem.php
+
+		-
+			message: '#^Method App\\Models\\DailyTestItem\:\:latestAttempt\(\) should return App\\Models\\TestAttempt\|null but returns Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/DailyTestItem.php
+
+		-
+			message: '#^Method App\\Models\\DailyTestItem\:\:word\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DailyTestItem.php
+
+		-
+			message: '#^PHPDoc type array\<int, string\> of property App\\Models\\DailyTestItem\:\:\$fillable is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/DailyTestItem.php
+
+		-
+			message: '#^Class App\\Models\\DailyWordHistory uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DailyWordHistory.php
+
+		-
+			message: '#^Method App\\Models\\DailyWordHistory\:\:word\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DailyWordHistory.php
+
+		-
+			message: '#^PHPDoc type array\<int, string\> of property App\\Models\\DailyWordHistory\:\:\$fillable is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/DailyWordHistory.php
+
+		-
+			message: '#^Class App\\Models\\FlashcardAttempt uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/FlashcardAttempt.php
+
+		-
+			message: '#^Method App\\Models\\FlashcardAttempt\:\:scopeByType\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/FlashcardAttempt.php
+
+		-
+			message: '#^Method App\\Models\\FlashcardAttempt\:\:scopeByType\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/FlashcardAttempt.php
+
+		-
+			message: '#^Method App\\Models\\FlashcardAttempt\:\:scopeCorrect\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/FlashcardAttempt.php
+
+		-
+			message: '#^Method App\\Models\\FlashcardAttempt\:\:scopeCorrect\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/FlashcardAttempt.php
+
+		-
+			message: '#^Method App\\Models\\FlashcardAttempt\:\:scopeForgotten\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/FlashcardAttempt.php
+
+		-
+			message: '#^Method App\\Models\\FlashcardAttempt\:\:scopeForgotten\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/FlashcardAttempt.php
+
+		-
+			message: '#^Method App\\Models\\FlashcardAttempt\:\:scopeIncorrect\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/FlashcardAttempt.php
+
+		-
+			message: '#^Method App\\Models\\FlashcardAttempt\:\:scopeIncorrect\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/FlashcardAttempt.php
+
+		-
+			message: '#^Method App\\Models\\FlashcardAttempt\:\:scopeWithHints\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/FlashcardAttempt.php
+
+		-
+			message: '#^Method App\\Models\\FlashcardAttempt\:\:scopeWithHints\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/FlashcardAttempt.php
+
+		-
+			message: '#^Method App\\Models\\FlashcardAttempt\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/FlashcardAttempt.php
+
+		-
+			message: '#^Method App\\Models\\FlashcardAttempt\:\:word\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/FlashcardAttempt.php
+
+		-
+			message: '#^Class App\\Models\\FlashcardTemplate uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/FlashcardTemplate.php
+
+		-
+			message: '#^Method App\\Models\\FlashcardTemplate\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/FlashcardTemplate.php
+
+		-
+			message: '#^Method App\\Models\\FlashcardTemplate\:\:validateSettings\(\) has parameter \$settings with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/FlashcardTemplate.php
+
+		-
+			message: '#^Class App\\Models\\SavedSession uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/SavedSession.php
+
+		-
+			message: '#^Method App\\Models\\SavedSession\:\:getFlashcardIds\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/SavedSession.php
+
+		-
+			message: '#^Method App\\Models\\SavedSession\:\:getShuffledFlashcardIds\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/SavedSession.php
+
+		-
+			message: '#^Method App\\Models\\SavedSession\:\:items\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/SavedSession.php
+
+		-
+			message: '#^Method App\\Models\\SavedSession\:\:scopeForUser\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/SavedSession.php
+
+		-
+			message: '#^Method App\\Models\\SavedSession\:\:scopeForUser\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/SavedSession.php
+
+		-
+			message: '#^Method App\\Models\\SavedSession\:\:scopeRecent\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/SavedSession.php
+
+		-
+			message: '#^Method App\\Models\\SavedSession\:\:scopeRecent\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/SavedSession.php
+
+		-
+			message: '#^Method App\\Models\\SavedSession\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/SavedSession.php
+
+		-
+			message: '#^PHPDoc type array\<string\> of property App\\Models\\SavedSession\:\:\$fillable is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/SavedSession.php
+
+		-
+			message: '#^Class App\\Models\\SavedSessionItem uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/SavedSessionItem.php
+
+		-
+			message: '#^Method App\\Models\\SavedSessionItem\:\:savedSession\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/SavedSessionItem.php
+
+		-
+			message: '#^Method App\\Models\\SavedSessionItem\:\:scopeForSession\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/SavedSessionItem.php
+
+		-
+			message: '#^Method App\\Models\\SavedSessionItem\:\:scopeForSession\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/SavedSessionItem.php
+
+		-
+			message: '#^Method App\\Models\\SavedSessionItem\:\:scopeOrdered\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/SavedSessionItem.php
+
+		-
+			message: '#^Method App\\Models\\SavedSessionItem\:\:scopeOrdered\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/SavedSessionItem.php
+
+		-
+			message: '#^Method App\\Models\\SavedSessionItem\:\:word\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/SavedSessionItem.php
+
+		-
+			message: '#^PHPDoc type array\<string\> of property App\\Models\\SavedSessionItem\:\:\$fillable is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/SavedSessionItem.php
+
+		-
+			message: '#^Class App\\Models\\Subscription uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Subscription.php
+
+		-
+			message: '#^Method App\\Models\\Subscription\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Subscription.php
+
+		-
+			message: '#^PHPDoc type array\<int, string\> of property App\\Models\\Subscription\:\:\$fillable is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/Subscription.php
+
+		-
+			message: '#^Class App\\Models\\TestAttempt uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/TestAttempt.php
+
+		-
+			message: '#^Method App\\Models\\TestAttempt\:\:dailyTest\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/TestAttempt.php
+
+		-
+			message: '#^Method App\\Models\\TestAttempt\:\:dailyTestItem\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/TestAttempt.php
+
+		-
+			message: '#^Method App\\Models\\TestAttempt\:\:scopeCorrect\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/TestAttempt.php
+
+		-
+			message: '#^Method App\\Models\\TestAttempt\:\:scopeCorrect\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/TestAttempt.php
+
+		-
+			message: '#^Method App\\Models\\TestAttempt\:\:scopeForUser\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/TestAttempt.php
+
+		-
+			message: '#^Method App\\Models\\TestAttempt\:\:scopeForUser\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/TestAttempt.php
+
+		-
+			message: '#^Method App\\Models\\TestAttempt\:\:scopeForWord\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/TestAttempt.php
+
+		-
+			message: '#^Method App\\Models\\TestAttempt\:\:scopeForWord\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/TestAttempt.php
+
+		-
+			message: '#^Method App\\Models\\TestAttempt\:\:scopeIncorrect\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/TestAttempt.php
+
+		-
+			message: '#^Method App\\Models\\TestAttempt\:\:scopeIncorrect\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/TestAttempt.php
+
+		-
+			message: '#^Method App\\Models\\TestAttempt\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/TestAttempt.php
+
+		-
+			message: '#^Method App\\Models\\TestAttempt\:\:word\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/TestAttempt.php
+
+		-
+			message: '#^PHPDoc type array\<int, string\> of property App\\Models\\TestAttempt\:\:\$fillable is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/TestAttempt.php
+
+		-
+			message: '#^Class App\\Models\\Topic uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Topic.php
+
+		-
+			message: '#^Method App\\Models\\Topic\:\:collectedWords\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Topic.php
+
+		-
+			message: '#^Method App\\Models\\Topic\:\:collectedWordsForUser\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Topic.php
+
+		-
+			message: '#^Method App\\Models\\Topic\:\:scopeAvailableForUser\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Topic.php
+
+		-
+			message: '#^Method App\\Models\\Topic\:\:scopeAvailableForUser\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Topic.php
+
+		-
+			message: '#^Method App\\Models\\Topic\:\:scopeSystem\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Topic.php
+
+		-
+			message: '#^Method App\\Models\\Topic\:\:scopeSystem\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Topic.php
+
+		-
+			message: '#^Method App\\Models\\Topic\:\:scopeUserTopics\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Topic.php
+
+		-
+			message: '#^Method App\\Models\\Topic\:\:scopeUserTopics\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Topic.php
+
+		-
+			message: '#^Method App\\Models\\Topic\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Topic.php
+
+		-
+			message: '#^Method App\\Models\\Topic\:\:words\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Topic.php
+
+		-
+			message: '#^PHPDoc type array\<int, string\> of property App\\Models\\Topic\:\:\$fillable is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/Topic.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany\:\:learned\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany\:\:mastered\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany\:\:needsReview\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:dailyTests\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:learnedWords\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:masteredWords\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:reviewWords\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:savedSessions\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:subscription\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasOne does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:testAttempts\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:topics\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:userWords\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:words\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Class App\\Models\\UserWord uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/UserWord.php
+
+		-
+			message: '#^Method App\\Models\\UserWord\:\:scopeLearned\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/UserWord.php
+
+		-
+			message: '#^Method App\\Models\\UserWord\:\:scopeLearned\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/UserWord.php
+
+		-
+			message: '#^Method App\\Models\\UserWord\:\:scopeMastered\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/UserWord.php
+
+		-
+			message: '#^Method App\\Models\\UserWord\:\:scopeMastered\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/UserWord.php
+
+		-
+			message: '#^Method App\\Models\\UserWord\:\:scopeNeedsReview\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/UserWord.php
+
+		-
+			message: '#^Method App\\Models\\UserWord\:\:scopeNeedsReview\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/UserWord.php
+
+		-
+			message: '#^Method App\\Models\\UserWord\:\:scopeUnmasteredSeen\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/UserWord.php
+
+		-
+			message: '#^Method App\\Models\\UserWord\:\:scopeUnmasteredSeen\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/UserWord.php
+
+		-
+			message: '#^Method App\\Models\\UserWord\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/UserWord.php
+
+		-
+			message: '#^Method App\\Models\\UserWord\:\:word\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/UserWord.php
+
+		-
+			message: '#^PHPDoc type array\<int, string\> of property App\\Models\\UserWord\:\:\$fillable is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/UserWord.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\:\:byTopic\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Class App\\Models\\Word uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Method App\\Models\\Word\:\:dailyTestItems\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Method App\\Models\\Word\:\:getCefrLevels\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Method App\\Models\\Word\:\:getTopics\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Method App\\Models\\Word\:\:scopeByCefrLevel\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Method App\\Models\\Word\:\:scopeByCefrLevel\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Method App\\Models\\Word\:\:scopeByMeaning\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Method App\\Models\\Word\:\:scopeByMeaning\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Method App\\Models\\Word\:\:scopeByTopic\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Method App\\Models\\Word\:\:scopeByTopic\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Method App\\Models\\Word\:\:scopeByWord\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Method App\\Models\\Word\:\:scopeByWord\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Method App\\Models\\Word\:\:scopeFilter\(\) has parameter \$filters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Method App\\Models\\Word\:\:scopeFilter\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Method App\\Models\\Word\:\:scopeFilter\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Method App\\Models\\Word\:\:testAttempts\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Method App\\Models\\Word\:\:topic\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Method App\\Models\\Word\:\:userTopics\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Method App\\Models\\Word\:\:userWords\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Method App\\Models\\Word\:\:users\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^PHPDoc type array\<int, string\> of property App\\Models\\Word\:\:\$fillable is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Unable to resolve the template type TWhenReturnType in call to method Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>\:\:when\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: app/Models/Word.php
+
+		-
+			message: '#^Method App\\Repositories\\Eloquent\\EloquentSubscriptionRepository\:\:confirm\(\) should return bool but returns int\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Repositories/Eloquent/EloquentSubscriptionRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\Eloquent\\EloquentSubscriptionRepository\:\:create\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Repositories/Eloquent/EloquentSubscriptionRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\Eloquent\\EloquentSubscriptionRepository\:\:unsubscribe\(\) should return bool but returns int\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Repositories/Eloquent/EloquentSubscriptionRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\Eloquent\\EloquentUserWordRepository\:\:getUserWords\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Repositories/Eloquent/EloquentUserWordRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\Eloquent\\WordRepository\:\:filter\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Repositories/Eloquent/WordRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\Eloquent\\WordRepository\:\:searchWords\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Repositories/Eloquent/WordRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\Interfaces\\SubscriptionRepositoryInterface\:\:create\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Repositories/Interfaces/SubscriptionRepositoryInterface.php
+
+		-
+			message: '#^Method App\\Repositories\\Interfaces\\UserWordRepositoryInterface\:\:getUserWords\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Repositories/Interfaces/UserWordRepositoryInterface.php
+
+		-
+			message: '#^Method App\\Repositories\\Interfaces\\WordRepositoryInterface\:\:filter\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Repositories/Interfaces/WordRepositoryInterface.php
+
+		-
+			message: '#^Method App\\Repositories\\Interfaces\\WordRepositoryInterface\:\:searchWords\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Repositories/Interfaces/WordRepositoryInterface.php
+
+		-
+			message: '#^Method App\\Services\\DailyWordService\:\:getTodayWord\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Services/DailyWordService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\TestAttempt\:\:\$attempts\.$#'
+			identifier: property.notFound
+			count: 4
+			path: app/Services/DashboardService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\TestAttempt\:\:\$correct\.$#'
+			identifier: property.notFound
+			count: 5
+			path: app/Services/DashboardService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\TestAttempt\:\:\$correct_count\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/DashboardService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\TestAttempt\:\:\$date\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/DashboardService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\TestAttempt\:\:\$incorrect\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/DashboardService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\TestAttempt\:\:\$incorrect_count\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/DashboardService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\TestAttempt\:\:\$total\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/DashboardService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\TestAttempt\:\:\$total_attempts\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/DashboardService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$cefr_level\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/DashboardService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$topic\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/DashboardService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$word\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/DashboardService.php
+
+		-
+			message: '#^Method App\\Services\\DashboardService\:\:calculateTrendDirection\(\) has parameter \$trends with generic class Illuminate\\Support\\Collection but does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/DashboardService.php
+
+		-
+			message: '#^Method App\\Services\\DashboardService\:\:getCefrLevels\(\) should return array\<int, string\> but returns array\<string, string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/DashboardService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\TestAttempt\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 4
+			path: app/Services/DashboardService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:avg\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Services/DashboardService.php
+
+		-
+			message: '#^Parameter \#1 \$value of function collect contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Services/DashboardService.php
+
+		-
+			message: '#^Return type of call to function collect contains unresolvable type\.$#'
+			identifier: function.unresolvableReturnType
+			count: 1
+			path: app/Services/DashboardService.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\TestAttempt\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 4
+			path: app/Services/DashboardService.php
+
+		-
+			message: '#^Method App\\Services\\EmailDigestService\:\:logEmail\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/EmailDigestService.php
+
+		-
+			message: '#^Property App\\Services\\LearningService\:\:\$userProgressService is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: app/Services/LearningService.php
+
+		-
+			message: '#^Parameter \#1 \$word of method App\\Services\\ReviewService\:\:evaluateReviewAnswer\(\) expects App\\Models\\Word, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/ReviewService.php
+
+		-
+			message: '#^Parameter \#1 \$word of method App\\Services\\ReviewService\:\:getCorrectAnswer\(\) expects App\\Models\\Word, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/ReviewService.php
+
+		-
+			message: '#^Method App\\Services\\SubscriptionService\:\:confirm\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Services/SubscriptionService.php
+
+		-
+			message: '#^Method App\\Services\\SubscriptionService\:\:subscribe\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Services/SubscriptionService.php
+
+		-
+			message: '#^Method App\\Services\\SubscriptionService\:\:unsubscribe\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Services/SubscriptionService.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/SubscriptionService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/TestService.php
+
+		-
+			message: '#^Anonymous function has an unused use \$newWordsRatio\.$#'
+			identifier: closure.unusedUse
+			count: 1
+			path: app/Services/TestService.php
+
+		-
+			message: '#^Anonymous function has an unused use \$reviewWordsRatio\.$#'
+			identifier: closure.unusedUse
+			count: 1
+			path: app/Services/TestService.php
+
+		-
+			message: '#^Anonymous function has an unused use \$unmasteredWordsRatio\.$#'
+			identifier: closure.unusedUse
+			count: 1
+			path: app/Services/TestService.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between mixed~\(0\|0\.0\|''''\|''0''\|array\{\}\|false\|null\) and '''' will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 2
+			path: app/Services/TestService.php
+
+		-
+			message: '#^Anonymous function has an unused use \$name\.$#'
+			identifier: closure.unusedUse
+			count: 1
+			path: app/Services/TopicService.php
+
+		-
+			message: '#^Anonymous function has an unused use \$query\.$#'
+			identifier: closure.unusedUse
+			count: 1
+			path: app/Services/TopicService.php
+
+		-
+			message: '#^Method App\\Services\\TopicService\:\:getAllAvailableTopics\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/TopicService.php
+
+		-
+			message: '#^Method App\\Services\\UserProgressService\:\:getWordsNeedingReview\(\) return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types\: TKey, TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/UserProgressService.php
+
+		-
+			message: '#^Method App\\Services\\WordService\:\:filterWords\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/WordService.php
+
+		-
+			message: '#^Method App\\Services\\WordService\:\:searchWords\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/WordService.php
+
+		-
+			message: '#^Class Database\\Factories\\DailyWordHistoryFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: database/factories/DailyWordHistoryFactory.php
+
+		-
+			message: '#^Call to static method factory\(\) on an unknown class App\\Models\\Flashcard\.$#'
+			identifier: class.notFound
+			count: 1
+			path: database/factories/SavedSessionItemFactory.php
+
+		-
+			message: '#^Class Database\\Factories\\SubscriptionFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: database/factories/SubscriptionFactory.php
+
+		-
+			message: '#^Class Database\\Factories\\TopicFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: database/factories/TopicFactory.php
+
+		-
+			message: '#^Class Database\\Factories\\UserWordFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: database/factories/UserWordFactory.php
+
+		-
+			message: '#^Class Database\\Factories\\WordFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: database/factories/WordFactory.php
+
+		-
+			message: '#^Match expression does not handle remaining value\: string$#'
+			identifier: match.unhandled
+			count: 3
+			path: database/migrations/2025_12_04_012140_create_pulse_tables.php
+
+		-
+			message: '#^Method Database\\Seeders\\LargeVocabularySeeder\:\:getVocabularyData\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: database/seeders/LargeVocabularySeeder.php
+
+		-
+			message: '#^Method Database\\Seeders\\TopicsTableSeeder\:\:run\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: database/seeders/TopicsTableSeeder.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: database/seeders/TopicsTableSeeder.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: database/seeders/TopicsTableSeeder.php
+
+		-
+			message: '#^Method Database\\Seeders\\WordsTableSeeder\:\:run\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: database/seeders/WordsTableSeeder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$description\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Admin/TopicManagementTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/Feature/Admin/TopicManagementTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$is_system\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Admin/TopicManagementTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 10
+			path: tests/Feature/Admin/TopicManagementTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with int will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Feature/Admin/TopicManagementTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$cefr_level\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Admin/WordManagementTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$definition\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Admin/WordManagementTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$example\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Admin/WordManagementTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 3
+			path: tests/Feature/Admin/WordManagementTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$pronunciation\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Admin/WordManagementTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$topic\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Admin/WordManagementTest.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:users\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/Feature/Admin/WordManagementTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with int will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Feature/Admin/WordManagementTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Feature/Api/TokenTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with int will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 2
+			path: tests/Feature/Api/WordSearchTest.php
+
+		-
+			message: '#^Class App\\Http\\Middleware\\VerifyCsrfToken not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Feature/Auth/EmailVerificationTest.php
+
+		-
+			message: '#^Parameter \#3 \$callback of static method Illuminate\\Support\\Facades\\Notification\:\:assertSentTo\(\) expects \(callable\(\)\: mixed\)\|null, 2 given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Feature/Auth/EmailVerificationTest.php
+
+		-
+			message: '#^Class App\\Http\\Middleware\\VerifyCsrfToken not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Feature/Auth/LoginTest.php
+
+		-
+			message: '#^Class App\\Http\\Middleware\\VerifyCsrfToken not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Feature/Auth/PasswordResetTest.php
+
+		-
+			message: '#^Class App\\Http\\Middleware\\VerifyCsrfToken not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Feature/Auth/RegistrationTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/Feature/Learning/LearningFlowTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with string will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Feature/Learning/LearningFlowTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model&object\{pivot\: Illuminate\\Database\\Eloquent\\Relations\\Pivot\}\:\:\$cefr_level\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Review/ReviewFlowTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model&object\{pivot\: Illuminate\\Database\\Eloquent\\Relations\\Pivot\}\:\:\$definition\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/Feature/Review/ReviewFlowTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model&object\{pivot\: Illuminate\\Database\\Eloquent\\Relations\\Pivot\}\:\:\$meaning\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Review/ReviewFlowTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model&object\{pivot\: Illuminate\\Database\\Eloquent\\Relations\\Pivot\}\:\:\$pronunciation\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/Feature/Review/ReviewFlowTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model&object\{pivot\: Illuminate\\Database\\Eloquent\\Relations\\Pivot\}\:\:\$word\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/Feature/Review/ReviewFlowTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Feature/Security/ApiSecurityTest.php
+
+		-
+			message: '#^Result of \|\| is always true\.$#'
+			identifier: booleanOr.alwaysTrue
+			count: 1
+			path: tests/Feature/Security/ApiSecurityTest.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between 200 and 200 will always evaluate to true\.$#'
+			identifier: identical.alwaysTrue
+			count: 1
+			path: tests/Feature/Security/ApiSecurityTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with int will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Feature/Security/AuthenticationSecurityTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 2
+			path: tests/Feature/Security/RateLimitTest.php
+
+		-
+			message: '#^Comparison operation "\>" between int\<1, max\> and 0 is always true\.$#'
+			identifier: greater.alwaysTrue
+			count: 1
+			path: tests/Feature/Security/RateLimitTest.php
+
+		-
+			message: '#^Right side of \|\| is always true\.$#'
+			identifier: booleanOr.rightAlwaysTrue
+			count: 1
+			path: tests/Feature/Security/RateLimitTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with App\\Models\\Subscription will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Feature/Subscription/SubscribeTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$words\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Topics/TopicCrudTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with Illuminate\\Support\\Carbon will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 2
+			path: tests/Feature/Topics/TopicCrudTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with int will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Feature/Topics/TopicCrudTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$cefr_level\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Words/WordCrudTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/Feature/Words/WordCrudTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$meaning\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Words/WordCrudTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$pronunciation\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Words/WordCrudTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$source\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Words/WordCrudTest.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:users\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: tests/Feature/Words/WordCrudTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with int will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Feature/Words/WordCrudTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Unit/ExampleTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 23
+			path: tests/Unit/Models/DatabaseIntegrityTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Models/DatabaseIntegrityTest.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:userWords\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/Unit/Models/DatabaseIntegrityTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/Unit/Models/TopicTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Models/TopicTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$user\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Models/TopicTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Models/TopicTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$words\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Models/TopicTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsObject\(\) with App\\Models\\Topic will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Unit/Models/TopicTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with Illuminate\\Support\\Carbon will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 2
+			path: tests/Unit/Models/TopicTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$cefr_level\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Models/WordTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Models/WordTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$definition\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/Unit/Models/WordTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$example\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Models/WordTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 3
+			path: tests/Unit/Models/WordTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$meaning\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Models/WordTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$pronunciation\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/Unit/Models/WordTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$source\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Models/WordTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$topic\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Models/WordTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$updated_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Models/WordTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$users\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/Unit/Models/WordTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$word\.$#'
+			identifier: property.notFound
+			count: 5
+			path: tests/Unit/Models/WordTest.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:users\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: tests/Unit/Models/WordTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsObject\(\) with Illuminate\\Database\\Eloquent\\Model will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Unit/Models/WordTest.php
+
+		-
+			message: '#^Call to function is_bool\(\) with bool will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 2
+			path: tests/Unit/Policies/AdminPolicyTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 2
+			path: tests/Unit/Policies/AdminPolicyTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/Unit/Services/FlashcardServiceTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with string will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Unit/Services/FlashcardServiceTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model&object\{pivot\: Illuminate\\Database\\Eloquent\\Relations\\Pivot\}\:\:\$definition\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Services/SpacedRepetitionServiceTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model&object\{pivot\: Illuminate\\Database\\Eloquent\\Relations\\Pivot\}\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Services/SpacedRepetitionServiceTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model&object\{pivot\: Illuminate\\Database\\Eloquent\\Relations\\Pivot\}\:\:\$word\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Services/SpacedRepetitionServiceTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Services/SpacedRepetitionServiceTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with int will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Unit/Services/SubscriptionServiceTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with false will always evaluate to false\.$#'
+			identifier: method.impossibleType
+			count: 1
+			path: tests/Unit/Services/SubscriptionServiceTest.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: tests/Unit/Services/SubscriptionServiceTest.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: tests/Unit/Services/SubscriptionServiceTest.php
