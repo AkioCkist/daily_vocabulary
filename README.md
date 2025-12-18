@@ -59,7 +59,6 @@ Below are comprehensive report illustrations from the application, ordered to ma
 
 ---
 
-git clone https://github.com/AkioCkist/daily_vocabulary.git
 ## Quick Start
 
 ```bash
